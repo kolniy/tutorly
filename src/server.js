@@ -6,10 +6,6 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json({ extended: false }))
 
-app.get("/", (req, res) => {
-  res.send("welcome to divine mingle")
-})
-
 // all application routes will accessed from here
 
 
@@ -19,7 +15,7 @@ if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'))
 
     
-    app.get("/*", (req, res) => {
+    app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'))
     })
 }
