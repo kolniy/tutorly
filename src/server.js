@@ -1,0 +1,28 @@
+import path from "path"
+import express from "express"
+
+const app = express()
+const PORT = process.env.PORT || 5000
+
+app.use(express.json({ extended: false }))
+
+app.get("/", (req, res) => {
+  res.send("welcome to divine mingle")
+})
+
+// all application routes will accessed from here
+
+
+// block of code come's after application routes
+if(process.env.NODE_ENV === 'production'){
+    // set static files
+    app.use(express.static('client/build'))
+
+    
+    app.get("/*", (req, res) => {
+      res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'))
+    })
+}
+
+
+app.listen(PORT, () => console.log(`App is Listenng on port ${PORT}`))
