@@ -1,0 +1,25 @@
+
+.btn-login, .btn-login:hover {
+    color: var(--site-dark-color);
+    background-color: var(--site-white-color);
+    border: 1px solid var(--site-dark-color);
+}
+
+.toggler-style {
+    color: var(--site-dark-color);
+}
+
+.btn-signup, .btn-signup:hover {
+    color: var(--site-white-color);
+    background-color: var(--site-dark-color);
+}
+
+@media screen and (max-width: 992px) {
+    .btn-login {
+        margin: 7px;
+    }
+
+    .btn-signup {
+        margin: 7px;
+    }
+}
