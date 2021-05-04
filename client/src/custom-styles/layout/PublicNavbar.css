@@ -1,3 +1,18 @@
+.navbar-dark .navbar-brand {
+    color: var(--site-dark-color);
+}
+
+.navbar-dark .navbar-brand:hover {
+    color: var(--site-dark-color);
+}
+
+.navbar-dark .navbar-brand:active {
+    color: var(--site-dark-color);
+}
+
+.collapse-brand a {
+    color: var(--site-dark-color);
+}
 
 .btn-login, .btn-login:hover {
     color: var(--site-dark-color);

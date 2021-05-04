@@ -1,8 +1,10 @@
 import React from 'react'
+import PublicNavbar from "../layout/PublicNavbar"
 
 const Signup = () => {
     return <>
-        this is the site sign up page
+        <PublicNavbar />
+
     </>
 }
 

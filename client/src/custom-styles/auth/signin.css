@@ -1,0 +1,33 @@
+.card-style {
+    padding: 20px;
+    border: .3px solid var(--site-subtle-dark);
+}
+
+.card-style .form-group {
+    margin-bottom: 6vh;
+}
+
+.signup-cta {
+    font-size: 13px;
+}
+
+.signup-cta a{
+    color: var(--site-red-color);
+}
+
+.card-style .signin-btn {
+    color: var(--site-subtle-dark);
+    background-color: var(--site-white-color);
+    border: .5px solid var(--site-subtle-dark);
+    border-radius: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+@media screen and (min-width: 992px) {
+    .card-style {
+        padding: 20px;
+        border: .3px solid var(--site-subtle-dark);
+        width: 400px;
+    }
+}
