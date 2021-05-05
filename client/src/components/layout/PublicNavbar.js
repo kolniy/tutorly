@@ -23,7 +23,7 @@ const PublicNavbar = () => {
                 Tutorly
               </NavbarBrand>
               <button className="navbar-toggler" id="navbar-primary">
-                <i class="fas fa-bars toggler-style"></i>
+                <i className="fas fa-bars toggler-style"></i>
               </button>
               <UncontrolledCollapse navbar toggler="#navbar-primary">
                 <div className="navbar-collapse-header">

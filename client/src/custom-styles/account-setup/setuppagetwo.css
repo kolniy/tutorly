@@ -1,0 +1,47 @@
+.progress-container {
+    display: flex;
+    align-items: center;
+    margin: 8px auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.step-counter-number {
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    background-color: #e2dcdc;
+    color: var(--site-white-color);
+    text-align: center;
+    font-weight: 900;
+    font-size: 23px;
+    padding: 8px;
+}
+
+.step-counter-text {
+    color: var(--background-black);
+    font-weight: 700;
+    font-size: 17px;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.step-counter-number__coloured{
+    background-color: var(--background-black);
+}
+
+.setup-info {
+    color: var(--alt-text-color);
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.account-setup__page-two .form-group {
+    position: relative;
+    margin-bottom: 4vh;
+}
+
+.account-setup__page-two .form__input {
+    border: .5px solid #cad1d7;
+}

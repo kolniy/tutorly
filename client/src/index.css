@@ -22,11 +22,15 @@
   --site-orange-color: #ff3b30;
   --site-green-color: #7BDB97;
   --site-dark-color: #242121;
-  --site-subtle-dark: #494949;
+  --site-subtle-dark: #3d3d3d;
   --site-grey-color: #e6e5e5;
   --site-secondary-grey: #f4f5f7;
   --site-white-color: #ffffff;
+  --alt-text-color: #807d7d;
+  --background-black: #3d3c3c;
 }
+
+
 
 body {
   font-family: Lato, sans-serif;

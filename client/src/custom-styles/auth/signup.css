@@ -12,12 +12,32 @@
     font-weight: 580;
 }
 
-.signup-cta {
+.remove-margin {
+    margin-bottom: 1px !important;
+}
+
+.terms-condition-text {
+    font-size: 13px;
+    margin: 20px 0;
+    color: var(--alt-text-color);
+}
+
+.terms-and-condition-checkbox:active .terms-and-condition-checkbox:active:checked{
+    background-color:var(--site-subtle-dark);
+}
+
+.terms-condition-text .terms-condition-highlight{
+    font-weight: 800;
+    font-size: 12.8px;
+    color: var(--site-subtle-dark);
+}
+
+.login-cta {
     font-size: 13px;
     color: var(--alt-text-color);
 }
 
-.signup-cta a{
+.login-cta a{
     color: var(--site-red-color);
 }
 

@@ -20,13 +20,13 @@ const Signin = () => {
     <PublicNavbar />
         <br/>
         <br/>
-        <br/>
         <Container>
             <Row>
          <Col sm="3"></Col>
         <Col sm="6">
         <Card className="shadow card-style">
           <CardBody>
+          <h1 className="text-center page-heading">Login</h1>
         <Form>
           <FormGroup>
              <Input
