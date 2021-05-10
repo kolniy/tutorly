@@ -1,0 +1,5 @@
+.form-warning {
+    color: var(--site-orange-color);
+    font-size: 13px;
+    margin-top: 2px;
+  }

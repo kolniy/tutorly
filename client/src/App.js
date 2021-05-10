@@ -13,10 +13,29 @@ import Courses from "./components/dashboard/Courses"
 import Customize from "./components/dashboard/Customize"
 import Sales from "./components/dashboard/Sales"
 import Messages from "./components/dashboard/Messages"
+import AppLoader from "./components/layout/AppLoader"
+
+// REDUX STORE CONFIG
+import { Provider } from "react-redux"
+import store from "./store"
+// import { loadUser } from "./actions/auth"
+import setAuthToken from "./utilities/setAuthToken"
+
+if(localStorage.getItem("token")){
+  setAuthToken(localStorage.getItem("token"))
+}
+
 
 function App() {
+
+  //  useEffect(() => {
+  //   store.dispatch(loadUser()) // load user when app mounts, checks for authentication
+  // }, [])
+
   return (
-    <Router>
+   <Provider store={store}>
+      <Router>
+        <AppLoader />
       <Switch>
         <Route exact path="/" component={Homepage} />
         <Route exact path="/signup" component={Signup} />
@@ -30,6 +49,7 @@ function App() {
         <Route exact path="/dashboard/messages" component={Messages} />
       </Switch>
     </Router>
+   </Provider>
   )
 }
 

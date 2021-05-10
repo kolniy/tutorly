@@ -6,10 +6,20 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "axios": "0.21.1",
+    "moment": "2.29.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-loading-skeleton": "2.2.0",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
-    "reactstrap": "^8.9.0",
+    "react-toastify": "7.0.4",
+    "reactstrap": "8.9.0",
+    "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
+    "uuid": "8.3.2",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
@@ -35,5 +45,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

@@ -1,13 +1,22 @@
 import path from "path"
 import express from "express"
+import connectDB from "./config/connection"
+
+import userRoute from "./routes/user"
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(express.json({ extended: false }))
 
-// all application routes will accessed from here
+connectDB()
 
+app.get('/', (req, res) => {
+  res.send("welcome to our api")
+})
+
+// all application routes will accessed from here
+app.use('/api/v1/user', userRoute)
 
 // block of code come's after application routes
 if(process.env.NODE_ENV === 'production'){
