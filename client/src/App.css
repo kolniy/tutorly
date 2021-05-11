@@ -3,3 +3,13 @@
     font-size: 13px;
     margin-top: 2px;
   }
+
+  .app-loader .modal-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loader-text {
+    color: var(--site-subtle-dark);
+  }

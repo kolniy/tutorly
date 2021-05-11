@@ -4,7 +4,11 @@ import {
     SIGNUP_FAIL, 
     SIGNIN_FAIL,
     LOAD_USER,
-    AUTH_ERROR, 
+    AUTH_ERROR,
+    UPDATE_ACCOUNT_STEP_ONE,
+    UPDATE_ACCOUNT_STEP_TWO,
+    UPDATE_ACCOUNT_STEP_ONE_FAIL,
+    UPDATE_ACCOUNT_STEP_TWO_FAIL,
     LOGOUT 
 } from "../actions/types"
 
@@ -47,6 +51,21 @@ const authReducer = (state = initialState, action) => {
                 loading:false,
                 user: payload
             }  
+        case UPDATE_ACCOUNT_STEP_ONE: 
+        case UPDATE_ACCOUNT_STEP_TWO:
+            return {
+                ...state,
+                authenticated: true,
+                loading:false,
+                user: payload
+            } 
+        case UPDATE_ACCOUNT_STEP_ONE_FAIL:
+        case UPDATE_ACCOUNT_STEP_TWO_FAIL:     
+            return {
+                ...state,
+                authenticated: true,
+                loading: false,
+            }    
         default:
            return state
     }

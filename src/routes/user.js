@@ -1,8 +1,9 @@
 import express from "express"
-import User from "../models/User"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { body, validationResult } from "express-validator"
+import User from "../models/User"
+import School from "../models/School"
 
 import auth from "../middleware/auth"
 
@@ -121,6 +122,127 @@ async (req, res) => {
             errors: error
         })
         console.error(error)
+    }
+})
+
+router.put('/account/setup/stepone', auth, [
+    body("firstname", "firstname is required").not().isEmpty(),
+    body("lastname", "lastname is required").not().isEmpty(),
+    body("username", "username is required").not().isEmpty()
+], async (req, res) => {
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { firstname, lastname, username } = req.body
+
+    try {
+        const usernameExists = await User.findOne({
+            username: username
+        })
+
+        if(usernameExists){
+            return res.status(400).json({ errors: [
+                {
+                    msg: "username already exist's"
+                }
+            ]})
+        }
+
+        let user = await User.findOne({
+            _id: req.user.id
+        })
+
+        if(!user){
+            return res.status(400).json({
+                errors: [
+                    {
+                        msg: "user not valid"
+                    }
+                ]
+            })
+        }
+
+        const school = new School({
+            name: username,
+            createdBy: req.user.id
+        })
+
+        user.firstname = firstname
+        user.lastname = lastname
+        user.username = username
+
+        await school.save()
+        await user.save()
+
+        res.json({
+            user,
+            school
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            errors: error
+        })
+        console.error(error)
+    }
+})
+
+router.put('/account/setup/steptwo', auth, [
+    body("field", "field is requied").not().isEmpty()
+], async (req, res) => {
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { field, about } = req.body
+
+    try {
+        
+        let user = await User.findOne({
+            _id: req.user.id
+        })
+
+        if(!user){
+            return res.status(400).json({
+                errors: [
+                    {
+                        msg: "user not valid"
+                    }
+                ]
+            })
+        }
+
+        user.field = field
+        user.about = about
+        user.setupComplete = true
+
+        await user.save()
+        res.json(user)
+
+    } catch (error) {
+        res.status(500).json({
+            errors: error
+        })
+        console.error(error)
+    }
+})
+
+router.get('/account/setup/existinguser/username', async (req, res) => {
+    const usernameQuery = req.query.username
+    try {
+        if(usernameQuery){
+            const users = await User.find({
+                username: usernameQuery
+            })
+            res.json(users)
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Internal server error")
     }
 })
 

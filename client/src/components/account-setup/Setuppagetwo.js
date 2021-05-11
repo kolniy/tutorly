@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import {
     Container,
     Col,
@@ -10,11 +12,63 @@ import {
     Input,
     Button
 } from "reactstrap"
+import { accountSetupTwo } from "../../actions/account"
 import PublicNavbar from "../layout/PublicNavbar"
 
 import "../../custom-styles/account-setup/setuppagetwo.css"
 
-const Setuppagetwo = () => {
+const Setuppagetwo = ({ accountSetup, history }) => {
+
+    const [ formData, setFormData ] = useState({
+        field:"",
+        about:""
+    })
+    const [ validationInfo, setValidationInfo ] = useState({
+        validField: true
+    })
+    
+    const { field, about } = formData
+    const updateFormData = (e) => setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+    })
+
+    const { validField } = validationInfo
+
+    const checkInputsOnBlur = (e, validationName) => {
+        if(e.target.value.length === 0){
+            setValidationInfo({
+                ...validationInfo,
+                [validationName]: false
+            })
+        } else {
+            setValidationInfo({
+                ...validationInfo,
+                [validationName]: true
+            })
+        }
+    }
+
+    const updateFieldData = (e, validationName) => {
+        updateFormData(e)
+        if(e.target.value.length === 0){
+            setValidationInfo({
+                ...validationInfo,
+                [validationName]: false
+            })
+        } else {
+            setValidationInfo({
+                ...validationInfo,
+                [validationName]: true
+            })
+        }
+    }
+
+    const submitData = (e) => {
+        e.preventDefault()
+        accountSetup(formData, history)
+    }
+
     return <>
     <PublicNavbar />
     <br />
@@ -46,13 +100,17 @@ const Setuppagetwo = () => {
           <h1 className="setup-info text-center">
             Fill in the form to complete account setup
           </h1>
-        <Form>
+        <Form onSubmit={e => submitData(e)}>
            <FormGroup>
         <Input
              className="form-control-alternative input-Style form__input"
              type="select"
              name="field"
+             value={field}
+             onChange={e => updateFieldData(e, "validField")}
+             onBlur={e => checkInputsOnBlur(e, "validField")}
              required
+             autoFocus
              >
             <option value="" placeholder="true">What field are you in?</option>
             <option value="Art">Art</option>
@@ -60,6 +118,9 @@ const Setuppagetwo = () => {
             <option value="computer science">computer science</option>
             <option value="software development">software development</option>
         </Input>
+        {
+            !validField && <p className="form-warning">field cannot be empty</p>
+        }
            </FormGroup>
             <FormGroup>
             <Input
@@ -67,13 +128,20 @@ const Setuppagetwo = () => {
             placeholder="About me"
             rows="5"
             type="textarea"
+            name="about"
+            value={about}
+            onChange={e => updateFormData(e)}
           />
             </FormGroup>
             <FormGroup className="mt-5">
             <Button
             className="accout-setup-btn"
              type="submit"
-             size="lg">
+             size="lg"
+             disabled={
+                !validField
+             }
+             >
                  Proceed
              </Button>
           </FormGroup>
@@ -89,4 +157,8 @@ const Setuppagetwo = () => {
     </>
 }
 
-export default Setuppagetwo
+const mapDispatchToProps = (dispatch) => ({
+    accountSetup : (formData, history) => dispatch(accountSetupTwo(formData, history))
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(Setuppagetwo))
