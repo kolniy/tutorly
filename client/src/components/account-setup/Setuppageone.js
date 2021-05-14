@@ -102,7 +102,7 @@ const Setuppageone = ({
                 username: userName
             })
         }
-    }, [])
+    }, [user])
 
     const submitData = (e) => {
         e.preventDefault()
