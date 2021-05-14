@@ -19,6 +19,7 @@ import "../../custom-styles/account-setup/setuppageone.css"
 
 const Setuppageone = ({
     accountSetup,
+    user,
     history
 }) => {
 
@@ -83,12 +84,25 @@ const Setuppageone = ({
     }
 
     useEffect(() => {
-        if(username.length > 0){
+        if(username?.length > 0){
             getExistingUserByUsername(username)
         } else {
             return
         }
     }, [username])
+
+    useEffect(() => {
+        if(user !== null){
+            let userFirstName = user.firstname
+            let userLastname = user.lastname
+            let userName = user.username
+            setFormData({
+                firstname: userFirstName,
+                lastname: userLastname,
+                username: userName
+            })
+        }
+    }, [])
 
     const submitData = (e) => {
         e.preventDefault()
@@ -213,8 +227,12 @@ const Setuppageone = ({
     </>
 }
 
+const mapStateToProps = (state) => ({
+    user: state.auth.user
+})
+
 const mapDispatchToProps = (dispatch) => ({
     accountSetup : (formData, history) => dispatch(accountSetupOne(formData, history))
 })
 
-export default connect(null, mapDispatchToProps)(withRouter(Setuppageone))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Setuppageone))

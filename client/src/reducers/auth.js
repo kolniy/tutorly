@@ -57,8 +57,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 authenticated: true,
                 loading:false,
-                user: payload
-            } 
+                user: {
+                  ...state.user,
+                  ...payload
+                }
+            }    
         case UPDATE_ACCOUNT_STEP_ONE_FAIL:
         case UPDATE_ACCOUNT_STEP_TWO_FAIL:     
             return {
