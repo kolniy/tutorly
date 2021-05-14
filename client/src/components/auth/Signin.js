@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 import { 
     Row,
     Container,
@@ -11,11 +13,28 @@ import {
     FormGroup
 } from "reactstrap"
 import { Link } from "react-router-dom"
+import { signIn } from "../../actions/auth"
 import PublicNavbar from "../layout/PublicNavbar"
 
 import "../../custom-styles/auth/signin.css"
 
-const Signin = () => {
+const Signin = ({ signInUser, history }) => {
+
+      const [ userCredentials, setUserCredentials ] = useState({
+        email: "",
+        password:""
+      })
+
+      const updateUserCredentials = (e) => setUserCredentials({
+        ...userCredentials,
+        [e.target.name]: e.target.value
+      })
+
+      const formSubmit = (e) => {
+        e.preventDefault()
+        signInUser(userCredentials, history)
+      }
+
     return <>
     <PublicNavbar />
         <br/>
@@ -27,7 +46,7 @@ const Signin = () => {
         <Card className="shadow card-style">
           <CardBody>
           <h1 className="text-center page-heading">Login</h1>
-        <Form>
+        <Form onSubmit={e => formSubmit(e)}>
           <FormGroup>
              <Input
                     className="form-control-alternative"
@@ -35,15 +54,17 @@ const Signin = () => {
                      type="email"
                      name="email"
                      required
+                     onChange={e => updateUserCredentials(e)}
                 />
            </FormGroup>
             <FormGroup>
              <Input
                     className="form-control-alternative"
                      placeholder="your password"
-                     type="passord"
-                     name="passord"
+                     type="password"
+                     name="password"
                      required
+                     onChange={e => updateUserCredentials(e)}
                 />
             </FormGroup>
             <FormGroup>
@@ -69,4 +90,8 @@ const Signin = () => {
     </>
 }
 
-export default Signin
+const mapDispatchToProps = (dispatch) => ({
+   signInUser : (formData, history) => dispatch(signIn(formData, history))
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(Signin))

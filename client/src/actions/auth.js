@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SIGNUP_SUCCESS, SIGNIN_SUCCESS, SIGNUP_FAIL, SIGNIN_FAIL, LOAD_USER, AUTH_ERROR } from "./types"
+import { SIGNUP_SUCCESS, SIGNIN_SUCCESS, SIGNUP_FAIL, SIGNIN_FAIL, LOAD_USER, AUTH_ERROR, LOGOUT } from "./types"
 import { startLoading, stopLoading } from "./appLoading"
 import setAuthToken from "../utilities/setAuthToken"
 
@@ -54,6 +54,7 @@ export const signUp = ({ email, password }, history) => {
                    alert(error.msg)
                 });
             }
+            dispatch(stopLoading())
             dispatch({
                 type: SIGNUP_FAIL 
             })
@@ -87,9 +88,19 @@ export const signIn = ({ email, password }, history) => {
                    alert(error.msg)
                 });
             }
+            dispatch(stopLoading())
             dispatch({
                 type: SIGNIN_FAIL 
             })
         }
+    }
+}
+
+export const logout = (history) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOGOUT
+        })
+        history.push('/')
     }
 }

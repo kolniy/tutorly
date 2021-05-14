@@ -155,7 +155,8 @@ router.put('/account/setup/stepcomplete', auth, [
 
         const school = new School({
             name: username,
-            createdBy: req.user.id
+            createdBy: req.user.id,
+            isDefault: true
         })
 
         user.firstname = firstname

@@ -21,9 +21,8 @@
 
 .vertical-navbar .logged-in-user__image{
     border-radius: 50%;
-    width: 50%;
+    width: 60%;
     margin: 0 auto;
-    height: 130px;
 }
 
 .vertical-navbar .logged-in-user__image img {

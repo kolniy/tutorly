@@ -1,5 +1,6 @@
-import React from 'react'
-import { Link } from "react-router-dom"
+import React, { useEffect } from 'react'
+import { connect } from "react-redux"
+import { Link, withRouter } from "react-router-dom"
 import { 
     Col,
     Nav, 
@@ -8,13 +9,39 @@ import {
     PopoverBody,
     UncontrolledPopover
 } from "reactstrap"
+import { loadUser, logout } from "../../actions/auth"
+import { getDefaultSchool } from "../../actions/school"
+import DashboardLoadingSkeleton from "./DashboardLoadingSkeleton"
 import dummyAvatar from "../../images/dummy-avatar.png"
 
 import "../../custom-styles/dashboard/dashboardlayout.css";
 
-const DashboardNavbar = () => {
-    return <>
-        <Col sm="2" md="2" xs="2" xl="2">
+const DashboardNavbar = ({ 
+    loGout,
+    history,
+    school,
+    getSchool,
+    getLoggedInUser,
+    user
+    }) => {
+
+    const handleLogout = (e) => {
+        e.preventDefault()
+        loGout(history)
+    }
+
+    useEffect(() => {
+        getSchool()
+        getLoggedInUser()
+    }, [getSchool, getLoggedInUser])
+
+    return <> 
+            {
+                school.loading !== true && 
+                school.schoolDetails !== null &&
+                user !== null
+                ? <>
+                     <Col sm="2" md="2" xs="2" xl="2">
                         <div className="vertical-navbar">
                             <div className="tutorly-logo">
                                 TUTORLY
@@ -27,8 +54,8 @@ const DashboardNavbar = () => {
                                  />
                                 </div>
                             </div>
-                            <p className="logged-in-user__school-name d-none-sm">Eustice Jack Film School</p>
-                            <p className="logged-in-user__email d-none-sm">eusticethemenace2020@gmail.com</p>
+                            <p className="logged-in-user__school-name d-none-sm">{school.schoolDetails.name}</p>
+                            <p className="logged-in-user__email d-none-sm">{user.email}</p>
                             <div className="action-links">
                                 <Nav vertical>
                                 <NavItem>
@@ -74,7 +101,7 @@ const DashboardNavbar = () => {
                                         </NavLink>
                                        </NavItem>
                                        <NavItem>
-                                        <NavLink className="link-text" href="#">
+                                        <NavLink className="link-text" href="*" onClick={e => handleLogout(e)}>
                                         <i className="fas fa-sign-out-alt"></i> <span className="navlink-text">Logout</span>
                                         </NavLink>
                                        </NavItem>
@@ -84,7 +111,22 @@ const DashboardNavbar = () => {
                             </div>
                         </div>
                     </Col>
-    </>
+                </> :  <>
+                    <DashboardLoadingSkeleton />
+                </> 
+            }
+        </>
 }
 
-export default DashboardNavbar
+const mapStateToProps = (state) => ({
+   school: state.school,
+   user: state.auth.user
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    loGout : (history) => dispatch(logout(history)),
+    getSchool : () => dispatch(getDefaultSchool()),
+    getLoggedInUser : () => dispatch(loadUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DashboardNavbar))

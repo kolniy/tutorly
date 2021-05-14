@@ -50,7 +50,6 @@ export const accountSetupTwo = ({ field, about }, history ) => {
            // dispatch to add the school data to the state
             dispatch(stopLoading())
             history.push('/dashboard/createcourse')
-            console.log(res.data.user)
         } catch (error) {
             const errors = error.response.data.errors
             errors.forEach(error => {

@@ -10,6 +10,10 @@ const schoolSchema = new mongoose.Schema({
         required: true,
         ref: "user"
     },
+    isDefault: {
+        type: Boolean,
+        default: false
+    }
     // @todo remember to add the courses schema and model
     // courses: [
     //     {

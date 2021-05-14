@@ -64,7 +64,7 @@
     transform: translateY(3px);
 }
 
-.form__label{
+.account-setup__page-one .form__label{
     color: #cad1d7;
     margin-left: 20px;
     display: block;
@@ -77,7 +77,7 @@
     padding-right: 5px;
 }
 
-.accout-setup-btn {
+.account-setup__page-one .accout-setup-btn {
     color: var(--site-subtle-dark);
     background-color: var(--site-white-color);
     border: .5px solid var(--site-subtle-dark);
@@ -86,7 +86,7 @@
     padding-right: 50px;
 }
 
-.accout-setup-btn:hover{
+.account-setup__page-one .accout-setup-btn:hover{
     color: var(--site-subtle-dark);
     background-color: var(--site-white-color);
     border: .5px solid var(--site-subtle-dark);
