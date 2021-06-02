@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import axios from "axios"
 import {
     Container,
     Col,
@@ -14,6 +15,7 @@ import {
 } from "reactstrap"
 import { accountSetupTwo } from "../../actions/account"
 import PublicNavbar from "../layout/PublicNavbar"
+import FieldSuggestContainer from "./FieldSuggestContainer"
 
 import "../../custom-styles/account-setup/setuppagetwo.css"
 
@@ -26,8 +28,26 @@ const Setuppagetwo = ({ accountSetup, history }) => {
     const [ validationInfo, setValidationInfo ] = useState({
         validField: true
     })
-    
+    const [ fieldResults, setFieldResults ] = useState([])
+
     const { field, about } = formData
+
+    useEffect(() => {
+        if(field.length > 0){
+            getFieldsOnType(field)
+        }
+    }, [field])
+
+    const getFieldsOnType = async (query) => {
+        try {
+            const res = await axios.get(`/api/v1/coursetype/coursetitle?data=${query}`)
+            setFieldResults(res.data)
+        } catch (error) {
+            alert(error)
+            console.log(error)
+        }
+    }
+
     const updateFormData = (e) => setFormData({
         ...formData,
         [e.target.name]: e.target.value
@@ -104,7 +124,7 @@ const Setuppagetwo = ({ accountSetup, history }) => {
            <FormGroup>
         <Input
              className="form-control-alternative input-Style form__input"
-             type="select"
+             type="text"
              name="field"
              value={field}
              onChange={e => updateFieldData(e, "validField")}
@@ -112,16 +132,14 @@ const Setuppagetwo = ({ accountSetup, history }) => {
              required
              autoFocus
              >
-            <option value="" placeholder="true">What field are you in?</option>
-            <option value="Art">Art</option>
-            <option value="ui/ux">UI/UX</option>
-            <option value="computer science">computer science</option>
-            <option value="software development">software development</option>
         </Input>
         {
             !validField && <p className="form-warning">field cannot be empty</p>
         }
-           </FormGroup>
+        {
+           field.length > 0 && <FieldSuggestContainer suggestions={fieldResults} />
+        }
+    </FormGroup>
             <FormGroup>
             <Input
             className="form__input"

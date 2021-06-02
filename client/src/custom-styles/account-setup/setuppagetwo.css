@@ -1,47 +1,87 @@
 .progress-container {
-    display: flex;
-    align-items: center;
-    margin: 8px auto;
-    text-align: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 8px auto;
+  text-align: center;
+  justify-content: center;
 }
 
 .step-counter-number {
-    width: 55px;
-    height: 55px;
-    border-radius: 100%;
-    background-color: #e2dcdc;
-    color: var(--site-white-color);
-    text-align: center;
-    font-weight: 900;
-    font-size: 23px;
-    padding: 8px;
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  background-color: #e2dcdc;
+  color: var(--site-white-color);
+  text-align: center;
+  font-weight: 900;
+  font-size: 23px;
+  padding: 8px;
 }
 
 .step-counter-text {
-    color: var(--background-black);
-    font-weight: 700;
-    font-size: 17px;
-    text-align: center;
-    margin-top: 4px;
+  color: var(--background-black);
+  font-weight: 700;
+  font-size: 17px;
+  text-align: center;
+  margin-top: 4px;
 }
 
-.step-counter-number__coloured{
-    background-color: var(--background-black);
+.step-counter-number__coloured {
+  background-color: var(--background-black);
 }
 
 .setup-info {
-    color: var(--alt-text-color);
-    text-transform: capitalize;
-    font-weight: 600;
-    font-size: 30px;
+  color: var(--alt-text-color);
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 30px;
 }
 
 .account-setup__page-two .form-group {
-    position: relative;
-    margin-bottom: 4vh;
+  position: relative;
+  margin-bottom: 4vh;
 }
 
 .account-setup__page-two .form__input {
-    border: .5px solid #cad1d7;
+  border: 0.5px solid #cad1d7;
+}
+
+.account-setup__page-two .accout-setup-btn {
+  color: var(--site-subtle-dark);
+  background-color: var(--site-white-color);
+  border: 0.5px solid var(--site-subtle-dark);
+  border-radius: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.account-setup__page-two .accout-setup-btn:hover {
+  color: var(--site-subtle-dark);
+  background-color: var(--site-white-color);
+  border: 0.5px solid var(--site-subtle-dark);
+  border-radius: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.field-suggest {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.field-suggest .not-found-suggestion {
+  text-align: center;
+}
+
+.field-suggest .field-suggest-item {
+  transition: all 0.4s;
+}
+
+.field-suggest .field-suggest-item:hover {
+  background-color: var(--background-black);
+  color: var(--site-white-color);
+  cursor: pointer;
 }

@@ -1,0 +1,155 @@
+.customize-page .page-title {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--site-dark-color);
+}
+
+.customize-page__contents {
+  margin: 0 auto;
+  width: 80%;
+  padding-top: 12vh;
+}
+
+.display-setup {
+  width: 100%;
+  height: fit-content;
+  background-color: var(--site-grey-color);
+  padding: 30px;
+  margin-top: 10px;
+}
+
+.display-setup .setup-title {
+  font-weight: -300 !important;
+  font-size: 30px;
+  color: var(--alt-text-color);
+}
+
+.display-setup__viewer {
+  margin-top: 5px;
+}
+
+.display-setup__previewer {
+  margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  height: 430px;
+}
+
+.previewer-header {
+  width: 100%;
+  height: 50px;
+  background-color: #156a71;
+}
+
+.previewer-body {
+  background-color: #b5e6eb;
+  height: 100%;
+}
+
+.previewer-container {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-left: 28px;
+  padding-right: 12px;
+  background-color: var(--site-white-color);
+  display: flex;
+}
+
+.previewer-container .block-container {
+  width: 40%;
+  height: fit-content;
+}
+
+.previewer-container .typography-container {
+  width: 58%;
+  margin-left: 2%;
+  height: fit-content;
+  background-color: #b5e6eb;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.display-block-large {
+  background-color: #b5e6eb;
+  width: 100%;
+  height: 120px;
+  margin-bottom: 35px;
+}
+
+.display-block-medium {
+  background-color: #b5e6eb;
+  width: 100%;
+  height: 30px;
+  margin-bottom: 8px;
+}
+
+.typo-header {
+  color: var(--site-dark-color);
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.typography-header-previewer {
+  color: var(--site-dark-color);
+  margin-top: 0;
+  font-size: 60px;
+  font-weight: 700;
+}
+
+.typo-paragraph {
+  color: var(--site-dark-color);
+  font-weight: 350;
+  font-size: 16px;
+}
+
+.typo-paragraph-previewer {
+  color: var(--site-dark-color);
+  font-weight: 300;
+  font-size: 35px;
+}
+
+.color-picker__form-group {
+  position: relative;
+}
+
+.display-setup__selector .color-picked {
+  height: 20px;
+  width: 20px;
+  background-color: #156a71;
+  border-radius: 50%;
+  position: absolute;
+  left: 75%;
+  bottom: 12px;
+}
+
+.media-section {
+  margin: 0 auto;
+  width: 80%;
+  margin-top: 4vh;
+}
+
+.media-section__header {
+  font-weight: -300 !important;
+  font-size: 30px;
+  color: var(--alt-text-color);
+  border-bottom: 0.5px solid var(--alt-text-color);
+  width: 100%;
+}
+
+.upload-controllers {
+  margin-top: 30px;
+}
+
+.upload-controllers .upload-ctr-btn-styles {
+  border-radius: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  box-shadow: none;
+  border: 1px solid var(--site-dark-color);
+  background-color: var(--site-white-color);
+}

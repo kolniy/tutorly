@@ -4,6 +4,7 @@ import connectDB from "./config/connection"
 
 import userRoute from "./routes/user"
 import schoolRoute from "./routes/school"
+import courseTypeRoute from "./routes/coursetype"
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 // all application routes will accessed from here
 app.use('/api/v1/user', userRoute)
 app.use('/api/v1/school', schoolRoute)
+app.use('/api/v1/coursetype', courseTypeRoute)
 
 // block of code come's after application routes
 if(process.env.NODE_ENV === 'production'){

@@ -112,7 +112,7 @@ const DashboardNavbar = ({
                         </div>
                     </Col>
                 </> :  <>
-                    <DashboardLoadingSkeleton />
+                <DashboardLoadingSkeleton />
                 </> 
             }
         </>
