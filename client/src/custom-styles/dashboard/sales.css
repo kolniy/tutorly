@@ -1,0 +1,78 @@
+.sales-page .page-title {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--site-dark-color);
+}
+
+.sales-page__contents {
+  margin: 0 auto;
+  width: 80%;
+  padding-top: 12vh;
+}
+
+.subscription-info {
+  margin-top: 20px;
+}
+
+.subscription-info-text {
+  font-size: 17px;
+  color: var(--alt-text-color);
+}
+
+.subscription-actions {
+  display: flex;
+}
+
+.subscription-cost-container {
+  text-align: center;
+  color: var(--alt-text-color);
+  padding: 12px 40px;
+  border: 1px solid var(--site-dark-color);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 20px;
+  background-color: var(--site-white-color);
+}
+
+.subscription-accept-button {
+  background-color: var(--site-dark-color);
+  color: var(--site-white-color);
+  padding: 12px 40px;
+  box-shadow: none;
+  margin-left: 15px;
+}
+
+.subscription-accept-button:hover {
+  background-color: var(--site-dark-color);
+  color: var(--site-white-color);
+}
+
+.sales-breakdown__info {
+  margin-top: 9vh;
+}
+
+.total-sales-info_container {
+  color: var(--alt-text-color);
+}
+
+.sales-breakdown__info h1 {
+  color: var(--alt-text-color);
+  font-weight: 800;
+  font-size: 50px;
+}
+
+.total-sales_info {
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.monthly-sale-info_container {
+  color: var(--alt-text-color);
+}
+
+.monthly-sale_info {
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
