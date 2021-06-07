@@ -79,7 +79,7 @@ export const signIn = ({ email, password }, history) => {
             })
             dispatch(stopLoading())
             dispatch(loadUser())
-            history.push('/dashboard/createcourse')
+            history.push('/dashboard/courses')
         } catch (error) {
             console.log(error)
             const errors = error.response.data.errors

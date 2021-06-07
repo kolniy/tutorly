@@ -9,10 +9,10 @@ import {
     Card,
     CardBody
 } from "reactstrap"
-import DashboardNavbar from "./DashboardNavbar"
+import DashboardNavbar from "../DashboardNavbar"
 
-import "../../custom-styles/dashboard/dashboardlayout.css";
-import "../../custom-styles/dashboard/createcourse.css"
+import "../../../custom-styles/dashboard/dashboardlayout.css";
+import "../../../custom-styles/dashboard/createcourse.css"
 
 const CreateCourse = () => {
     return <>

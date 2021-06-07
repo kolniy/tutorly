@@ -5,12 +5,14 @@ import {
     Container,
     Button
 } from "reactstrap"
-import DashboardNavbar from "./DashboardNavbar"
+import DashboardNavbar from "../DashboardNavbar"
+import Barchat from "./Barchat"
 
-import "../../custom-styles/dashboard/dashboardlayout.css";
-import "../../custom-styles/dashboard/sales.css"
+import "../../../custom-styles/dashboard/dashboardlayout.css";
+import "../../../custom-styles/dashboard/sales.css"
 
 const Sales = () => {
+
     return <>
     <div className="dashboard-layout">
         <Container fluid>
@@ -31,6 +33,9 @@ const Sales = () => {
                                         Accept
                                     </Button>
                                 </div>
+                            </div>
+                            <div className="chart-container">
+                            <Barchat />
                             </div>
                            <div className="sales-breakdown__info">
                            <div className="total-sales-info_container">

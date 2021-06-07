@@ -7,10 +7,10 @@ import {
     FormGroup,
     Button
 } from "reactstrap"
-import DashboardNavbar from "./DashboardNavbar"
+import DashboardNavbar from "../DashboardNavbar"
 
-import "../../custom-styles/dashboard/dashboardlayout.css";
-import "../../custom-styles/dashboard/customize.css"
+import "../../../custom-styles/dashboard/dashboardlayout.css";
+import "../../../custom-styles/dashboard/customize.css"
 
 const Customize = () => {
     return <>

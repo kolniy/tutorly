@@ -147,6 +147,7 @@ const Setuppagetwo = ({ accountSetup, history }) => {
             rows="5"
             type="textarea"
             name="about"
+            autoComplete="off"
             value={about}
             onChange={e => updateFormData(e)}
           />

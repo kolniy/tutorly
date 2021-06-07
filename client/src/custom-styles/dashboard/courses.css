@@ -1,0 +1,91 @@
+.courses-page .page-title {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--site-dark-color);
+}
+
+.courses-page__contents {
+  margin: 0 auto;
+  width: 80%;
+  padding-top: 12vh;
+}
+
+.courses-container {
+  margin-top: 20px;
+}
+
+.create-course-button {
+  height: 380px;
+  border-radius: 17px;
+  padding-top: 35%;
+  background-color: #fff;
+}
+
+.create-course-button-icon {
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+  color: var(--alt-text-color);
+}
+
+.create-course-button-icon i {
+  font-size: 11vw;
+}
+
+.create-course-text-cta {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--alt-text-color);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.course-card {
+  border-radius: 17px;
+  margin-bottom: 35px;
+  min-height: 360px;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.course-card .card-img-top {
+  border-top-left-radius: 17px;
+  border-top-right-radius: 17px;
+}
+
+.course-card .card-title {
+  color: var(--site-subtle-dark);
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.course-card .card-text {
+  font-size: 13px;
+  margin-bottom: 4px;
+  font-weight: 200;
+  color: var(--alt-text-color);
+}
+
+.course-card .course-card-star-rating {
+  margin: 6px 0;
+  display: flex;
+}
+
+.course-card .course-card-star-rating .ratings-text {
+  margin-right: 9px;
+  font-size: 20px;
+  color: var(--alt-text-color);
+}
+
+.course-card .course-card-star-rating .ratings {
+  margin-left: 2px;
+}
+
+.course-card .course-card-price {
+  margin-bottom: 1px;
+  color: var(--site-subtle-dark);
+  font-size: 18px;
+}

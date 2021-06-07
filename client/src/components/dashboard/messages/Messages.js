@@ -4,9 +4,10 @@ import {
     Col,
     Container
 } from "reactstrap"
-import DashboardNavbar from "./DashboardNavbar"
+import DashboardNavbar from "../DashboardNavbar"
 
-import "../../custom-styles/dashboard/dashboardlayout.css";
+import "../../../custom-styles/dashboard/dashboardlayout.css";
+import "../../../custom-styles/dashboard/messages.css"
 
 const Messages = () => {
     return <>
