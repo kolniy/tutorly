@@ -10,7 +10,7 @@ import {
     UncontrolledPopover
 } from "reactstrap"
 import classnames from "classnames"
-import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../actions/types"
+import { UPDATE_DASHBOARD_PAGE_COUNTER, UPDATE_DASHBOARD_PAGE_COUNTER_TO_DEFAULT } from "../../actions/types"
 import { loadUser, logout } from "../../actions/auth"
 import { getDefaultSchool } from "../../actions/school"
 import DashboardLoadingSkeleton from "./DashboardLoadingSkeleton"
@@ -28,11 +28,13 @@ const DashboardNavbar = ({
     user,
     currentPage,
     updatePageCounter,
+    updatePageCounterToDefault
     }) => {
 
     const handleLogout = (e) => {
         e.preventDefault()
         loGout(history)
+        updatePageCounterToDefault()
     }
 
     const updatePage = (index) => {
@@ -149,7 +151,8 @@ const mapDispatchToProps = (dispatch) => ({
     loGout : (history) => dispatch(logout(history)),
     getSchool : () => dispatch(getDefaultSchool()),
     getLoggedInUser : () => dispatch(loadUser()),
-    updatePageCounter: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload: counter})
+    updatePageCounter: (counter) => dispatch({ type: UPDATE_DASHBOARD_PAGE_COUNTER, payload: counter }),
+    updatePageCounterToDefault: () => dispatch({ type: UPDATE_DASHBOARD_PAGE_COUNTER_TO_DEFAULT })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DashboardNavbar))
