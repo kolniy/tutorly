@@ -47,6 +47,11 @@
   color: var(--site-white-color);
 }
 
+.chart {
+  background-color: #d8ffdc;
+  margin-top: 20px;
+}
+
 .sales-breakdown__info {
   margin-top: 9vh;
 }

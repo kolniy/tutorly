@@ -7,7 +7,7 @@ export const Barchat = () => {
         labels: ['May', 'June', 'July', 'August', 'September', 'October'],
         datasets: [
             {
-                label: 'Population',
+                label: 'Sales Report for the past 6 months',
                 data: [
                     1000,
                     2300,

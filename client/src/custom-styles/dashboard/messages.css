@@ -35,7 +35,7 @@
 .message-item-info {
   border-bottom: 0.4px solid var(--alt-text-color);
   flex: 1;
-  padding: 2vh 2vw;
+  padding: 2vh 2.4vw;
   display: flex;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 import { 
@@ -10,6 +10,7 @@ import {
     UncontrolledPopover
 } from "reactstrap"
 import classnames from "classnames"
+import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../actions/types"
 import { loadUser, logout } from "../../actions/auth"
 import { getDefaultSchool } from "../../actions/school"
 import DashboardLoadingSkeleton from "./DashboardLoadingSkeleton"
@@ -24,7 +25,9 @@ const DashboardNavbar = ({
     school,
     getSchool,
     getLoggedInUser,
-    user
+    user,
+    currentPage,
+    updatePageCounter,
     }) => {
 
     const handleLogout = (e) => {
@@ -32,15 +35,13 @@ const DashboardNavbar = ({
         loGout(history)
     }
 
-    const [ selectedNav, setSelectedItem ] = useState(2)
-
-    const updateSelectedItem = (e, index, to) => {
-        setSelectedItem(index)
+    const updatePage = (index) => {
+        updatePageCounter(index)
     }
 
     useEffect(() => {
-        // getSchool()
-        // getLoggedInUser()
+        getSchool()
+        getLoggedInUser()
     }, [getSchool, getLoggedInUser])
 
     return <> 
@@ -68,38 +69,38 @@ const DashboardNavbar = ({
                                 <Nav vertical>
                                 <NavItem
                                 className={classnames("navbar-item-link", {
-                                        selected: selectedNav === 1
+                                        selected: currentPage.currentPage === 1
                                     })}>
-                                        <NavLink  onClick={e => updateSelectedItem(e, 1)} tag={Link} to="/dashboard/createcourse">
+                                        <NavLink  onClick={e => updatePage(1)} tag={Link} to="/dashboard/createcourse">
                                         <i className="fas fa-plus"></i> <span className="navlink-text d-none-sm">Create New Course</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem
                                     className={classnames("navbar-item-link", {
-                                        selected: selectedNav === 2
+                                        selected: currentPage.currentPage === 2
                                          })}>
-                                        <NavLink  onClick={e => updateSelectedItem(e, 2)} tag={Link} to="/dashboard/courses">
+                                        <NavLink  onClick={e => updatePage(2)} tag={Link} to="/dashboard/courses">
                                         <i className="fas fa-book"></i> <span className="navlink-text d-none-sm">My Courses</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: selectedNav === 3
+                                        selected: currentPage.currentPage === 3
                                     })} >
-                                        <NavLink onClick={e => updateSelectedItem(e, 3)} tag={Link} to="/dashboard/customize">
+                                        <NavLink onClick={e => updatePage(3)} tag={Link} to="/dashboard/customize">
                                         <i className="fas fa-edit"></i> <span className="navlink-text d-none-sm">Customize space</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: selectedNav === 4
+                                        selected: currentPage.currentPage === 4
                                     })}>
-                                        <NavLink onClick={e => updateSelectedItem(e, 4)} tag={Link} to="/dashboard/sales">
+                                        <NavLink onClick={e => updatePage(4)} tag={Link} to="/dashboard/sales">
                                         <i className="fas fa-dollar-sign"></i><span className="navlink-text d-none-sm">Sales</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: selectedNav === 5
-                                    })} onClick={e => updateSelectedItem(e, 5)}>
-                                        <NavLink onClick={e => updateSelectedItem(e, 5, "/dashboard/messages")} tag={Link} to="/dashboard/messages">
+                                        selected: currentPage.currentPage === 5
+                                    })}>
+                                        <NavLink onClick={e => updatePage(5)} tag={Link} to="/dashboard/messages">
                                         <i className="far fa-comment-alt"></i> <span className="navlink-text d-none-sm">Messages</span>
                                         </NavLink>
                                     </NavItem>
@@ -140,13 +141,15 @@ const DashboardNavbar = ({
 
 const mapStateToProps = (state) => ({
    school: state.school,
-   user: state.auth.user
+   user: state.auth.user,
+   currentPage: state.currentPage
 })
 
 const mapDispatchToProps = (dispatch) => ({
     loGout : (history) => dispatch(logout(history)),
     getSchool : () => dispatch(getDefaultSchool()),
-    getLoggedInUser : () => dispatch(loadUser())
+    getLoggedInUser : () => dispatch(loadUser()),
+    updatePageCounter: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload: counter})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DashboardNavbar))
