@@ -26,6 +26,7 @@
   text-align: center;
   margin: 0 auto;
   color: var(--alt-text-color);
+  cursor: pointer;
 }
 
 .create-course-button-icon i {

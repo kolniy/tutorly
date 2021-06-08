@@ -5,6 +5,7 @@ import {
     Container
 } from "reactstrap"
 import DashboardNavbar from "../DashboardNavbar"
+import MessagesContainer from "./MessagesContainer"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/messages.css"
@@ -17,7 +18,14 @@ const Messages = () => {
                <DashboardNavbar />
                 <Col>
                    <div className="page-actions">
-                        
+                        <div className="messages-page">
+                        <div className="messages-page__contents">
+                            <h3 className="page-title">
+                                 Messages
+                            </h3>
+                        <MessagesContainer />
+                        </div>
+                        </div>
                    </div>
                 </Col>
             </Row>
