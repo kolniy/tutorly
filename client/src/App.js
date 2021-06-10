@@ -15,6 +15,11 @@ import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
 
+//
+// routing 
+import PrivateRoute from "./components/routers/PrivateRoute"
+import PrivateRouteForToken from "./components/routers/PrivateRouteForToken"
+
 // REDUX STORE CONFIG
 import { Provider } from "react-redux"
 import store from "./store"
@@ -40,13 +45,13 @@ function App() {
         <Route exact path="/" component={Homepage} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/signin" component={Signin} />
-        <Route exact path="/account/setup/stepone" component={Setpageone} />
-        <Route exact path="/account/setup/steptwo" component={Setpagetwo} />
-        <Route exact path="/dashboard/createcourse" component={CreateCourse} />
-        <Route exact path="/dashboard/courses" component={Courses} />
-        <Route exact path="/dashboard/customize" component={Customize} />
-        <Route exact path="/dashboard/sales" component={Sales} />
-        <Route exact path="/dashboard/messages" component={Messages} />
+        <PrivateRouteForToken exact path="/account/setup/stepone" component={Setpageone} />
+        <PrivateRouteForToken exact path="/account/setup/steptwo" component={Setpagetwo} />
+        <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />
+        <PrivateRoute exact path="/dashboard/courses" component={Courses} />
+        <PrivateRoute exact path="/dashboard/customize" component={Customize} />
+        <PrivateRoute exact path="/dashboard/sales" component={Sales} />
+        <PrivateRoute exact path="/dashboard/messages" component={Messages} />
       </Switch>
     </Router>
    </Provider>

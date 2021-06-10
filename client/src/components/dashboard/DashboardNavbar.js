@@ -20,8 +20,7 @@ import Logo from "../../images/tuturly logo.png"
 import "../../custom-styles/dashboard/dashboardlayout.css";
 
 const DashboardNavbar = ({ 
-    loGout,
-    history,
+    logUserOut,
     school,
     getSchool,
     getLoggedInUser,
@@ -33,7 +32,7 @@ const DashboardNavbar = ({
 
     const handleLogout = (e) => {
         e.preventDefault()
-        loGout(history)
+        logUserOut()
         updatePageCounterToDefault()
     }
 
@@ -71,7 +70,7 @@ const DashboardNavbar = ({
                                 <Nav vertical>
                                 <NavItem
                                 className={classnames("navbar-item-link", {
-                                        selected: currentPage.currentPage === 1
+                                        selected: currentPage.counter === 1
                                     })}>
                                         <NavLink  onClick={e => updatePage(1)} tag={Link} to="/dashboard/createcourse">
                                         <i className="fas fa-plus"></i> <span className="navlink-text d-none-sm">Create New Course</span>
@@ -79,28 +78,28 @@ const DashboardNavbar = ({
                                     </NavItem>
                                     <NavItem
                                     className={classnames("navbar-item-link", {
-                                        selected: currentPage.currentPage === 2
+                                        selected: currentPage.counter === 2
                                          })}>
                                         <NavLink  onClick={e => updatePage(2)} tag={Link} to="/dashboard/courses">
                                         <i className="fas fa-book"></i> <span className="navlink-text d-none-sm">My Courses</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: currentPage.currentPage === 3
+                                        selected: currentPage.counter === 3
                                     })} >
                                         <NavLink onClick={e => updatePage(3)} tag={Link} to="/dashboard/customize">
                                         <i className="fas fa-edit"></i> <span className="navlink-text d-none-sm">Customize space</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: currentPage.currentPage === 4
+                                        selected: currentPage.counter === 4
                                     })}>
                                         <NavLink onClick={e => updatePage(4)} tag={Link} to="/dashboard/sales">
                                         <i className="fas fa-dollar-sign"></i><span className="navlink-text d-none-sm">Sales</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
-                                        selected: currentPage.currentPage === 5
+                                        selected: currentPage.counter === 5
                                     })}>
                                         <NavLink onClick={e => updatePage(5)} tag={Link} to="/dashboard/messages">
                                         <i className="far fa-comment-alt"></i> <span className="navlink-text d-none-sm">Messages</span>
@@ -148,7 +147,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    loGout : (history) => dispatch(logout(history)),
+    logUserOut : () => dispatch(logout()),
     getSchool : () => dispatch(getDefaultSchool()),
     getLoggedInUser : () => dispatch(loadUser()),
     updatePageCounter: (counter) => dispatch({ type: UPDATE_DASHBOARD_PAGE_COUNTER, payload: counter }),
