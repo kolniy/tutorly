@@ -49,7 +49,7 @@ export const accountSetupTwo = ({ field, about }, history ) => {
             })
            // dispatch to add the school data to the state
             dispatch(stopLoading())
-            history.push('/dashboard/courses')
+            history.push('/dashboard/customize')
         } catch (error) {
             const errors = error.response.data.errors
             errors.forEach(error => {

@@ -1,7 +1,7 @@
 import { UPDATE_DASHBOARD_PAGE_COUNTER, UPDATE_DASHBOARD_PAGE_COUNTER_TO_DEFAULT } from "../actions/types"
 
 const initialState = {
-    counter: 2
+    counter: 1
 }
 
 const currentDashboardCounterReducer = (state = initialState, action) => {
@@ -16,7 +16,7 @@ const currentDashboardCounterReducer = (state = initialState, action) => {
         case UPDATE_DASHBOARD_PAGE_COUNTER_TO_DEFAULT:
             return {
                 ...state,
-                counter: 2
+                counter: 1
             }
         default:
             return state;

@@ -5,11 +5,10 @@ import School from "../models/School"
 const router = express.Router()
 
 // private route to get school by logged in user
-router.get('/default', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const school = await School.findOne({
-            createdBy: req.user.id,
-            isDefault: true
+            createdBy: req.user.id
         })
 
         if(!school){

@@ -8,7 +8,7 @@ export const getDefaultSchool = () => {
             setAuthToken(localStorage.token)
         }
         try {
-            const res = await axios.get('/api/v1/school/default')
+            const res = await axios.get('/api/v1/school/')
             dispatch({
                 type: GET_SCHOOL,
                 payload: res.data

@@ -68,27 +68,27 @@ const DashboardNavbar = ({
                             <p className="logged-in-user__email d-none-sm">{user.email}</p>
                             <div className="action-links">
                                 <Nav vertical>
+                                <NavItem className={classnames("navbar-item-link", {
+                                        selected: currentPage.counter === 1
+                                    })} >
+                                        <NavLink onClick={e => updatePage(1)} tag={Link} to="/dashboard/customize">
+                                        <i className="fas fa-edit"></i> <span className="navlink-text d-none-sm">Customize space</span>
+                                        </NavLink>
+                                    </NavItem>  
                                 <NavItem
                                 className={classnames("navbar-item-link", {
-                                        selected: currentPage.counter === 1
+                                        selected: currentPage.counter === 2
                                     })}>
-                                        <NavLink  onClick={e => updatePage(1)} tag={Link} to="/dashboard/createcourse">
+                                        <NavLink  onClick={e => updatePage(2)} tag={Link} to="/dashboard/createcourse">
                                         <i className="fas fa-plus"></i> <span className="navlink-text d-none-sm">Create New Course</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem
                                     className={classnames("navbar-item-link", {
-                                        selected: currentPage.counter === 2
-                                         })}>
-                                        <NavLink  onClick={e => updatePage(2)} tag={Link} to="/dashboard/courses">
-                                        <i className="fas fa-book"></i> <span className="navlink-text d-none-sm">My Courses</span>
-                                        </NavLink>
-                                    </NavItem>
-                                    <NavItem className={classnames("navbar-item-link", {
                                         selected: currentPage.counter === 3
-                                    })} >
-                                        <NavLink onClick={e => updatePage(3)} tag={Link} to="/dashboard/customize">
-                                        <i className="fas fa-edit"></i> <span className="navlink-text d-none-sm">Customize space</span>
+                                         })}>
+                                        <NavLink  onClick={e => updatePage(3)} tag={Link} to="/dashboard/courses">
+                                        <i className="fas fa-book"></i> <span className="navlink-text d-none-sm">My Courses</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {
