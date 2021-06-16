@@ -5,21 +5,33 @@ const schoolSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    about: {
+        type: String
+    },
+    themename: {
+        type: String
+    },
+    testimonials: [
+        {
+            testifiedby: {
+                type: String
+            },
+            testifiertext: {
+                type: String
+            }
+        }
+    ],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "user"
     },
-    isDefault: {
-        type: Boolean,
-        default: false
-    }
-    // @todo remember to add the courses schema and model
-    // courses: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId
-    //     }
-    // ]
+    courses: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "course"
+        }
+    ]
 })
 
 const School = mongoose.model('school', schoolSchema)
