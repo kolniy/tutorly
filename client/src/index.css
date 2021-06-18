@@ -20,7 +20,7 @@
   --site-blue-color: #5e72e4;
   --site-red-color: #f5365c;
   --site-orange-color: #ff3b30;
-  --site-green-color: #7BDB97;
+  --site-green-color: #7bdb97;
   --site-alt-green: #f4fff2;
   --site-dark-color: #242121;
   --site-subtle-dark: #3d3d3d;
@@ -29,11 +29,9 @@
   --site-white-color: #ffffff;
   --alt-text-color: #807d7d;
   --background-black: #3d3c3c;
+  --background-grey: #d9d2d2;
 }
-
-
 
 body {
   font-family: Lato, sans-serif;
 }
-

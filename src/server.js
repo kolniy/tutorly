@@ -8,6 +8,7 @@ import courseTypeRoute from "./routes/coursetype"
 import CourseRoute from "./routes/course"
 import courseMediaRoute from "./routes/coursemedia"
 import messageRoute from "./routes/message"
+import themeRoute from "./routes/theme"
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -27,6 +28,8 @@ app.use('/api/v1/coursetype', courseTypeRoute)
 app.use('/api/v1/course', CourseRoute)
 app.use('/api/v1/coursemedia', courseMediaRoute)
 app.use('/api/v1/message', messageRoute)
+app.use('/api/v1/theme', themeRoute)
+
 
 // block of code come's after application routes
 if(process.env.NODE_ENV === 'production'){
