@@ -7,6 +7,17 @@ const themeSchema = new mongoose.Schema({
     },
     imagepreview: {
         type: String
+    },
+    themeassets: {
+        themelogo: {
+            type: String
+        },
+        themefeatureimage:{
+            type: String
+        },
+        themeinstructorimage: {
+            type: String
+        }
     }
 })
 

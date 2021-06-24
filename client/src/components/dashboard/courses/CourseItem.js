@@ -12,7 +12,7 @@ import courseImgPreview from "../../../images/course-preview.jpg"
 
 export const CourseItem = () => {
     return <>
-       <Col xs="6" sm="3" md="3">
+       <Col xs="12" sm="12" md="4" xl="3">
        <Card className="course-card shadow">
           <CardImg
             alt="..."

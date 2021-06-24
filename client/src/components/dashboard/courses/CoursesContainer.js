@@ -9,7 +9,7 @@ export const CoursesContainer = () => {
             <CourseItem />
             <CourseItem />
             <CourseItem />
-            <Col xs="6" sm="3" md="3">
+            <Col xs="12" sm="12" md="4" xl="3">
             <div className="create-course-button shadow">
                 <div className="create-course-button-icon">
                 <i class="fas fa-plus-circle"></i>

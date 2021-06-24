@@ -15,6 +15,9 @@ import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
 
+// theme preview components import
+import Herotheme from "./themes/Hero-type-theme/LandingPage"
+
 //
 // routing 
 import PrivateRoute from "./components/routers/PrivateRoute"
@@ -52,6 +55,7 @@ function App() {
         <PrivateRoute exact path="/dashboard/customize" component={Customize} />
         <PrivateRoute exact path="/dashboard/sales" component={Sales} />
         <PrivateRoute exact path="/dashboard/messages" component={Messages} />
+        <PrivateRoute exact path="/dashboard/themes/preview/hero" component={Herotheme} />
       </Switch>
     </Router>
    </Provider>
