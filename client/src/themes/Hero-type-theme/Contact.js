@@ -28,7 +28,7 @@ export const Contact = () => {
                             <Form>
                             <FormGroup>
                             <Input
-                                className="form-control-alternative input-Style form__input"
+                                className="form-control-alternative hero-contact-form-styles"
                                 type="text"
                                 name="name"
                                 placeholder="Enter your name"
@@ -37,7 +37,7 @@ export const Contact = () => {
                             </FormGroup>
                             <FormGroup>
                             <Input
-                                className="form-control-alternative input-Style form__input"
+                                className="form-control-alternative hero-contact-form-styles"
                                 type="email"
                                 name="email"
                                 placeholder="Enter a valid email"
@@ -46,11 +46,11 @@ export const Contact = () => {
                             </FormGroup>
                                 <FormGroup>
                                 <Input
-                                className="form__input"
+                                className="form__input hero-contact-form-styles"
                                 placeholder="Type Your Message"
                                 rows="5"
                                 type="textarea"
-                                name="about"
+                                name="message"
                                 autoComplete="off"
                             />
                                 </FormGroup>
@@ -58,6 +58,7 @@ export const Contact = () => {
                                 <Button
                                 type="submit"
                                 size="lg"
+                                className="hero-contact-form-button"
                                 >
                                     Submit
                                 </Button>

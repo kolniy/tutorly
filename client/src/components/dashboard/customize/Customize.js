@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from "react-redux"
 import axios from 'axios'
 import { 
     Row,
     Col,
     Container
 } from "reactstrap"
+import { updateSchoolTheme } from "../../../actions/school"
 import DashboardNavbar from "../DashboardNavbar"
 import ThemeContainer from "./ThemeContainer"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/customize.css"
 
-const Customize = () => {
+const Customize = ({ 
+    updateSchoolThemeToSelectedTheme
+}) => {
 
     const [ themes, setThemes ] = useState([])
     const [ selectedTheme, setSelectedTheme ] = useState(null)
@@ -23,6 +27,12 @@ const Customize = () => {
     useEffect(() => {
         getThemes()
     }, [])
+
+    useEffect(() => {
+        if(selectedTheme !== null){
+        updateSchoolThemeToSelectedTheme(selectedTheme._id)
+        }
+    }, [selectedTheme, updateSchoolThemeToSelectedTheme])
 
     const getThemes = async () => {
         const res = await axios.get('/api/v1/theme/')
@@ -54,4 +64,8 @@ const Customize = () => {
 </>
 }
 
-export default Customize
+const mapDispatchToProps = (dispatch) => ({
+    updateSchoolThemeToSelectedTheme : (themeid) => dispatch(updateSchoolTheme(themeid))
+})
+
+export default connect(null, mapDispatchToProps)(Customize)

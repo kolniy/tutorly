@@ -7,7 +7,7 @@ export const Footer = () => {
            <Container fluid>
                <hr className="hero-footer-hr" />
             <p className="text-center hero-footer-text">
-                Copyright &copy { new Date().getFullYear() } - Sano's Wood
+                Copyright &copy; { new Date().getFullYear() } - Sano's Wood
             </p>
            </Container>
         </section>

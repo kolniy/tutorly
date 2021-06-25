@@ -1,4 +1,4 @@
-import { GET_SCHOOL } from "../actions/types"
+import { GET_SCHOOL, UPDATE_SCHOOL_THEME } from "../actions/types"
 
 const initialState = {
     loading: true,
@@ -15,6 +15,12 @@ const schoolReducer = (state = initialState, action) => {
                 loading: false,
                 schoolDetails: payload
             }
+        case UPDATE_SCHOOL_THEME: 
+            return {
+                ...state,
+                loading: false,
+                schoolDetails: payload
+            }    
         default:
            return state
     }

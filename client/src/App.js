@@ -14,6 +14,7 @@ import Customize from "./components/dashboard/customize/Customize"
 import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
+import SchoolLandingPage from "./components/school/SchoolPage"
 
 // theme preview components import
 import Herotheme from "./themes/Hero-type-theme/LandingPage"
@@ -48,6 +49,7 @@ function App() {
         <Route exact path="/" component={Homepage} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/signin" component={Signin} />
+        <Route exact path="/:schoolname" component={SchoolLandingPage} />
         <PrivateRouteForToken exact path="/account/setup/stepone" component={Setpageone} />
         <PrivateRouteForToken exact path="/account/setup/steptwo" component={Setpagetwo} />
         <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />

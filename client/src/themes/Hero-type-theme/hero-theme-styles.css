@@ -1,5 +1,5 @@
 :root {
-  --hero-theme-color: #4d4a4c;
+  --hero-theme-color: #272727;
   --hero-theme-green-color: #7bdb97;
 }
 
@@ -178,10 +178,6 @@
   background-color: var(--hero-theme-color);
   padding: 10vh 2vw;
 }
-/* 
-.contact-info {
-  margin-left: auto;
-} */
 
 .contact-header {
   color: #fff;
@@ -198,6 +194,23 @@
 
 .contact-form-question {
   color: #fff;
+}
+
+.hero-contact-form-styles {
+  border-radius: 0;
+  background-color: #c4c4c4;
+}
+
+.hero-contact-form-styles::placeholder {
+  color: #746e6e;
+}
+
+.hero-contact-form-button {
+  border-radius: 25px;
+  padding: 14px 28px;
+  color: #fff;
+  border: 1px solid #fff;
+  background-color: var(--hero-theme-color);
 }
 
 .hero-footer {
