@@ -5,20 +5,23 @@ const themeSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    schoolID: {
+    schoolId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'school'
     },
     logo: {
         type: String
     },
-    heroimage:{
+    themeimage:{
         type: String
     },
-    herotitle: {
+    themeschoolname: {
         type: String
     },
-    herosubtitle: {
+    themetitle: {
+        type: String
+    },
+    themesubtitle: {
         type: String
     },
     facebooklink: {

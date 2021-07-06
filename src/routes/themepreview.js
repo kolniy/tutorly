@@ -13,11 +13,12 @@ router.post('/', [
     if(!errors.isEmpty()){
         return res.status(400).json({ errors: errors.array() })
     }
-    const { type, thumbnail } = req.body
+    const { type, thumbnail, requiresassets } = req.body
     try {
         const newThemePreviewer = new Themepreview({
             type,
-            thumbnail
+            thumbnail,
+            requiresassets
         })
         await newThemePreviewer.save()
         res.json(newThemePreviewer)

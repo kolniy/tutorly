@@ -6,6 +6,10 @@ const themePreviewSchema = mongoose.Schema({
     },
     thumbnail: {
         type: String
+    },
+    requiresassets: {
+        type: Boolean,
+        default: false
     }
 })
 
