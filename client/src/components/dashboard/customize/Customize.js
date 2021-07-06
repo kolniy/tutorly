@@ -4,11 +4,16 @@ import axios from 'axios'
 import { 
     Row,
     Col,
-    Container
+    Container,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from "reactstrap"
 import { updateSchoolTheme } from "../../../actions/school"
 import DashboardNavbar from "../DashboardNavbar"
-import ThemeContainer from "./ThemeContainer"
+import ThemePreviewContainer from "./ThemePreviewContainer"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/customize.css"
@@ -17,26 +22,39 @@ const Customize = ({
     updateSchoolThemeToSelectedTheme
 }) => {
 
-    const [ themes, setThemes ] = useState([])
+    const [ showChangeThemeConfrimationModal, setShowChangeThemeConfrimationModal] = useState(false)
+    const [ themePreview, setThemePreview ] = useState([])
     const [ selectedTheme, setSelectedTheme ] = useState(null)
 
-    const selectTheme = (themeData) => {
-        setSelectedTheme(themeData)
+    // const selectTheme = (themeData) => {
+    //     setSelectedTheme(themeData)
+    // }
+
+    const closeThemeChangeModal = () => setShowChangeThemeConfrimationModal(false)
+    const openThemeChangeModal = (themeId) => { 
+        setShowChangeThemeConfrimationModal(true) 
+        setSelectedTheme(themeId)
     }
 
     useEffect(() => {
-        getThemes()
+        getThemePreviewList()
     }, [])
 
-    useEffect(() => {
-        if(selectedTheme !== null){
-        updateSchoolThemeToSelectedTheme(selectedTheme._id)
-        }
-    }, [selectedTheme, updateSchoolThemeToSelectedTheme])
+    const onUpdateThemeClickHandler = () => {
+        // communicate with the backend
+        console.log(selectedTheme)
+        setShowChangeThemeConfrimationModal(false)
+    }
 
-    const getThemes = async () => {
-        const res = await axios.get('/api/v1/theme/')
-        setThemes(res.data)
+    // useEffect(() => {
+    //     if(selectedTheme !== null){
+    //     updateSchoolThemeToSelectedTheme(selectedTheme._id)
+    //     }
+    // }, [selectedTheme, updateSchoolThemeToSelectedTheme])
+
+    const getThemePreviewList = async () => {
+        const res = await axios.get('/api/v1/themepreview/')
+        setThemePreview(res.data)
     }
 
     return <>
@@ -50,10 +68,10 @@ const Customize = ({
                     <div className="customize-page__contents">
                         <h3 className="page-title">Customize space</h3>
                         <p className="page-subtitle">Select a Landing Page Style</p>
-                        <ThemeContainer
-                         themes={themes}
-                         selectTheme={selectTheme} 
-                         selectedTheme={selectedTheme} />
+                        <ThemePreviewContainer
+                         themePreview={themePreview}
+                         openThemeChangeModal={openThemeChangeModal}
+                         />
                   </div>
                 </div>
                    </div>
@@ -61,6 +79,16 @@ const Customize = ({
             </Row>
         </Container>
     </div>
+    <Modal isOpen={showChangeThemeConfrimationModal} toggle={closeThemeChangeModal}>
+        <ModalHeader className="text-dark" toggle={closeThemeChangeModal}>Confirm Change</ModalHeader>
+        <ModalBody className="text-dark">
+        Are You Sure you want to Change your Theme?
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={e => onUpdateThemeClickHandler()} className="customize-modal-btn">Update Theme</Button>{' '}
+          <Button color="secondary" onClick={closeThemeChangeModal}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
 </>
 }
 

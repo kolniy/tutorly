@@ -11,6 +11,9 @@ import Setpagetwo from "./components/account-setup/Setuppagetwo"
 import CreateCourse from "./components/dashboard/create-courses/CreateCourse"
 import Courses from "./components/dashboard/courses/Courses"
 import Customize from "./components/dashboard/customize/Customize"
+import ThemeInfo from "./components/dashboard/customize/ThemeSetupPages/ThemeInfo"
+import ThemeUpload from "./components/dashboard/customize/ThemeSetupPages/ThemeUploads"
+import ThemeContact from "./components/dashboard/customize/ThemeSetupPages/ThemeContact";
 import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
@@ -55,6 +58,9 @@ function App() {
         <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />
         <PrivateRoute exact path="/dashboard/courses" component={Courses} />
         <PrivateRoute exact path="/dashboard/customize" component={Customize} />
+        <PrivateRoute exact path="/dashboard/customize/theme/setup/themeinfo" component={ThemeInfo} />
+        <PrivateRoute exact path="/dashboard/customize/theme/setup/assetupload" component={ThemeUpload} />
+        <PrivateRoute exact path="/dashboard/customize/theme/setup/contactinfo" component={ThemeContact} />
         <PrivateRoute exact path="/dashboard/sales" component={Sales} />
         <PrivateRoute exact path="/dashboard/messages" component={Messages} />
         <PrivateRoute exact path="/dashboard/themes/preview/hero" component={Herotheme} />

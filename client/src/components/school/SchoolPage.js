@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import setDocumentTitle from "../../utilities/setDocumentTitle"
 
 // theme components import 
 import HeroTheme from "../../themes/Hero-type-theme/LandingPage"
@@ -15,6 +16,12 @@ export const SchoolPage = ({ match }) => {
         getSchoolBySchoolName(match.params.schoolname)
         }
     }, [match.params.schoolname])
+
+    useEffect(() => {
+        if(school){
+            setDocumentTitle(school)
+        }
+    }, [school])
 
     const getSchoolBySchoolName = async (schoolname) => {
         try {

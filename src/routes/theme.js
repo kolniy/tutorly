@@ -29,18 +29,4 @@ router.post('/', [
     }
 })
 
-// route to get all themes
-router.get('/', async (req, res) => {
-    try {
-    const themes = await Theme.find()
-    res.json(themes)
-    } catch (error) {
-        res.status(500).json({
-            errors: error
-        })
-        console.error(error)
-    }
-})
-
-
 export default router

@@ -153,6 +153,7 @@ const Setuppageone = ({
             onBlur={e => checkInputOnBlur(e, "validFirstname")}
             required
             autoFocus
+            autoComplete="off"
             />
           <label for="firstname" className="form__label">First Name</label>
           {
@@ -169,7 +170,8 @@ const Setuppageone = ({
             value={lastname}
             onChange={e => updateFormData(e, "validLastname")}
             onBlur={e => checkInputOnBlur(e, "validLastname")}
-             required
+            required
+            autoComplete="off"
             />
             <label for="lastname" className="form__label">Last Name</label>
             {
@@ -187,6 +189,7 @@ const Setuppageone = ({
             onChange={e => updateFormData(e, "validUsername")}
             onBlur={e => checkInputOnBlur(e, "validUsername")}
              required
+            autoComplete="off"
             />
             <label for="username" className="form__label">Username</label>
             <div className="username-info">

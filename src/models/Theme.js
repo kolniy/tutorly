@@ -5,19 +5,51 @@ const themeSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    imagepreview: {
+    schoolID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'school'
+    },
+    logo: {
         type: String
     },
-    themeassets: {
-        themelogo: {
-            type: String
-        },
-        themefeatureimage:{
-            type: String
-        },
-        themeinstructorimage: {
-            type: String
-        }
+    heroimage:{
+        type: String
+    },
+    herotitle: {
+        type: String
+    },
+    herosubtitle: {
+        type: String
+    },
+    facebooklink: {
+        type: String
+    },
+    instagramlink: {
+        type: String
+    },
+    twitterlink: {
+        type: String
+    },
+    googlelink: {
+        type: String
+    },
+    youtubelink: {
+        type: String
+    },
+    instructorimage: {
+        type: String
+    },
+    abouttext: {
+        type: String
+    },
+    contactaddress: {
+        type: String
+    },
+    contactcountry: {
+        type: String
+    },
+    phonenumber: {
+        type: String
     }
 })
 
