@@ -1,0 +1,7 @@
+import {
+    CHOOSE_THEME, 
+    UPDATE_THEME_IMAGE,
+    UPDATE_THEME_ABOUT_IMAGE,
+    UPDATE_THEME_CONTACT_INFO,
+    UPDATE_THEME_INFO    
+} from "./types"

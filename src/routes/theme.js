@@ -1,8 +1,13 @@
 import express from "express"
 import { body, validationResult } from "express-validator"
+import cloudinary from "cloudinary"
+import sharp from "sharp"
+import multer, { memoryStorage } from "multer"
+import auth from "../middleware/auth"
 import Theme from "../models/Theme"
 import School from "../models/School" 
 import Themepreview from "../models/Themepreview"
+import dataUri from "../utilities/dataUri"
 
 const router = express.Router()
 
@@ -10,7 +15,7 @@ const defaultHeroThemeImage = "https://res.cloudinary.com/thawebguy/image/upload
 const defaultAboutThemeImage = "https://res.cloudinary.com/thawebguy/image/upload/v1625223376/tuturly/default%20theme%20assets/author-image_c4vdrq.png"
 
 // route to create new theme or update school theme name
-router.post('/:schoolId/:themepreviewId', async (req, res) => {
+router.post('/:schoolId/:themepreviewId', auth, async (req, res) => {
     const themepreviewId = req.params.themepreviewId
     const schoolId = req.params.schoolId
     try {
@@ -55,13 +60,18 @@ router.post('/:schoolId/:themepreviewId', async (req, res) => {
         newThemeObject['name'] = previewThemeInfo.name
         newThemeObject['schoolId'] = validSchool._id
 
+        // save themepreview name in 
+        validSchool.themename = previewThemeInfo.type
+
         if(previewThemeInfo.requiresassets === true){ // if previewed theme requires default
             // theme assets save the default 
            newThemeObject['themeimage'] = defaultHeroThemeImage
            newThemeObject['instructorimage'] = defaultAboutThemeImage
         }
         const newTheme = new Theme(newThemeObject)
+
         await newTheme.save()
+        await validSchool.save()
 
         res.json({
             school: validSchool,
@@ -69,16 +79,18 @@ router.post('/:schoolId/:themepreviewId', async (req, res) => {
         })
     } catch (error) {
         res.status(500).send("server error")
+        console.error(error)
     }
 })
 
-router.put('/setup/themeinfo/:themeid', [
+router.put('/setup/themeinfo/:schoolId', [
+    auth,
     body('heading', 'heading can not be empty').not().isEmpty(),
     body('subheading', 'subheading can not be empty').not().isEmpty(),
     body('schoolname', 'schoolname can not be empty').not().isEmpty(),
     body('schoolabout', 'schoolabout cannot be empty').not().isEmpty()
 ], async (req, res) => {
-    const themeId = req.params.themeid
+    const schoolId = req.params.schoolId
 
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -94,7 +106,7 @@ router.put('/setup/themeinfo/:themeid', [
             abouttext: schoolabout
         }
         const theme = await Theme.findOneAndUpdate({
-            _id: themeId
+            schoolId: schoolId
         }, themeUpdates, {
             new: true,
         })  
@@ -104,6 +116,167 @@ router.put('/setup/themeinfo/:themeid', [
     } catch (error) {
         res.status(500).send("server error")
     }
+})
+
+const storageDest = memoryStorage()
+
+const upload = multer({
+    storage: storageDest,
+    fileFilter(req, file, cb){
+        if(!file.originalname.match(/\.(jpg|jpeg|png|JPEG)$/)){
+            return cb(new Error('Please Upload another image'))
+         }
+         cb(undefined, true)
+    }
+})
+
+const bannerUpload = upload.single('banner')
+
+router.put('/setup/assetupload/banner/:schoolId', [
+    auth,
+    body('banner', "image not found").not().isEmpty()
+], async (req, res) => {
+
+    const schoolId = req.params.schoolId
+
+    const errors = validationResult(req.body)
+    if(!errors.isEmpty()){
+        return res.status(400).json({
+            errors: errors.array()
+        })
+    }
+
+    bannerUpload(req, res, (err) => {
+        if(err){
+            return res.status(400).json({
+                errors: [{ msg: "invalid image type" }]
+            })
+        }
+    })
+
+    try {
+        let theme = await Theme.findOne({ schoolId: schoolId })
+        let school = await School.findOne({ _id: schoolId })
+
+        if(!theme){
+            return res.status(404).json({
+                errors: [{ msg: "theme not found"}]
+            })
+        }
+        const buffer = await sharp(req.file.buffer)
+        .resize({ width:1400, height:500 })
+        .png().toBuffer()
+
+        const bannerToBeUploaded = dataUri('.png', buffer).content
+        
+        let uploadResponse = await cloudinary.v2.uploader.upload(bannerToBeUploaded, {
+            folder: `tuturly/schoolId-${school.name}/themeassets`,
+            public_id: `${school.name}-banner`
+        })
+
+        theme.themeimage = uploadResponse.url
+        await theme.save()
+        
+        res.json(theme)
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+const aboutUpload = upload.single('about')
+
+router.put('/setup/assetupload/aboutimage/:schoolId', [
+    auth,
+    body('instructorimage', "image not found").not().isEmpty()
+], async (req, res) => {
+
+    const schoolId = req.params.schoolId
+
+    const errors = validationResult(req.body)
+    if(!errors.isEmpty()){
+        return res.status(400).json({
+            errors: errors.array()
+        })
+    }
+
+    aboutUpload(req, res, (err) => {
+        if(err){
+            return res.status(400).json({
+                errors: [{ msg: "invalid image type" }]
+            })
+        }
+    })
+
+    try {
+        let theme = await Theme.findOne({ schoolId: schoolId })
+        let school = await School.findOne({ _id: schoolId })
+
+        if(!theme){
+            return res.status(404).json({
+                errors: [{ msg: "theme not found"}]
+            })
+        }
+        const buffer = await sharp(req.file.buffer)
+        .resize({ width:350, height:300 })
+        .png().toBuffer()
+
+        const bannerToBeUploaded = dataUri('.png', buffer).content
+
+        let uploadResponse = await cloudinary.v2.uploader.upload(bannerToBeUploaded, {
+            folder: `tuturly/schoolId-${school.name}/themeassets`,
+            public_id: `${school.name}-about`
+        })
+
+        theme.instructorimage = uploadResponse.url
+        await theme.save()
+        
+        res.json(theme)
+
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+router.put('/setup/contactinfo/:schoolId', [
+    auth,
+    body('address', 'address is required').not().isEmpty(),
+    body('phone', 'phone is required').not().isEmpty(),
+    body('phonecc', 'phone country code is required').not().isEmpty()
+], async (req, res) => {
+    const schoolId = req.params.schoolId
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({
+            errors: errors.array()
+        })
+    }
+
+    const { address, phone, 
+        phonecc, googleurl,
+        facebookurl, youtubeurl, 
+        twitterurl, instagramurl } = req.body
+        
+        try {
+            let theme = await Theme.findOne({
+                schoolId
+            })
+
+            theme.contactaddress = address
+            theme.phonenumber = phone
+            theme.countryphonecode = phonecc
+          
+            if(googleurl) theme.googlelink = googleurl
+            if(facebookurl) theme.facebooklink = facebookurl
+            if(youtubeurl) contactInfo.youtubeurl = youtubeurl
+            if(twitterurl) contactInfo.twitterurl = twitterurl
+            if(instagramurl) contactInfo.instagramurl = instagramurl
+
+            await theme.save()
+            res.json(theme)
+        } catch (error) {
+            res.status(500).send("server error")
+        }
 })
 
 export default router

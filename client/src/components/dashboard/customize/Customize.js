@@ -11,7 +11,6 @@ import {
     ModalBody,
     ModalFooter
 } from "reactstrap"
-import { updateSchoolTheme } from "../../../actions/school"
 import DashboardNavbar from "../DashboardNavbar"
 import ThemePreviewContainer from "./ThemePreviewContainer"
 
@@ -93,7 +92,7 @@ const Customize = ({
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    updateSchoolThemeToSelectedTheme : (themeid) => dispatch(updateSchoolTheme(themeid))
+   
 })
 
 export default connect(null, mapDispatchToProps)(Customize)

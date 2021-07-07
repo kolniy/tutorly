@@ -24,19 +24,19 @@ const themeSchema = new mongoose.Schema({
     themesubtitle: {
         type: String
     },
-    facebooklink: {
+    facebookurl: {
         type: String
     },
-    instagramlink: {
+    instagramurl: {
         type: String
     },
-    twitterlink: {
+    twitterurl: {
         type: String
     },
-    googlelink: {
+    googleurl: {
         type: String
     },
-    youtubelink: {
+    youtubeurl: {
         type: String
     },
     instructorimage: {
@@ -48,10 +48,10 @@ const themeSchema = new mongoose.Schema({
     contactaddress: {
         type: String
     },
-    contactcountry: {
+    phonenumber: {
         type: String
     },
-    phonenumber: {
+    countryphonecode: {
         type: String
     }
 })
