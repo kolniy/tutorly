@@ -15,9 +15,11 @@ export const getDefaultSchool = () => {
             })
         } catch (error) {
             const errors = error.response.data.errors
-            errors.forEach(element => {
-                alert(element.msg)
-            });
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
         }
     }
 }

@@ -1,11 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 import { Container, Row, Col, Form, FormGroup, Input, Button } from "reactstrap"
+import { getTheme, updateThemeInfo } from "../../../../actions/theme"
 import DashboardNavbar from '../../DashboardNavbar'
 
 import "../../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../../custom-styles/dashboard/customize.css"
 
-export const ThemeInfo = () => {
+export const ThemeInfo = ({
+  getSchoolTheme,
+  updateTheme,
+  school,
+  history,
+  theme
+}) => {
+
+      const [ formData, setFormData ] = useState({
+          heading: '',
+          subheading:'',
+          schoolname:'',
+          schoolabout:''
+      })
+
+      const { heading, subheading, schoolname, schoolabout } = formData
+
+      const updateFormFields = (e) => (
+          setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+          })
+      )
+
+      const submitFormInfoHandler = (e) => {
+        e.preventDefault()
+        updateTheme(formData, school._id, history)
+      }
+
+      useEffect(() => {
+        if(theme !== null){
+          let themeHaeding = theme.themetitle !== null && theme.themetitle
+          let themeSubTitle = theme.themesubtitle !== null && theme.themesubtitle
+          let themeSchoolName = theme.themeschoolname !== null && theme.themeschoolname
+          let themeAboutText = theme.abouttext !== null && theme.abouttext
+          setFormData({
+            heading: themeHaeding,
+            subheading: themeSubTitle,
+            schoolname: themeSchoolName,
+            schoolabout: themeAboutText
+          })
+        }
+      }, [theme])
+
+      useEffect(() => {
+       if(school){
+        getSchoolTheme(school._id)
+       }
+      }, [getSchoolTheme, school])
+
     return <>
      <div className="dashboard-layout">
         <Container fluid>
@@ -20,19 +72,21 @@ export const ThemeInfo = () => {
                         <div className="theme-preview-container">
                            <div className="theme-setup">
                             <div className="form-container">
-                            <Form>
+                            <Form onSubmit={e => submitFormInfoHandler(e)}>
                             <FormGroup>
                              <input
                                type="text"
                                className="form__input"
                                placeholder="Heading"
-                               name="themeheading"
-                               id="themeheading"
+                               name="heading"
+                               id="heading"
                                required
                                autoFocus
                                autoComplete="off"
+                               onChange={e => updateFormFields(e)}
+                               value={heading}
                                />
-                            <label for="themeheading" className="form__label">Heading</label>
+                            <label for="heading" className="form__label">Heading</label>
                             </FormGroup>
                             <FormGroup>
                              <input
@@ -44,6 +98,8 @@ export const ThemeInfo = () => {
                                required
                                autoFocus
                                autoComplete="off"
+                               onChange={e => updateFormFields(e)}
+                               value={subheading}
                                />
                             <label for="subheading" className="form__label">Sub Heading</label>
                             <div className="instructions-tag">
@@ -60,6 +116,8 @@ export const ThemeInfo = () => {
                                required
                                autoFocus
                                autoComplete="off"
+                               value={schoolname}
+                               onChange={e => updateFormFields(e)}
                                />
                             <label for="schoolname" className="form__label">Name of your school</label>
                             </FormGroup>
@@ -69,8 +127,10 @@ export const ThemeInfo = () => {
                              placeholder="About School"
                              rows="5"
                              type="textarea"
-                             name="aboutschool"
+                             name="schoolabout"
                              autoComplete="off"
+                             value={schoolabout}
+                             onChange={e => updateFormFields(e)}
                             />
                             </FormGroup>
                             <FormGroup className="mt-5">
@@ -96,4 +156,14 @@ export const ThemeInfo = () => {
     </>
 }
 
-export default ThemeInfo
+const mapStateToProps = (state) => ({
+  theme: state.theme.schoolTheme,
+  school: state.school.schoolDetails
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getSchoolTheme: (schoolId) => dispatch(getTheme(schoolId)),
+  updateTheme: (formData, schoolId, history) => dispatch(updateThemeInfo(formData, schoolId, history))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ThemeInfo))

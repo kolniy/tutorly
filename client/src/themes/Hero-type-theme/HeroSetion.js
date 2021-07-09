@@ -11,9 +11,17 @@ import {
     Col
 } from "reactstrap"
 
-export const HeroSetion = () => {
+export const HeroSetion = ({ themeData }) => {
     return <>
-        <section className="hero-section">
+        <section style={{
+              backgroundImage:`url(${themeData.themeimage})`,
+              backgroundSize:'cover',
+              backgroundRepeat:'no-repeat',
+              backgroundAttachment:'fixed',
+              backgroundPosition:'botto',
+              width:'100%',
+              height:'70vh'
+            }} className="hero-section">
         <Navbar className="navbar-dark home-nav" expand="lg">
             <Container>
               <button className="navbar-toggler" id="navbar-primary">
@@ -63,25 +71,35 @@ export const HeroSetion = () => {
           <Container fluid className="hero-container-styles">
             <div className="hero-contents">
             <div className="hero-section-socail-links">
-                   <Link className="social-icon-item">
-                   <i class="fab fa-twitter"></i>
-                   </Link>
-                    <Link className="social-icon-item">
-                    <i class="fab fa-youtube"></i>
-                    </Link>
-                    <Link className="social-icon-item">
-                     <i class="fab fa-google"></i>
-                    </Link>
-                    <Link className="social-icon-item">
-                    <i class="fab fa-instagram"></i>
-                    </Link>
-                    <Link className="social-icon-item">
-                        <i class="fab fa-facebook"></i>
-                    </Link>
+                     {
+                       themeData.twitterurl !== undefined && (<a target="_blank" href={`https://${themeData.twitterurl}`} className="social-icon-item">
+                       <i class="fab fa-twitter"></i>
+                       </a>)
+                     }
+                     {
+                       themeData.youtubeurl !== undefined && (<a target="_blank" href={`https://${themeData.youtubeurl}`} className="social-icon-item">
+                       <i class="fab fa-youtube"></i>
+                       </a>)
+                     }
+                    {
+                      themeData.googleurl !== undefined && (<a target="_blank" href={`https://${themeData.googleurl}`} className="social-icon-item">
+                      <i class="fab fa-google"></i>
+                     </a>)
+                    }
+                    {
+                      themeData.instagramurl !== undefined && (<a target="_blank" href={`https://${themeData.instagramurl}`} className="social-icon-item">
+                      <i class="fab fa-instagram"></i>
+                      </a>)
+                    }
+                   {
+                     themeData.facebookurl !== undefined && ( <a target="_blank" href={`https://${themeData.facebookurl}`} className="social-icon-item">
+                     <i class="fab fa-facebook"></i>
+                 </a>)
+                   }
             </div>
             <div className="hero-section-school-info">
-                <h1 className="school-name">Sano's Wood Work</h1>
-                <p className="school-subtitle">a complete carpentry masterclass</p>
+                <h1 className="school-name">{themeData.themeschoolname}</h1>
+                <p className="school-subtitle">{themeData.themetitle}</p>
                 <Button className="hero-btn-enroll">Enroll</Button>
             </div>
             </div>

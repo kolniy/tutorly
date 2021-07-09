@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 import axios from 'axios'
 import { 
     Row,
@@ -13,21 +14,20 @@ import {
 } from "reactstrap"
 import DashboardNavbar from "../DashboardNavbar"
 import ThemePreviewContainer from "./ThemePreviewContainer"
+import { chooseTheme } from "../../../actions/theme"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/customize.css"
 
 const Customize = ({ 
-    updateSchoolThemeToSelectedTheme
+    chooseNewTheme,
+    school,
+    history
 }) => {
 
     const [ showChangeThemeConfrimationModal, setShowChangeThemeConfrimationModal] = useState(false)
     const [ themePreview, setThemePreview ] = useState([])
     const [ selectedTheme, setSelectedTheme ] = useState(null)
-
-    // const selectTheme = (themeData) => {
-    //     setSelectedTheme(themeData)
-    // }
 
     const closeThemeChangeModal = () => setShowChangeThemeConfrimationModal(false)
     const openThemeChangeModal = (themeId) => { 
@@ -40,16 +40,9 @@ const Customize = ({
     }, [])
 
     const onUpdateThemeClickHandler = () => {
-        // communicate with the backend
-        console.log(selectedTheme)
+        chooseNewTheme(school._id, selectedTheme, history)
         setShowChangeThemeConfrimationModal(false)
     }
-
-    // useEffect(() => {
-    //     if(selectedTheme !== null){
-    //     updateSchoolThemeToSelectedTheme(selectedTheme._id)
-    //     }
-    // }, [selectedTheme, updateSchoolThemeToSelectedTheme])
 
     const getThemePreviewList = async () => {
         const res = await axios.get('/api/v1/themepreview/')
@@ -91,8 +84,12 @@ const Customize = ({
 </>
 }
 
-const mapDispatchToProps = (dispatch) => ({
-   
+const mapStateToProps = (state) => ({
+    school: state.school.schoolDetails
 })
 
-export default connect(null, mapDispatchToProps)(Customize)
+const mapDispatchToProps = (dispatch) => ({
+   chooseNewTheme : (schoolId, themePreviewId, history) => dispatch(chooseTheme(schoolId, themePreviewId, history))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Customize))

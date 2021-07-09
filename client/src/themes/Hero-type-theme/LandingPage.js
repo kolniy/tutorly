@@ -7,13 +7,13 @@ import Footer from "./Footer"
 
 import "./hero-theme-styles.css"
 
-export const LandingPage = () => {
+export const LandingPage = ({ themeData }) => {
     return <>
-        <HeroSection />
-        <CourseList />
-        <About />
-        <Contact />
-        <Footer />
+        <HeroSection themeData={themeData} />
+        <CourseList themeData={themeData} />
+        <About themeData={themeData} />
+        <Contact themeData={themeData} />
+        <Footer themeData={themeData} />
     </>
 }
 

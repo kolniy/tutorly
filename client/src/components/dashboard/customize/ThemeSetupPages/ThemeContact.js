@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
 import { Container, Row, Col, Button, FormGroup } from "reactstrap"
+import { getTheme, updateThemeContactInfo } from "../../../../actions/theme"
 import ReactFlagsSelect from "react-flags-select"
 import DashboardNavbar from '../../DashboardNavbar'
 
@@ -7,7 +10,67 @@ import "../../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../../custom-styles/dashboard/customize.css"
 
 
-export const ThemeContact = () => {
+export const ThemeContact = ({ 
+    theme,
+    school,
+    updateContactInfo,
+    getSchoolTheme,
+    history
+}) => {
+
+    const [ formData, setFormData ] = useState({
+        address: '',
+        phone: '',
+        phonecc: '234',
+        googleurl: '',
+        facebookurl: '',
+        twitterurl: '',
+        instagramurl: '',
+        youtubeurl: ''
+    })
+
+    const { address, phone, phonecc, googleurl, facebookurl, twitterurl, instagramurl, youtubeurl } = formData
+
+    const updateFormFields = (e) => (
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    )
+
+    const submitFormContactHandler = () => {
+        updateContactInfo(formData, school._id, school.name, history)
+    }
+
+    useEffect(() => {
+        if(theme !== null){
+            let address = theme.contactaddress !== null && theme.contactaddress
+            let phone = theme.phonenumber !== null && theme.phonenumber
+            let phonecc = theme.countryphonecode !== null && theme.countryphonecode
+            let google = theme.googleurl !== null && theme.googleurl
+            let facebook = theme.facebookurl !== null && theme.facebookurl
+            let instagram = theme.instagramurl !== null && theme.instagramurl
+            let youtube = theme.youtubeurl !== null && theme.youtubeurl
+            let twitter = theme.twitterurl !== null && theme.twitterurl
+            setFormData({
+                address,
+                phone,
+                phonecc,
+                googleurl: google,
+                facebookurl: facebook,
+                instagramurl: instagram,
+                youtubeurl: youtube,
+                twitterurl: twitter
+            })
+        }
+    }, [theme])
+
+    useEffect(() => {
+        if(school){
+            getSchoolTheme(school._id)
+        }
+    }, [getSchoolTheme, school])
+
     return <>
         <div className="dashboard-layout">
         <Container fluid>
@@ -29,9 +92,11 @@ export const ThemeContact = () => {
                                placeholder="Address"
                                name="address"
                                id="address"
+                               value={address}
                                required
                                autoFocus
                                autoComplete="off"
+                               onChange={e => updateFormFields(e)}
                                />
                             <label for="themeheading" className="form__label">Address</label>
                             </FormGroup>
@@ -53,9 +118,11 @@ export const ThemeContact = () => {
                                     placeholder="Phone No."
                                     name="phone"
                                     id="phone"
+                                    value={phone}
                                     required
                                     autoFocus
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                     <label for="phone" className="form__label">Address</label>
                             </FormGroup>
@@ -70,9 +137,11 @@ export const ThemeContact = () => {
                                     type="text"
                                     class="form__input"
                                     placeholder="Enter URL"
-                                    name="google"
-                                    id="google"
+                                    name="googleurl"
+                                    id="googleurl"
+                                    value={googleurl}
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                 </div>
                                 <div className="social-icon-and-input">
@@ -81,9 +150,11 @@ export const ThemeContact = () => {
                                     type="text"
                                     class="form__input"
                                     placeholder="Enter URL"
-                                    name="youtube"
-                                    id="youtube"
+                                    name="youtubeurl"
+                                    id="youtubeurl"
+                                    value={youtubeurl}
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                 </div>
                                 <div className="social-icon-and-input">
@@ -92,9 +163,11 @@ export const ThemeContact = () => {
                                     type="text"
                                     class="form__input"
                                     placeholder="Enter URL"
-                                    name="twitter"
-                                    id="twitter"
+                                    name="twitterurl"
+                                    id="twitterurl"
+                                    value={twitterurl}
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                 </div>
                                 <div className="social-icon-and-input">
@@ -103,9 +176,11 @@ export const ThemeContact = () => {
                                     type="text"
                                     class="form__input"
                                     placeholder="Enter URL"
-                                    name="instagram"
-                                    id="instagram"
+                                    name="instagramurl"
+                                    id="instagramurl"
+                                    value={instagramurl}
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                 </div>
                                 <div className="social-icon-and-input">
@@ -114,13 +189,15 @@ export const ThemeContact = () => {
                                     type="text"
                                     class="form__input"
                                     placeholder="Enter URL"
-                                    name="facebook"
-                                    id="facebook"
+                                    name="facebookurl"
+                                    id="facebookurl"
+                                    value={facebookurl}
                                     autoComplete="off"
+                                    onChange={e => updateFormFields(e)}
                                     />
                                 </div>
                             </div>
-                            <Button className="customize-page-btn mb-4" size="large">Save</Button>
+                            <Button onClick={submitFormContactHandler} className="customize-page-btn mb-4" size="large">Save</Button>
                             </div>
                           </div>
                         </div>
@@ -134,4 +211,14 @@ export const ThemeContact = () => {
     </>
 }
 
-export default ThemeContact
+const mapStateToProps = (state) => ({
+   theme: state.theme.schoolTheme,
+   school: state.school.schoolDetails
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    getSchoolTheme: (schoolId) => dispatch(getTheme(schoolId)),
+    updateContactInfo: (formData, schoolId, schoolName, history) => dispatch(updateThemeContactInfo(formData, schoolId, schoolName, history))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ThemeContact))

@@ -7,7 +7,7 @@ import { Button,
     FormGroup, 
     Input } from "reactstrap"
 
-export const Contact = () => {
+export const Contact = ({ themeData }) => {
     return <>
         <section className="contact">
             <Container>
@@ -15,9 +15,8 @@ export const Contact = () => {
                     <Col sm="6" md="6">
                         <div className="contact-info">
                             <h2 className="contact-header">Contact Us</h2>
-                            <p className="contact-paragraph">94602 San Pablo Avenue,</p>
-                            <p className="contact-paragraph">oakland califonia</p>
-                            <p className="contact-paragraph">phone no:xxx xxxx xxxxx</p>
+                            <p className="contact-paragraph">{themeData.contactaddress}</p>
+                            <p className="contact-paragraph">phone no:{themeData.countryphonecode}{themeData.phonenumber}</p>
                         </div>
                     </Col>
                     <Col sm="6" md="6">

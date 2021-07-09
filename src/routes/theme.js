@@ -14,6 +14,20 @@ const router = express.Router()
 const defaultHeroThemeImage = "https://res.cloudinary.com/thawebguy/image/upload/v1625221263/tuturly/default%20theme%20assets/hero-image_cgkrdx.png"
 const defaultAboutThemeImage = "https://res.cloudinary.com/thawebguy/image/upload/v1625223376/tuturly/default%20theme%20assets/author-image_c4vdrq.png"
 
+// route to get theme by school Id
+router.get('/:schoolId', auth, async (req, res) => {
+    const schoolId = req.params.schoolId
+    try {
+        const theme = await Theme.findOne({
+            schoolId: schoolId
+        })
+        res.json(theme)
+    } catch (error) {
+        res.status(500).send("server error")
+        console.error(error)
+    }
+})
+
 // route to create new theme or update school theme name
 router.post('/:schoolId/:themepreviewId', auth, async (req, res) => {
     const themepreviewId = req.params.themepreviewId
@@ -217,7 +231,7 @@ router.put('/setup/assetupload/aboutimage/:schoolId', [
             })
         }
         const buffer = await sharp(req.file.buffer)
-        .resize({ width:350, height:300 })
+        .resize({ width:200, height:200 })
         .png().toBuffer()
 
         const bannerToBeUploaded = dataUri('.png', buffer).content
@@ -266,16 +280,17 @@ router.put('/setup/contactinfo/:schoolId', [
             theme.phonenumber = phone
             theme.countryphonecode = phonecc
           
-            if(googleurl) theme.googlelink = googleurl
-            if(facebookurl) theme.facebooklink = facebookurl
-            if(youtubeurl) contactInfo.youtubeurl = youtubeurl
-            if(twitterurl) contactInfo.twitterurl = twitterurl
-            if(instagramurl) contactInfo.instagramurl = instagramurl
+            if(googleurl) theme.googleurl = googleurl
+            if(facebookurl) theme.facebookurl = facebookurl
+            if(youtubeurl) theme.youtubeurl = youtubeurl
+            if(twitterurl) theme.twitterurl = twitterurl
+            if(instagramurl) theme.instagramurl = instagramurl
 
             await theme.save()
             res.json(theme)
         } catch (error) {
             res.status(500).send("server error")
+            console.error(error)
         }
 })
 

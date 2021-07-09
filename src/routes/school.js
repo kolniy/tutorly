@@ -35,7 +35,15 @@ router.get('/:schoolname', async (req, res) => {
                 msg: "school not found"
             }]})
         }
-        res.json(school)
+
+        const theme = await Theme.findOne({
+            schoolId: school._id
+        })
+
+        res.json({
+            school,
+            theme
+        })
     } catch (error) {
         res.status(500).send("server error")
     }

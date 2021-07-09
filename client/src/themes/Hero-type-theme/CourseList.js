@@ -2,11 +2,11 @@ import React from 'react'
 import { Container, Row } from "reactstrap"
 import CourseItem from "./CourseItem"
 
-export const CourseList = () => {
+export const CourseList = ({ themeData }) => {
     return <>
         <section className="course-list">
             <Container fluid className="course-list-container">
-                <h3 className="section-title">Sano's Wood work Course List</h3>
+                <h3 className="section-title">{themeData.themeschoolname} Course List</h3>
                 <div className="course-item-container">
                     <Row>
                         <CourseItem courseName="Journey into the wood" />

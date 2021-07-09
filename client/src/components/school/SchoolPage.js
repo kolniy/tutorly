@@ -9,6 +9,7 @@ import SectionTheme from "../../themes/Section-type-theme/LandingPage"
 export const SchoolPage = ({ match }) => {
 
     const [ school, setSchool ] = useState(null)
+    const [ theme, setTheme ] = useState(null)
     const [ pageLoading, setPageLoading ] = useState(true)
 
     useEffect(() => {
@@ -26,7 +27,8 @@ export const SchoolPage = ({ match }) => {
     const getSchoolBySchoolName = async (schoolname) => {
         try {
            const res = await axios.get(`/api/v1/school/${schoolname}`)
-           setSchool(res.data)
+           setSchool(res.data.school)
+           setTheme(res.data.theme)
            setPageLoading(false)
         } catch (error) {
             if(error.response.status === 404){
@@ -48,8 +50,8 @@ export const SchoolPage = ({ match }) => {
                    <>
                     {
                           school.themename.toLowerCase().includes("hero") ? 
-                          <><HeroTheme /></> 
-                          : <><SectionTheme/></>
+                          <><HeroTheme themeData={theme} /></> 
+                          : <><SectionTheme themeData={theme}/></>
                     }
                   </>
                 }

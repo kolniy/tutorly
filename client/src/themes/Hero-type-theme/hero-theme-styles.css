@@ -3,7 +3,7 @@
   --hero-theme-green-color: #7bdb97;
 }
 
-.hero-section {
+/* .hero-section {
   width: 100%;
   height: 70vh;
   background-image: url(./images/hero-image.png);
@@ -11,7 +11,7 @@
   background-size: cover;
   background-attachment: fixed;
   background-position: bottom;
-}
+} */
 
 .hero-section-button {
   color: #fff;
