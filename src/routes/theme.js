@@ -57,9 +57,10 @@ router.post('/:schoolId/:themepreviewId', auth, async (req, res) => {
     
             // update school theme name
             validSchool.themename = previewThemeInfo.type
-
+            validSchool.themepreviewid = previewThemeInfo._id
+            
             // update theme info for school
-            schoolThemeExists.name = previewThemeInfo.type
+            schoolThemeExists.name = previewThemeInfo.type 
 
             await validSchool.save()
             await schoolThemeExists.save()
@@ -75,7 +76,8 @@ router.post('/:schoolId/:themepreviewId', auth, async (req, res) => {
         newThemeObject['schoolId'] = validSchool._id
 
         // save themepreview name in 
-        validSchool.themename = previewThemeInfo.type
+        validSchool.themename = previewThemeInfo.type 
+        validSchool.themepreviewid = previewThemeInfo._id
 
         if(previewThemeInfo.requiresassets === true){ // if previewed theme requires default
             // theme assets save the default 

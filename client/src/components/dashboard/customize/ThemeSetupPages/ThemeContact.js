@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { Container, Row, Col, Button, FormGroup } from "reactstrap"
+import { useAlert } from "react-alert"
 import { getTheme, updateThemeContactInfo } from "../../../../actions/theme"
 import ReactFlagsSelect from "react-flags-select"
 import DashboardNavbar from '../../DashboardNavbar'
@@ -26,9 +27,10 @@ export const ThemeContact = ({
         facebookurl: '',
         twitterurl: '',
         instagramurl: '',
-        youtubeurl: ''
+        youtubeurl: '',
     })
 
+    const alert = useAlert()
     const { address, phone, phonecc, googleurl, facebookurl, twitterurl, instagramurl, youtubeurl } = formData
 
     const updateFormFields = (e) => (
@@ -39,23 +41,38 @@ export const ThemeContact = ({
     )
 
     const submitFormContactHandler = () => {
+        if(address.length === 0){
+            return alert.show("address is required", {
+                type: 'error'
+            })
+        }
+        if(phone.length === 0){
+            return alert.show("phone number is required", {
+                type: 'error'
+            })
+        }
+        if(phonecc.length === 0){
+            return alert.show("phone country code is required", {
+                type: 'error'
+            })
+        }
         updateContactInfo(formData, school._id, school.name, history)
     }
 
     useEffect(() => {
         if(theme !== null){
-            let address = theme.contactaddress !== null && theme.contactaddress
-            let phone = theme.phonenumber !== null && theme.phonenumber
-            let phonecc = theme.countryphonecode !== null && theme.countryphonecode
-            let google = theme.googleurl !== null && theme.googleurl
-            let facebook = theme.facebookurl !== null && theme.facebookurl
-            let instagram = theme.instagramurl !== null && theme.instagramurl
-            let youtube = theme.youtubeurl !== null && theme.youtubeurl
-            let twitter = theme.twitterurl !== null && theme.twitterurl
+            let address = theme.contactaddress !== undefined ? theme.contactaddress : ''
+            let phone = theme.phonenumber !== undefined ? theme.phonenumber : ''
+            let cc = theme.countryphonecode !== undefined ? theme.countryphonecode : '234'
+            let google = theme.googleurl !== undefined ? theme.googleurl : ''
+            let facebook = theme.facebookurl !== undefined ? theme.facebookurl : ''
+            let instagram = theme.instagramurl !== undefined ? theme.instagramurl : ''
+            let youtube = theme.youtubeurl !== undefined ? theme.youtubeurl : ''
+            let twitter = theme.twitterurl !== undefined ? theme.twitterurl : ''
             setFormData({
                 address,
                 phone,
-                phonecc,
+                phonecc:cc,
                 googleurl: google,
                 facebookurl: facebook,
                 instagramurl: instagram,

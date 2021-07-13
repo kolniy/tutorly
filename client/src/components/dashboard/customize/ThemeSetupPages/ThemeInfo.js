@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { Container, Row, Col, Form, FormGroup, Input, Button } from "reactstrap"
+import { useAlert } from "react-alert"
 import { getTheme, updateThemeInfo } from "../../../../actions/theme"
 import DashboardNavbar from '../../DashboardNavbar'
 
@@ -23,6 +24,7 @@ export const ThemeInfo = ({
           schoolabout:''
       })
 
+      const alert = useAlert()
       const { heading, subheading, schoolname, schoolabout } = formData
 
       const updateFormFields = (e) => (
@@ -34,6 +36,26 @@ export const ThemeInfo = ({
 
       const submitFormInfoHandler = (e) => {
         e.preventDefault()
+        if(heading.length === 0){
+            return alert.show("heading is required", {
+              type:'error'
+            })
+        }
+        if(subheading.length === 0){
+          return alert.show("subheading is required", {
+            type:'error'
+          })
+        }
+        if(schoolname.length === 0){
+          return alert.show("school name is required", {
+            type:'error'
+          })
+        }
+        if(schoolabout.length === 0){
+          return alert.show("school about is required", {
+            type:'error'
+          })
+        }
         updateTheme(formData, school._id, history)
       }
 

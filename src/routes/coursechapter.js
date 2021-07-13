@@ -1,5 +1,5 @@
 import express from "express"
-import Course from "../models/CourseMedia"
+import CourseChapter from "../models/CourseChapter"
 
 const router = express.Router()
 

@@ -102,7 +102,7 @@ export const ThemeUploads = ({
                                          id="banner-upload"
                                          style={{ display: 'none'}}
                                          onChange={e => bannerImagePickerHandler(e)}
-                                         ref={bannerImageInputPicker}
+                                         ref={bannerImageInputPicker} 
                                          />
                                         </Col>
                                     </Row>

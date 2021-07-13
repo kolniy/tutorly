@@ -72,27 +72,27 @@ export const HeroSetion = ({ themeData }) => {
             <div className="hero-contents">
             <div className="hero-section-socail-links">
                      {
-                       themeData.twitterurl !== undefined && (<a target="_blank" href={`https://${themeData.twitterurl}`} className="social-icon-item">
+                       themeData.twitterurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.twitterurl}`} className="social-icon-item">
                        <i class="fab fa-twitter"></i>
                        </a>)
                      }
                      {
-                       themeData.youtubeurl !== undefined && (<a target="_blank" href={`https://${themeData.youtubeurl}`} className="social-icon-item">
+                       themeData.youtubeurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.youtubeurl}`} className="social-icon-item">
                        <i class="fab fa-youtube"></i>
                        </a>)
                      }
                     {
-                      themeData.googleurl !== undefined && (<a target="_blank" href={`https://${themeData.googleurl}`} className="social-icon-item">
+                      themeData.googleurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.googleurl}`} className="social-icon-item">
                       <i class="fab fa-google"></i>
                      </a>)
                     }
                     {
-                      themeData.instagramurl !== undefined && (<a target="_blank" href={`https://${themeData.instagramurl}`} className="social-icon-item">
+                      themeData.instagramurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.instagramurl}`} className="social-icon-item">
                       <i class="fab fa-instagram"></i>
                       </a>)
                     }
                    {
-                     themeData.facebookurl !== undefined && ( <a target="_blank" href={`https://${themeData.facebookurl}`} className="social-icon-item">
+                     themeData.facebookurl !== undefined && ( <a target="_blank" rel="noreferrer" href={`https://${themeData.facebookurl}`} className="social-icon-item">
                      <i class="fab fa-facebook"></i>
                  </a>)
                    }

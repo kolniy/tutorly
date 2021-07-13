@@ -11,6 +11,10 @@ const schoolSchema = new mongoose.Schema({
     themename: {
         type: String
     },
+    themepreviewid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'themepreview'
+    },
     testimonials: [
         {
             testifiedby: {
