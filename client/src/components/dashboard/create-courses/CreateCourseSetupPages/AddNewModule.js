@@ -8,7 +8,7 @@ export const AddNewModule = ({ openModalDialog }) => {
                  <hr className="no-text__hr" />
             </div>
             <div onClick={openModalDialog} className="add-module__button">
-                <i class="fas fa-plus"></i>
+                <i className="fas fa-plus"></i>
                 <p>Click to add a new Module</p>
             </div>
         </div>

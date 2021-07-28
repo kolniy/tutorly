@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import axios from 'axios'
+import setAuthToken from '../../../../utilities/setAuthToken'
 import { 
     Container, 
     Row, 
@@ -11,22 +13,25 @@ import {
 } from "reactstrap"
 import { useAlert } from "react-alert"
 import DashboardNavbar from '../../DashboardNavbar'
-import { addCourseModule, getCourseById } from "../../../../actions/course"
+import { getCourseById } from "../../../../actions/course"
 import AddNewModule from './AddNewModule'
 import CourseModuleItem from './CourseModuleItem'
+import { startLoading, stopLoading } from "../../../../actions/appLoading"
 
 
 import "../../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../../custom-styles/dashboard/coursemodule.css"
 
 export const CreateCourseModules = ({
-    modules,
-    addModule,
     getCourse,
     course,
-    match
+    match,
+    displayLoader,
+    removeLoader
 }) => {
 
+    const [ modules, setModules ] = useState([])
+    const [ modluesLoading, setModulesLoading ] = useState(true)
     const [ launchAddModuleModal, setLaunchAddModuleModal ] = useState(false)
     const alert = useAlert()
     const [ newModuleName, setNewModuleName ] = useState({
@@ -40,15 +45,77 @@ export const CreateCourseModules = ({
         ...newModuleName,
           name: e.target.value
     })
+
+    const addModule = async () => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        const body = JSON.stringify(newModuleName)
+        displayLoader()
+        try {
+          const res = await axios.post(`/api/v1/coursechapter/${course._id}`, body, config)
+           setModules([
+               ...modules,
+               res.data
+           ])
+        removeLoader()
+        } catch (error) {
+            removeLoader()
+            const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert.show(element.msg, {
+                        type:"error"
+                    })
+                });
+            }
+        }
+    }
+
     const addModuleToCourse = () => {
         if(newModuleName.name.length === 0){
             return alert.show("module name cannot be empty", {
                 type: "error"
             })
         }
-        addModule(newModuleName, course._id)
+        addModule()
         closeModuleModal(false)
     }
+
+    const getModulesByCourseId = async (courseId) => {
+        try {
+            if(localStorage.getItem("token")){
+                setAuthToken(localStorage.getItem("token"))
+            }
+            setModulesLoading(true)
+            const res = await await axios.get(`/api/v1/coursechapter/${course._id}`)
+            setModules(res.data)
+            setModulesLoading(false)
+        } catch (error) {
+            setModulesLoading(false)
+            const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert.show(element.msg, {
+                        type:"error"
+                    })
+                });
+            }
+        }
+    }
+
+    useEffect(() => {
+        if(course){
+            getModulesByCourseId(course._id)
+        }
+         // eslint-disable-next-line
+    }, [course])
+    
 
     useEffect(() => {
         if(match.params.courseId){
@@ -78,9 +145,13 @@ export const CreateCourseModules = ({
                             </div>
                             <div className="modules-container__body">
                                 {
-                                    modules.length === 0 ? <AddNewModule
-                                    openModalDialog={openModuleModal}
-                                     /> : modules.map((module) => <CourseModuleItem key={module._id} module={module} />)
+                                    modluesLoading === true ? <p className="lead text-center">modules loading...</p> : <>
+                                        {
+                                             modules.length === 0 ? <AddNewModule
+                                             openModalDialog={openModuleModal}
+                                              /> : modules.map((module) => <CourseModuleItem key={module._id} module={module} />)
+                                        }
+                                    </>
                                 }
                             </div>
                         </div>
@@ -137,13 +208,13 @@ export const CreateCourseModules = ({
 }
 
 const mapStateToProps = (state) => ({
-    modules: state.course.coursemodules,
     course: state.course.courseDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addModule: (moduleName, courseId) => dispatch(addCourseModule(moduleName, courseId)),
-    getCourse: (courseId) => dispatch(getCourseById(courseId))
+    getCourse: (courseId) => dispatch(getCourseById(courseId)),
+    displayLoader: () => dispatch(startLoading()),
+    removeLoader: () => dispatch(stopLoading())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCourseModules)

@@ -1,9 +1,8 @@
-import { CREATE_COURSE, ADD_COURSE_MODULE, LOAD_COURSE } from "../actions/types";
+import { CREATE_COURSE, LOAD_COURSE } from "../actions/types";
 
 const initialState = {
     loading: true,
-    courseDetails: null,
-    coursemodules: []
+    courseDetails: null
 }
 
 const courseReducer = (state = initialState, action) => {
@@ -16,16 +15,7 @@ const courseReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 courseDetails: payload
-            }  
-        case ADD_COURSE_MODULE: 
-            return {
-                ...state,
-                loading: false,
-                coursemodules: [
-                    ...state.coursemodules,
-                    payload
-                ]
-            }    
+            }     
         default:
             return state
     }

@@ -46,10 +46,10 @@ router.post('/:courseId', [
     }
 })
 
-router.get('/courseId', async (req, res) => {
+router.get('/:courseId', async (req, res) => {
    try {
     const courseId = req.params.courseId
-    const courseChapters = await CourseChapter.findMany({
+    const courseChapters = await CourseChapter.find({
         course: courseId
     }).populate('courseunit')
     res.json(courseChapters)
