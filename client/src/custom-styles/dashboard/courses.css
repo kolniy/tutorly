@@ -47,13 +47,15 @@
   border-radius: 17px;
   margin-bottom: 35px;
   min-height: 360px;
-  max-width: 100%;
-  min-width: 100%;
+  max-width: 300px;
+  min-width: 200px;
 }
 
 .course-card .card-img-top {
   border-top-left-radius: 17px;
   border-top-right-radius: 17px;
+  max-height: 280px;
+  overflow: hidden;
 }
 
 .course-card .card-title {
@@ -61,6 +63,10 @@
   font-weight: 600;
   margin-bottom: 6px;
   font-size: 14px;
+}
+
+.course-card .card-title a {
+  color: var(--site-subtle-dark);
 }
 
 .course-card .card-text {

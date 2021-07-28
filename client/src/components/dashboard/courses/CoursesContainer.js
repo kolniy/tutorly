@@ -2,14 +2,19 @@ import React from 'react'
 import { Row, Col } from "reactstrap"
 import CourseItem from "./CourseItem"
 
-export const CoursesContainer = () => {
+export const CoursesContainer = ({ courses }) => {
     return <>
         <div className="courses-container">
            <Row>
-            <CourseItem />
-            <CourseItem />
-            <CourseItem />
-            <Col xs="12" sm="12" md="4" xl="3">
+               {
+                   courses.length === 0 ? 
+                   <p className="text-center lead">No Courses Found</p> : <>
+                    {
+                        courses.map((course) => <CourseItem key={course._id} course={course} />)
+                    }
+                   </>
+               }
+            <Col xs="12" sm="6" md="6" xl="3">
             <div className="create-course-button shadow">
                 <div className="create-course-button-icon">
                 <i class="fas fa-plus-circle"></i>

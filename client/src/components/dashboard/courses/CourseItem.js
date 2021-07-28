@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom"
 import {
     Card,
     CardBody,
@@ -8,23 +9,26 @@ import {
     Col
 } from "reactstrap"
 import StartRatings from "react-star-ratings"
-import courseImgPreview from "../../../images/course-preview.jpg"
 
-export const CourseItem = () => {
+export const CourseItem = ({ course }) => {
     return <>
-       <Col xs="12" sm="12" md="4" xl="3">
+       <Col xs="12" sm="6" md="6" xl="4">
        <Card className="course-card shadow">
-          <CardImg
-            alt="..."
-            src={courseImgPreview}
-            top
-          />
+         <Link to={`/dashboard/course/setup/module/${course._id}`}>
+             <CardImg
+                alt="..."
+                src={course.thumbnail}
+                top
+              />
+         </Link>
           <CardBody>
             <CardTitle>
-            Davinci Resolve 17 Tutorials: All you need to know about Davinci Resolve 17
+            <Link to={`/dashboard/course/setup/module/${course._id}`}>
+               { course.title }
+            </Link>
             </CardTitle>
             <CardText>
-             Master Yoda
+               {`${course.author.firstname} ${course.author.lastname}`}
             </CardText>
              <div className="course-card-star-rating">
                 <div className="ratings-text">3.0</div>
@@ -41,7 +45,7 @@ export const CourseItem = () => {
 			 /></div>
              </div>
              <p className="course-card-price">
-                $40.00
+                ${course.price}
              </p>
           </CardBody>
         </Card>

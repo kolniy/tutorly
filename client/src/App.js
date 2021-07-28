@@ -18,6 +18,7 @@ import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
 import SchoolLandingPage from "./components/school/SchoolPage"
+import CourseModules from "./components/dashboard/create-courses/CreateCourseSetupPages/CourseModules";
 
 // theme preview components import
 import Herotheme from "./themes/Hero-type-theme/LandingPage"
@@ -57,6 +58,8 @@ function App() {
         <PrivateRouteForToken exact path="/account/setup/steptwo" component={Setpagetwo} />
         <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />
         <PrivateRoute exact path="/dashboard/courses" component={Courses} />
+        <PrivateRoute exact path="/dashboard/course/setup/module" component={CourseModules} />
+        <PrivateRoute exact path="/dashboard/course/setup/module/:courseId" component={CourseModules} />
         <PrivateRoute exact path="/dashboard/customize" component={Customize} />
         <PrivateRoute exact path="/dashboard/customize/theme/setup/themeinfo" component={ThemeInfo} />
         <PrivateRoute exact path="/dashboard/customize/theme/setup/assetupload" component={ThemeUpload} />

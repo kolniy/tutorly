@@ -33,6 +33,9 @@ const courseSchema = new mongoose.Schema({
         type: Boolean,
         default: false  
     },
+    coursethumbnailid: {
+        type: String
+    },
     reviews: [{
         name: {
             type: String

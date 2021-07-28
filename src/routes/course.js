@@ -30,7 +30,8 @@ router.post('/:schoolId', [
 
     const { title, subtitle, category,
          description, prerequisite,
-          language, level, thumbnail, price  } = req.body
+          language, level, thumbnail,
+          price, coursethumbnailid  } = req.body
     try {
         let school = await School.findOne({
             _id: schoolId
@@ -51,11 +52,16 @@ router.post('/:schoolId', [
             level,
             thumbnail,
             price,
+            coursethumbnailid,
             author: userId,
             school: schoolId
         })
 
         await course.save()
+
+        school.courses.unshift(course._id)
+        await school.save()
+
         res.json(course)
     } catch (error) {
         res.status(500).send("server error")
@@ -84,7 +90,7 @@ router.get('/school/:schoolId', auth, async (req, res) => {
     try {
     const courses = await Course.find({
         school: req.params.schoolId
-    })
+    }).populate('author')
     res.json(courses)
     } catch (error) {
         res.status(500).send("server error")

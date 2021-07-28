@@ -7,6 +7,7 @@ import userRoute from "./routes/user"
 import schoolRoute from "./routes/school"
 import courseTypeRoute from "./routes/coursetype"
 import CourseRoute from "./routes/course"
+import courseChapterRoute from "./routes/coursechapter"
 import courseUnitRoute from "./routes/courseunit"
 import messageRoute from "./routes/message"
 import themeRoute from "./routes/theme"
@@ -34,6 +35,7 @@ app.use('/api/v1/user', userRoute)
 app.use('/api/v1/school', schoolRoute)
 app.use('/api/v1/coursetype', courseTypeRoute)
 app.use('/api/v1/course', CourseRoute)
+app.use('/api/v1/coursechapter', courseChapterRoute)
 app.use('/api/v1/courseunit', courseUnitRoute)
 app.use('/api/v1/message', messageRoute)
 app.use('/api/v1/theme', themeRoute)
