@@ -14,6 +14,7 @@ import {
 } from "reactstrap"
 import DashboardNavbar from "../DashboardNavbar"
 import ThemePreviewContainer from "./ThemePreviewContainer"
+import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import { chooseTheme } from "../../../actions/theme"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
@@ -22,12 +23,14 @@ import "../../../custom-styles/dashboard/customize.css"
 const Customize = ({ 
     chooseNewTheme,
     school,
-    history
+    history,
+    updatePageSelector
 }) => {
 
     const [ showChangeThemeConfrimationModal, setShowChangeThemeConfrimationModal] = useState(false)
     const [ themePreview, setThemePreview ] = useState([])
     const [ selectedTheme, setSelectedTheme ] = useState(null)
+    const [ loading, setLoading ] = useState(true)
 
     const closeThemeChangeModal = () => setShowChangeThemeConfrimationModal(false)
     const openThemeChangeModal = (themeId) => { 
@@ -39,14 +42,25 @@ const Customize = ({
         getThemePreviewList()
     }, [])
 
+    useEffect(() => {
+        updatePageSelector(1)
+        // eslint-disable-next-line
+    }, [])
+
     const onUpdateThemeClickHandler = () => {
         chooseNewTheme(school._id, selectedTheme, history)
         setShowChangeThemeConfrimationModal(false)
     }
 
     const getThemePreviewList = async () => {
-        const res = await axios.get('/api/v1/themepreview/')
-        setThemePreview(res.data)
+        setLoading(true)
+        try {
+            const res = await axios.get('/api/v1/themepreview/')
+            setThemePreview(res.data)
+        } catch (error) {
+            setThemePreview([])
+        }
+        setLoading(false)
     }
 
     return <>
@@ -60,10 +74,14 @@ const Customize = ({
                     <div className="customize-page__contents">
                         <h3 className="page-title">Customize space</h3>
                         <p className="page-subtitle">Select a Landing Page Style</p>
-                        <ThemePreviewContainer
-                         themePreview={themePreview}
-                         openThemeChangeModal={openThemeChangeModal}
-                         />
+                            {
+                                loading ? <p className="text-center lead">Loading...</p> : <>
+                                   <ThemePreviewContainer
+                                   themePreview={themePreview}
+                                    openThemeChangeModal={openThemeChangeModal}
+                                    />
+                                </>
+                            }  
                   </div>
                 </div>
                    </div>
@@ -89,7 +107,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-   chooseNewTheme : (schoolId, themePreviewId, history) => dispatch(chooseTheme(schoolId, themePreviewId, history))
+   chooseNewTheme : (schoolId, themePreviewId, history) => dispatch(chooseTheme(schoolId, themePreviewId, history)),
+  updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Customize))

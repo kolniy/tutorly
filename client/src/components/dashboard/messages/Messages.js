@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { 
     Row,
     Col,
     Container
 } from "reactstrap"
+import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import DashboardNavbar from "../DashboardNavbar"
 import MessagesContainer from "./MessagesContainer"
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/messages.css"
 
-const Messages = () => {
+const Messages = ({
+    updatePageSelector
+}) => {
+
+    useEffect(() => {
+        updatePageSelector(5)
+        // eslint-disable-next-line
+    }, [])
+
     return <>
     <div className="dashboard-layout">
         <Container fluid>
@@ -34,4 +44,8 @@ const Messages = () => {
 </>
 }
 
-export default Messages
+const mapDispatchToProps = (dispatch) => ({
+  updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
+})
+
+export default connect(null, mapDispatchToProps)(Messages)

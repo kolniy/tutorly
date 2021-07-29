@@ -11,11 +11,17 @@ import {
 import StartRatings from "react-star-ratings"
 
 export const CourseItem = ({ course }) => {
+
+   const totalCourseRatings = course.reviews.reduce((prev, curr) => {
+         return prev + curr.star
+   },0)
+
     return <>
        <Col xs="12" sm="6" md="6" xl="4">
        <Card className="course-card shadow">
          <Link to={`/dashboard/course/setup/module/${course._id}`}>
              <CardImg
+                className="img-fluid"
                 alt="..."
                 src={course.thumbnail}
                 top
@@ -35,7 +41,7 @@ export const CourseItem = ({ course }) => {
                 <div className="ratings"> <StartRatings
 				 isSelectable={false}
 				 starHoverColor="orangered"
-				 rating={3} 
+				 rating={course.reviews.length === 0 ? 0 : totalCourseRatings / course.reviews.length } 
 				 starDimension='20px'
 				 isAggregateRating={true}
 				 starRatedColor="orange"

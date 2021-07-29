@@ -5,14 +5,17 @@ const courseUnitSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String
+    vidoeurl : {
+        type: String,
+        required: true
     },
-    mediaurl: {
-        type: String
+    videopublicid: {
+        type: String,
+        required: true
     },
     hasattachments: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     attachmenturl: [{
         type: String

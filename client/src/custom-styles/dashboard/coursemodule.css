@@ -74,6 +74,11 @@
   cursor: pointer;
 }
 
+.video-file-required-text {
+  color: var(--site-orange-color);
+  font-size: 13px;
+}
+
 .add-module__button p {
   color: var(--site-subtle-dark);
   font-size: 22px;
@@ -105,4 +110,11 @@
   cursor: pointer;
   margin-left: 10px;
   font-size: 22px;
+}
+
+.no-video-message {
+  color: var(--site-subtle-dark);
+  font-size: 16px;
+  margin-top: -5px;
+  font-weight: 100;
 }

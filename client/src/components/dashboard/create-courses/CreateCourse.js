@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
+import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import axios from 'axios'
 import { useAlert } from "react-alert"
 import { 
@@ -28,6 +29,7 @@ const CreateCourse = ({
   school,
   createSchoolCourse,
   history,
+  updatePageSelector
 }) => {
 
     const alert = useAlert()
@@ -48,6 +50,11 @@ const CreateCourse = ({
       coursethumbnailId:"",
       price: 0
     })
+
+    useEffect(() => {
+      updatePageSelector(2)
+      // eslint-disable-next-line
+    }, [])
 
     const { title, subtitle,
       category, description,
@@ -365,7 +372,15 @@ const CreateCourse = ({
             {
               fileToSend !== null && fileToSend !== undefined && <>
                  <div className="picked-file-container">
-                    <p className="lead text-center">{fileToSend.name}</p>
+                    <div style={{
+                      width:'80%',
+                      margin:'0 auto'
+                    }}>
+                    <p style={{
+                        overflowWrap:'break-word',
+                        textAlign:'center'
+                    }}  className="lead text-center">{fileToSend.name}</p>
+                    </div>
                       {
                       loaded > 0 &&
                         <Row>
@@ -418,7 +433,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  createSchoolCourse : (formData, schoolId, history, routeTo) => dispatch(createNewCourse(formData, schoolId, history, routeTo))
+  createSchoolCourse : (formData, schoolId, history, routeTo) => dispatch(createNewCourse(formData, schoolId, history, routeTo)),
+  updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateCourse))

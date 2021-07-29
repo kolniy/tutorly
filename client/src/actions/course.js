@@ -22,7 +22,7 @@ export const createNewCourse = (courseDetails, schoolId, history, routeTo) => {
                 payload: res.data
             })
          dispatch(stopLoading())   
-         history.push(routeTo)   
+         history.push(`/dashboard/course/setup/module/${res.data._id}`)   
         } catch (error) {
             dispatch(stopLoading())   
             const errors = error.response.data.errors

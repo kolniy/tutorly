@@ -7,6 +7,7 @@ import {
 } from "reactstrap"
 import axios from 'axios'
 import { useAlert } from "react-alert"
+import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import setAuthToken from '../../../utilities/setAuthToken'
 import DashboardNavbar from "../DashboardNavbar"
 import CoursesContainer from "./CoursesContainer"
@@ -14,7 +15,7 @@ import CoursesContainer from "./CoursesContainer"
 import "../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../custom-styles/dashboard/courses.css"
 
-const Courses = ({ school }) => {
+const Courses = ({ school, updatePageSelector }) => {
 
     const [ courses, setCourse ] = useState([])
     const alert = useAlert()
@@ -29,6 +30,7 @@ const Courses = ({ school }) => {
             setCourse(res.data)
             setLoading(false)
         } catch (error) {
+            console.log(error)
             const errors = error.response.data.errors
             if(errors){
                 errors.forEach(element => {
@@ -41,10 +43,16 @@ const Courses = ({ school }) => {
     }
 
     useEffect(() => {
-        getSchoolCourses()
+        if(school){
+            getSchoolCourses()
+        }
+            // eslint-disable-next-line
+    }, [school])
+
+    useEffect(() => {
+        updatePageSelector(3)
         // eslint-disable-next-line
     }, [])
-
    
     return <>
         <div className="dashboard-layout">
@@ -75,4 +83,8 @@ const mapStateToProps = (state) => ({
     school: state.school.schoolDetails
 })
 
-export default connect(mapStateToProps)(Courses)
+const mapDispatchToProps = (dispatch) => ({
+    updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Courses)
