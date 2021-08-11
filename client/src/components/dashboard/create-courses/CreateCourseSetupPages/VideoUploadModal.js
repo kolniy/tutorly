@@ -85,3 +85,41 @@ export const VideoUploadModal = ({
 }
 
 export default VideoUploadModal
+
+
+
+// // const uploadVideo = async () => {
+
+// //   const cloudinaryCloudName = 'kolaniyi'
+// //   const CloudinaryUploadPreset = 'f17zv7io'
+// //   const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`
+
+// //   const form  = new FormData()
+// //   form.append("upload_preset", CloudinaryUploadPreset)
+// //   form.append("file", videoFileToCloudinary)
+
+// //   const config = {
+// //       onUploadProgress: (event) => {
+// //           setLoaded(event.loaded / event.total * 100)
+// //       }
+// //   }
+
+// //   try {
+// //   delete axios.defaults.headers.common["x-auth-token"]
+// //   const res = await axios.post(cloudinaryUploadUrl, form, config)
+// //   setUploadedVideoInfo({
+// //       ...uploadedVideoInfo,
+// //       videoUrl: res.data.url,
+// //       videoPublicId: res.data.public_id
+//   })
+//   alert.show("video uploaded successfully", {
+//       type: "success"
+//   })
+//   setVideoFile(null)
+//   setVideoFileToCloudinary(null)
+//   closeVideoUploadDialog()
+//   setLoaded(0)
+//   } catch (error) {
+//       console.log(error)
+//   }
+// }

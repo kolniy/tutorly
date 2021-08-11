@@ -5,6 +5,7 @@ import school from "./school"
 import currentPage from "./currentDashboardPage"
 import theme from "./theme"
 import course from "./course"
+import modules from "./modules"
 
 export default combineReducers({
     auth,
@@ -12,5 +13,6 @@ export default combineReducers({
     school,
     currentPage,
     theme,
-    course
+    course,
+    modules
 })

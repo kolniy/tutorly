@@ -35,6 +35,7 @@
   padding: 2vh 4vw;
   background-color: var(--site-white-color);
   min-height: 60vh;
+  margin-bottom: 4vh;
 }
 
 .modules-container__no-module {
@@ -117,4 +118,35 @@
   font-size: 16px;
   margin-top: -5px;
   font-weight: 100;
+}
+
+.course-video-item {
+  display: flex;
+}
+
+.course-video-item i {
+  color: var(--site-secondary-grey);
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 18px;
+  transition: all 0.4s;
+}
+
+.course-video-item i:hover {
+  transform: scale(1.08);
+}
+
+.course-video-item:hover i {
+  color: var(--site-subtle-dark);
+}
+
+.course-video-item__img-container {
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+}
+
+.course-video-item__name {
+  flex: 1;
+  color: var(--site-subtle-dark);
 }

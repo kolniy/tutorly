@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import axios from 'axios'
-import setAuthToken from '../../../../utilities/setAuthToken'
 import { 
     Container, 
     Row, 
@@ -14,10 +12,9 @@ import {
 import { useAlert } from "react-alert"
 import DashboardNavbar from '../../DashboardNavbar'
 import { getCourseById } from "../../../../actions/course"
+import { loadCourseModules, addNewCourseModule, addNewCourseUnitToModule } from "../../../../actions/modules"
 import AddNewModule from './AddNewModule' 
 import CourseModuleItem from './CourseModuleItem'
-import { startLoading, stopLoading } from "../../../../actions/appLoading"
-import VideoUploadModal from './VideoUploadModal'
 
 import "../../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../../custom-styles/dashboard/coursemodule.css"
@@ -26,23 +23,18 @@ export const CreateCourseModules = ({
     getCourse,
     course,
     match,
-    displayLoader,
-    removeLoader
+    modules,
+    modulesLoading,
+    addCourseModule,
+    loadModules,
+    createUnit
 }) => {
 
-    const [ modules, setModules ] = useState([])
-    const [ modluesLoading, setModulesLoading ] = useState(true)
     const [ launchAddModuleModal, setLaunchAddModuleModal ] = useState(false)
     const [ launchAddVideoModal, setLaunchAddVideoModal ] = useState(false)
     const [ moduleIdForVideoUpload, setModuleIdForVideoUpload ] = useState(null)
     const [ videoFile, setVideoFile ] = useState(null)
-    const [ videoFileToCloudinary, setVideoFileToCloudinary ] = useState(null)
-    const [ uploadedVideoInfo, setUploadedVideoInfo ] = useState({
-        videoUrl: '',
-        videoPublicId: ''
-    })
-    const [ videoUploadDialog, setVideoUploadDialog ] = useState(false)
-    const [ loaded, setLoaded ] = useState(0)
+  
     const alert = useAlert()
     const [ newModuleName, setNewModuleName ] = useState({
         name:""
@@ -52,9 +44,6 @@ export const CreateCourseModules = ({
     
     const openModuleModal = () => setLaunchAddModuleModal(true)
     const closeModuleModal = () => setLaunchAddModuleModal(false)
-
-    const openVideoUploadDialog = () => setVideoUploadDialog(true)
-    const closeVideoUploadDialog = () => setVideoUploadDialog(false)
 
     const openVideoModal = (moduleId) => {
         setLaunchAddVideoModal(true)
@@ -75,50 +64,13 @@ export const CreateCourseModules = ({
             setVideoFile(null)
           }
           setVideoFile(e.target.files[0])
-          const reader = new FileReader()
-          reader.addEventListener('load', function(){
-            setVideoFileToCloudinary(reader.result)
-          }, false)
-
-          if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0])
-        }
     }
 
+    // button references the video file picker
     const buttonFilePickerEventHandler = () => videoFileInputRef.current.click()
 
+    // state update for the video name in modal
     const updateVideoLessonTitle = (e) => setNewLessonName(e.target.value)
-
-    const addModule = async () => {
-        if(localStorage.getItem("token")){
-            setAuthToken(localStorage.getItem("token"))
-        }
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }
-        const body = JSON.stringify(newModuleName)
-        displayLoader()
-        try {
-          const res = await axios.post(`/api/v1/coursechapter/${course._id}`, body, config)
-           setModules([
-               ...modules,
-               res.data
-           ])
-        removeLoader()
-        } catch (error) {
-            removeLoader()
-            const errors = error.response.data.errors
-            if(errors){
-                errors.forEach(element => {
-                    alert.show(element.msg, {
-                        type:"error"
-                    })
-                });
-            }
-        }
-    }
 
     const addModuleToCourse = () => {
         if(newModuleName.name.length === 0){
@@ -126,90 +78,30 @@ export const CreateCourseModules = ({
                 type: "error"
             })
         }
-        addModule()
+        addCourseModule(newModuleName, course._id)
         closeModuleModal(false)
     }
 
-    const saveVideo = () => {
+    const saveVideo = async () => {
         if(newLessonName.length === 0){
             return alert.show("lesson name cannot be empty", {
                 type: "error"
             })
         }
-        // try {
-        //     // post data to backend
-        //     setUploadedVideoInfo({
-        //         ...uploadedVideoInfo,
-        //         videoUrl: '',
-        //         videoPublicId: ''
-        //     })
-            console.log(moduleIdForVideoUpload)
-        // } catch (error) {
-            
-        // }
-    }
+        const formData = new FormData()
+        formData.append('name', newLessonName)
+        formData.append('videofile', videoFile)
 
-    const uploadVideo = async () => {
-
-        const cloudinaryCloudName = 'kolaniyi'
-        const CloudinaryUploadPreset = 'f17zv7io'
-        const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`
-
-        const form  = new FormData()
-        form.append("upload_preset", CloudinaryUploadPreset)
-        form.append("file", videoFileToCloudinary)
-
-        const config = {
-            onUploadProgress: (event) => {
-                setLoaded(event.loaded / event.total * 100)
-            }
-        }
-
-        try {
-        delete axios.defaults.headers.common["x-auth-token"]
-        const res = await axios.post(cloudinaryUploadUrl, form, config)
-        setUploadedVideoInfo({
-            ...uploadedVideoInfo,
-            videoUrl: res.data.url,
-            videoPublicId: res.data.public_id
-        })
-        alert.show("video uploaded successfully", {
-            type: "success"
-        })
+        createUnit(formData, course._id, moduleIdForVideoUpload)
+        
+        closeVideoModal()
         setVideoFile(null)
-        setVideoFileToCloudinary(null)
-        closeVideoUploadDialog()
-        setLoaded(0)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getModulesByCourseId = async (courseId) => {
-        try {
-            if(localStorage.getItem("token")){
-                setAuthToken(localStorage.getItem("token"))
-            }
-            setModulesLoading(true)
-            const res = await await axios.get(`/api/v1/coursechapter/${course._id}`)
-            setModules(res.data)
-            setModulesLoading(false)
-        } catch (error) {
-            setModulesLoading(false)
-            const errors = error.response.data.errors
-            if(errors){
-                errors.forEach(element => {
-                    alert.show(element.msg, {
-                        type:"error"
-                    })
-                });
-            }
-        }
+        setNewLessonName('')
     }
 
     useEffect(() => {
         if(course !== null){
-            getModulesByCourseId(course._id)
+            loadModules(course._id)
         }
          // eslint-disable-next-line
     }, [course])
@@ -243,7 +135,7 @@ export const CreateCourseModules = ({
                             </div>
                             <div className="modules-container__body">
                                 {
-                                    modluesLoading === true ? <p className="lead text-center">modules loading...</p> : <>
+                                    modulesLoading === true ? <p className="lead text-center">modules loading...</p> : <>
                                         {
                                              modules.length === 0 ? <AddNewModule
                                              openModalDialog={openModuleModal}
@@ -315,14 +207,6 @@ export const CreateCourseModules = ({
               Upload Video Content
           </div>
           <div className="modal-body">
-              <VideoUploadModal
-                videoUploadDialog={videoUploadDialog}
-                fileToSend={videoFile}
-                loaded={loaded}
-                videoFilePickerHandler={buttonFilePickerEventHandler}
-                closeVideoUploadDialog={closeVideoUploadDialog}
-                uploadVideo={uploadVideo}
-              />
             <FormGroup className="mb-3 mt-3">
                 <Input
                 type="text"
@@ -339,10 +223,10 @@ export const CreateCourseModules = ({
                 onChange={e => videoLessonFilePickerHandler(e)}
                 />
              <FormGroup className="mb-3 mt-3">
-                 <Button onClick={openVideoUploadDialog} block>Upload Media File</Button>
+                 <Button onClick={buttonFilePickerEventHandler} block>Upload Media File</Button>
              </FormGroup>
              {
-                 uploadedVideoInfo.videoUrl.length === 0 && <p className="video-file-required-text">
+                 videoFile === null && <p className="video-file-required-text">
                      video file required
                  </p>
              }
@@ -358,7 +242,7 @@ export const CreateCourseModules = ({
             }} onClick={closeVideoModal} size="large">Cancel</Button>
             <Button 
              onClick={saveVideo}
-             disabled={uploadedVideoInfo.videoUrl.length === 0}
+             disabled={videoFile === null}
             style={{
                 color:'#fff',
                 backgroundColor:'#3d3d3d',
@@ -371,13 +255,16 @@ export const CreateCourseModules = ({
 }
 
 const mapStateToProps = (state) => ({
-    course: state.course.courseDetails
+    course: state.course.courseDetails,
+    modules: state.modules.courseModules,
+    modulesLoading: state.modules.loading
 })
 
 const mapDispatchToProps = (dispatch) => ({
     getCourse: (courseId) => dispatch(getCourseById(courseId)),
-    displayLoader: () => dispatch(startLoading()),
-    removeLoader: () => dispatch(stopLoading())
+    addCourseModule: (moduleInfo, courseId) => dispatch(addNewCourseModule(moduleInfo, courseId)),
+    loadModules: (courseId) => dispatch(loadCourseModules(courseId)),
+    createUnit: (courseUnitDetails, courseId, moduleId) => dispatch(addNewCourseUnitToModule(courseUnitDetails, courseId, moduleId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCourseModules)

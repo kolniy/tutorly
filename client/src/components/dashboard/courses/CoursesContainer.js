@@ -1,8 +1,14 @@
 import React from 'react'
 import { Row, Col } from "reactstrap"
+import { withRouter } from "react-router-dom"
 import CourseItem from "./CourseItem"
 
-export const CoursesContainer = ({ courses }) => {
+export const CoursesContainer = ({ courses, history }) => {
+
+    const pushToCreateCourseLink = () => {
+        history.push('/dashboard/createcourse')
+    }
+
     return <>
         <div className="courses-container">
            <Row>
@@ -15,7 +21,7 @@ export const CoursesContainer = ({ courses }) => {
                    </>
                }
             <Col xs="12" sm="6" md="6" xl="3">
-            <div className="create-course-button shadow">
+            <div onClick={pushToCreateCourseLink} className="create-course-button shadow">
                 <div className="create-course-button-icon">
                 <i class="fas fa-plus-circle"></i>
                 </div>
@@ -29,4 +35,4 @@ export const CoursesContainer = ({ courses }) => {
     </>
 }
 
-export default CoursesContainer
+export default withRouter(CoursesContainer)

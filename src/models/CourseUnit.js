@@ -5,9 +5,12 @@ const courseUnitSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    vidoeurl : {
+    videourl : {
         type: String,
         required: true
+    },
+    videothumbnail: {
+        type: String
     },
     videopublicid: {
         type: String,
