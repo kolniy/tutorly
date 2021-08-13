@@ -101,4 +101,21 @@ async (req, res) => {
     }
 })
 
+router.get('/:courseUnitId', auth, async (req, res) => {
+    const courseUnitId = req.params.courseUnitId
+    try {
+        const courseUnit = await CourseUnit.findOne({
+            _id: courseUnitId
+        })
+        if(!courseUnit){
+            return res.status(400).json({
+                errors: [{ msg: "course unit not found"}]
+            })
+        }
+        res.json(courseUnit)
+    } catch (error) {
+       console.error(error)
+    }
+})
+
 export default router

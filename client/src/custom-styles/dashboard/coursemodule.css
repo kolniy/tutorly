@@ -150,3 +150,7 @@
   flex: 1;
   color: var(--site-subtle-dark);
 }
+
+.course-video-item__name a {
+  color: var(--site-subtle-dark);
+}
