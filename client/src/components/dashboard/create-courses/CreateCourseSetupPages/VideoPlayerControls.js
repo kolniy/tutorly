@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef } from 'react'
 import { Button, Popover } from 'reactstrap'
 import Slider, { createSliderWithTooltip } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
-export const VideoPlayerControls = ({ 
+const VideoPlayerControls = ({ 
      courseunit,
      onPlayPause,
      playing,
@@ -15,23 +15,33 @@ export const VideoPlayerControls = ({
      onMute,
      volume,
      onVolumeChange,
-     onVolumeSeekDown
-    }) => {
+     onVolumeSeekUp,
+     playbackRate,
+     onPlaybackRateChange,
+     onToggleFullScreen,
+     played,
+     onSeek,
+     onSeekMouseDown,
+     onSeekMouseUp,
+     elaspedTime,
+     totalDuration,
+     onChangeDisplayFormat
+    }, ref) => {
 
     const [ popoverDisplay, setPopoverDisplay ] = useState(false)
     const togglePopover = () => setPopoverDisplay(!popoverDisplay)
 
     return <>
-         <div className="video-player__controls-wrapper">
+         <div className="video-player__controls-wrapper" ref={ref}>
                 {/* top controls  */}
                 <div className="video-info">
                  <h5>{courseunit.name}</h5>
-                <Button className="btn-icon btn-3" color="default" type="button">
+                {/* <Button className="btn-icon btn-3" color="default" type="button">
                     <span className="btn-inner--icon">
                       <i className="ni ni-bag-17"></i>
                     </span>
                     <span className="btn-inner--text">Bookmark</span>
-                 </Button>
+                 </Button> */}
                 </div>
 
                 {/* middle controls  */}
@@ -55,10 +65,10 @@ export const VideoPlayerControls = ({
                         <SliderWithTooltip
                          trackStyle={{ backgroundColor: '#242121', height:6 }}
                          railStyle={{ backgroundColor: '#fff', height:6 }}
-                         defaultValue={30}
+                         value={played * 100}
                          min={0}
                          max={100}
-                        tipFormatter={v => `${v} %`}
+                        tipFormatter={v => `${elaspedTime}`}
                         tipProps={{ overlayClassName: 'foo' }}
                         handleStyle={{
                             borderColor: '#242121',
@@ -66,7 +76,9 @@ export const VideoPlayerControls = ({
                             width: 17,
                             backgroundColor: '#fff',
                           }}
-                            // onChange={log}
+                        onChange={onSeek}
+                        onAfterChange={onSeekMouseDown}
+                        onBeforeChange={onSeekMouseUp}
                         />
                  </div>
                 <div className="bottom-controls">
@@ -96,11 +108,11 @@ export const VideoPlayerControls = ({
                             backgroundColor: '#242121',
                           }}
                         onChange={onVolumeChange}
-                        onAfterChange={onVolumeSeekDown}
+                        onAfterChange={onVolumeSeekUp}
                         />
                     </div>
-                    <div className="video-player__playback-time">
-                        05:05
+                    <div onClick={onChangeDisplayFormat} className="video-player__playback-time">
+                        {elaspedTime} / {totalDuration}
                     </div>
                     <div className="video-player__playback-rate">
                   <button
@@ -108,7 +120,7 @@ export const VideoPlayerControls = ({
                     id="popoverplaybackrate"
                     type="button"
                      >
-                    1x
+                    {playbackRate}x
                  </button>
                  <Popover 
                     placement='bottom'
@@ -117,11 +129,15 @@ export const VideoPlayerControls = ({
                     toggle={togglePopover}
                  >
                   {
-                    [0.5, 1, 1.5, 2].map((rate) => (<Button key={rate} className="playback-rate__btn-item">{rate}</Button>))
+                    [0.5, 1, 1.5, 2].map((rate) => (<Button 
+                        key={rate}
+                        onClick={() => onPlaybackRateChange(rate)} 
+                        className={`playback-rate__btn-item ${rate === playbackRate && 'active'}`}>{rate}
+                        </Button>))
                   } 
                  </Popover>
                  </div>
-                    <div className="video-player__fullscreen">
+                    <div onClick={onToggleFullScreen} className="video-player__fullscreen">
                     <i className="fas fa-expand"></i>
                     </div>
                  </div>
@@ -130,4 +146,4 @@ export const VideoPlayerControls = ({
     </>
 }
 
-export default VideoPlayerControls
+export default forwardRef(VideoPlayerControls)

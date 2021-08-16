@@ -16,13 +16,44 @@ const courseUnitSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    hasattachments: {
-        type: Boolean,
-        default: false
-    },
-    attachmenturl: [{
-        type: String
+    attachment: [{
+        url: {
+            type: String
+        },
+        attachmentId: {
+            type: String
+        }
     }],
+    comments: [
+       {
+        user: {
+            type: mongoose.Schema.Types.ObjectId, 
+        },
+        text: {
+            type: String
+        },
+        name: {
+            type: String
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        replies: [
+            {
+                name: {
+                    type: String
+                },
+                user: {
+                    type: mongoose.Schema.Types.ObjectId
+                },
+                text: {
+                    type: String
+                }
+            }
+        ]
+       }
+    ],
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "course",
