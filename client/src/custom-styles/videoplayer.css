@@ -1,7 +1,6 @@
 /* video player styles  */
 .video-player {
   width: 100%;
-  min-width: 430px;
   position: relative;
 }
 

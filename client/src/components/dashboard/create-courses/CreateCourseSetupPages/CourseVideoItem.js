@@ -10,8 +10,6 @@ export const CourseVideoItem = ({ courseUnit }) => {
             <p className="course-video-item__name ml-4">
                 <Link to={`/dashboard/course/module/vidoepreview/${courseUnit._id}`}>{courseUnit.name}</Link>
             </p>
-            <i className="fas fa-eye"></i>
-            <i className="fas fa-edit"></i>
             <i className="fas fa-trash-alt"></i>
         </div>
     </>
