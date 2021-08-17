@@ -158,3 +158,37 @@
 .attachment-item:hover {
   transform: translateY(-5px);
 }
+
+.edits-controls-container {
+  width: 75%;
+  min-height: 75vh;
+  margin: 4vh auto;
+}
+
+.update-course-unit-video {
+  width: 100%;
+  height: 300px;
+  background-color: #494949;
+}
+
+.edits-controls-container .update-video-name-btn {
+  background-color: var(--site-dark-color);
+  color: var(--site-white-color);
+}
+
+.edits-controls-container .update-video-name-btn:active {
+  background-color: var(--site-dark-color) !important;
+  color: var(--site-white-color) !important;
+}
+
+.edits-controls-container .attachment-btn-style {
+  color: var(--site-dark-color);
+  border-color: var(--site-dark-color);
+}
+
+.edits-controls-container .attachment-btn-style:active,
+.edits-controls-container .attachment-btn-style:hover {
+  color: var(--site-white-color) !important;
+  background-color: var(--site-dark-color) !important;
+  border-color: var(--site-dark-color) !important;
+}

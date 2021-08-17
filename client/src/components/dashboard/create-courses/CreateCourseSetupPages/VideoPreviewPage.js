@@ -4,7 +4,10 @@ import { Row, Col,
      Container, Nav,
     NavItem, NavLink, 
     Card, CardBody,
-    TabContent, TabPane
+    TabContent, TabPane,
+    FormGroup, Input,
+    InputGroup, InputGroupAddon,
+    Button
 } from 'reactstrap'
 import DashboardNavbar from '../../DashboardNavbar'
 import VideoPlayer from './VideoPlayer'
@@ -25,6 +28,8 @@ export const VideoPreviewPage = ({ match, courseunit: {
         plainTabs: 1
     })
 
+    const [ videoName, setVideoName ] = useState("")
+
     const toggleNavs = (e, name, value) => {
         e.preventDefault()
         updateIconTabsSelect({
@@ -33,9 +38,17 @@ export const VideoPreviewPage = ({ match, courseunit: {
         })
     }
 
+    const editVideoNameHandler = (e) => setVideoName(e.target.value)
+
     useEffect(() => {
         loadUnit(match.params.videoId)
     }, [match.params.videoId, loadUnit])
+
+    useEffect(() => {
+        if(unitDetails){
+        setVideoName(unitDetails.name)
+        }
+    }, [unitDetails])
 
     return <>
         <div className="dashboard-layout">
@@ -107,9 +120,45 @@ export const VideoPreviewPage = ({ match, courseunit: {
                                 </div>
                             </TabPane>
                             <TabPane tabId="iconTabs2">
-                              
-                                <p>Edit</p>
-                                
+                            <p className="text-center page-title">Edit Video Content</p>
+                                <h2 className="text-center video-name">{unitDetails.name}</h2>
+                                <div className="edits-controls-container">
+                                    <FormGroup>
+                                    <InputGroup>
+                                        <Input
+                                        aria-label="Edit video name"
+                                        placeholder="Edit video name"
+                                        type="text"
+                                        value={videoName}
+                                        onChange={e => editVideoNameHandler(e)}
+                                        ></Input>
+                                        <InputGroupAddon addonType="append">
+                                        <Button className="update-video-name-btn"
+                                         type="button">
+                                            Update Video Name
+                                        </Button>
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                    </FormGroup>
+                                    <div className="update-course-unit-video">
+                                    </div>
+                                    <InputGroup className="mt-4">
+                                        <Input
+                                        aria-describedby="button-addon4"
+                                        aria-label="attachment filename"
+                                        placeholder="attachment filename"
+                                        type="text"
+                                        ></Input>
+                                        <InputGroupAddon addonType="append" id="button-addon4">
+                                        <Button color="primary" className="attachment-btn-style" outline type="button">
+                                            Pick File
+                                        </Button>
+                                        <Button color="primary" className="attachment-btn-style" outline type="button">
+                                            Upload File
+                                        </Button>
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                </div>
                             </TabPane>
                             </TabContent>
                         </CardBody>
