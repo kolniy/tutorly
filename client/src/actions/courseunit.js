@@ -1,6 +1,10 @@
 import axios from "axios"
 import setAuthToken from "../utilities/setAuthToken"
-import { LOAD_COURSE_UNIT } from "./types"
+import { LOAD_COURSE_UNIT,
+     UPDATE_COURSE_UNIT_NAME, 
+    UPDATE_COURSEUNIT_VIDEO,
+    ADD_ATTACHMENT_TO_COURSE_UNIT } from "./types"
+import { startLoading, stopLoading } from "./appLoading"
 
 export const loadCourseUnit = (courseunitId) => {
     return async (dispatch) => {
@@ -15,6 +19,101 @@ export const loadCourseUnit = (courseunitId) => {
             })
         } catch (error) {
             const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const updateCourseUnitName = (updateDetails, courseunitId) => {
+    return async (dispatch) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const body = JSON.stringify(updateDetails)
+        try {
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/courseunit/${courseunitId}`, body, config)
+            dispatch({
+                type: UPDATE_COURSE_UNIT_NAME,
+                payload: res.data
+            })
+            dispatch(stopLoading())
+        } catch (error) {
+            const errors = error.response.data.errors
+            dispatch(stopLoading())
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const updateCourseUnitVideo = (videoUpdates, courseId, courseUnitId) => {
+    return async (dispatch) => {
+        try {
+            if(localStorage.getItem("token")){
+                setAuthToken(localStorage.getItem("token"))
+            }
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            const body = videoUpdates
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/courseunit/video/${courseId}/${courseUnitId}`, body, config)
+            dispatch({
+                type: UPDATE_COURSEUNIT_VIDEO,
+                payload: res.data
+            })
+            alert('video updated successfully')
+            dispatch(stopLoading())
+        } catch (error) {
+            const errors = error.response.data.errors
+            dispatch(stopLoading())
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const addAttachmentToCourseUnit = (attachmentDetails, courseUnitId) => {
+    return async (dispatch) => {
+        try {
+            if(localStorage.getItem("token")){
+                setAuthToken(localStorage.getItem("token"))
+            }
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            const body = attachmentDetails
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/courseunit/attachment/${courseUnitId}`, body, config)
+            dispatch({
+                type: ADD_ATTACHMENT_TO_COURSE_UNIT,
+                payload: res.data
+            })
+            alert('attachment added successfully')
+            dispatch(stopLoading())
+        } catch (error) {
+            const errors = error.response.data.errors
+            dispatch(stopLoading())
             if(errors){
                 errors.forEach(element => {
                     alert(element.msg)

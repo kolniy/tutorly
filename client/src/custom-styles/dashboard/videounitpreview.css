@@ -161,7 +161,7 @@
 
 .edits-controls-container {
   width: 75%;
-  min-height: 75vh;
+  min-height: 65vh;
   margin: 4vh auto;
 }
 
@@ -169,6 +169,23 @@
   width: 100%;
   height: 300px;
   background-color: #494949;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.update-course-unit-video-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--site-white-color);
+  cursor: pointer;
+}
+
+.update-course-unit-video-btn i {
+  font-size: 4vw;
+  text-align: center;
 }
 
 .edits-controls-container .update-video-name-btn {

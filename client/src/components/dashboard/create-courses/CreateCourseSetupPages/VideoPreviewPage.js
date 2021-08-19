@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Row, Col,
      Container, Nav,
@@ -9,9 +9,15 @@ import { Row, Col,
     InputGroup, InputGroupAddon,
     Button
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { useAlert } from 'react-alert'
 import DashboardNavbar from '../../DashboardNavbar'
 import VideoPlayer from './VideoPlayer'
-import { loadCourseUnit } from '../../../../actions/courseunit'
+import { loadCourseUnit,
+     updateCourseUnitName,
+     updateCourseUnitVideo, 
+    addAttachmentToCourseUnit
+    } from '../../../../actions/courseunit'
 import CommentsItem from './CommentsItem'
 import AttachmentItem from './AttachmentItem'
 
@@ -20,15 +26,31 @@ import "../../../../custom-styles/dashboard/videounitpreview.css"
 
 export const VideoPreviewPage = ({ match, courseunit: {
     loading,
-    unitDetails
-}, loadUnit }) => {
+    unitDetails,
+},
+course,
+loadUnit,
+updateUnitName,
+updateUnitVideo,
+addAttachment
+}) => {
 
     const [ iconTabsSelect, updateIconTabsSelect ] = useState({
         iconTabs: 1,
         plainTabs: 1
     })
 
-    const [ videoName, setVideoName ] = useState("")
+    const [ videoName, setVideoName ] = useState({
+        name: ""
+    })
+
+    const [ attachmentFile, setAttachmentFile ] = useState(null)
+    const attachmentRef = useRef()
+    const videoInputRef = useRef()
+    const customAlert = useAlert()
+
+    const handleAttachmentFileChange = () => attachmentRef.current.click()
+    const updateVideo = () => videoInputRef.current.click()
 
     const toggleNavs = (e, name, value) => {
         e.preventDefault()
@@ -38,7 +60,39 @@ export const VideoPreviewPage = ({ match, courseunit: {
         })
     }
 
-    const editVideoNameHandler = (e) => setVideoName(e.target.value)
+    const editVideoNameHandler = (e) => setVideoName({
+        name: e.target.value
+    })
+
+    const onAttachmentFileUpdate = (e) => {
+        if(e.target.files.length === 0){
+            setAttachmentFile(null)
+          }
+          setAttachmentFile(e.target.files[0])
+    }
+
+    const submitVideoNameUpdates = () => {  
+        if(videoName.name.length === 0){
+            return customAlert.show('video name cannot be empty', {
+                type:'error'
+            })
+        }
+        updateUnitName(videoName, unitDetails._id)
+    }
+
+    const submitNewAttachment = () => {
+        const formData = new FormData()
+        formData.append('attachment', attachmentFile)
+        addAttachment(formData, unitDetails._id)
+        setAttachmentFile(null)
+    }
+
+    const onVideoUpdateClickHandler = (e) => {
+        const formData = new FormData()
+        formData.append('videofile', e.target.files[0])
+
+        updateUnitVideo(formData, unitDetails.course, unitDetails._id)
+    }
 
     useEffect(() => {
         loadUnit(match.params.videoId)
@@ -46,7 +100,9 @@ export const VideoPreviewPage = ({ match, courseunit: {
 
     useEffect(() => {
         if(unitDetails){
-        setVideoName(unitDetails.name)
+        setVideoName({
+            name: unitDetails.name
+        })
         }
     }, [unitDetails])
 
@@ -65,7 +121,9 @@ export const VideoPreviewPage = ({ match, courseunit: {
                         <div className="video-preview-container shadow">
                             <div className="video-preview-page-controls">
                                 <div className="previous-page-arrow">
-                                <i className="fas fa-arrow-left"></i>
+                                    <Link to={`/dashboard/course/setup/module/${course._id}`}>
+                                     <i className="fas fa-arrow-left"></i>
+                                    </Link>
                                 </div>
                             <div className="nav-wrapper">
                             <Nav
@@ -113,9 +171,15 @@ export const VideoPreviewPage = ({ match, courseunit: {
                                 <div className="attachments-container">
                                     <h4 className="text-center mb-4">Course Unit Attachments</h4>
                                     <Row>
-                                      <AttachmentItem />
-                                      <AttachmentItem />
-                                      <AttachmentItem />
+                                        {
+                                            unitDetails.attachment.length === 0 ? <p className="text-center lead mt-3 mb-3">
+                                                No Attachments for this course
+                                            </p> : <>
+                                                {
+                                                unitDetails.attachment.map((item) => <AttachmentItem key={item._id} attachment={item} />)
+                                                }
+                                            </>
+                                        }
                                     </Row>
                                 </div>
                             </TabPane>
@@ -129,11 +193,11 @@ export const VideoPreviewPage = ({ match, courseunit: {
                                         aria-label="Edit video name"
                                         placeholder="Edit video name"
                                         type="text"
-                                        value={videoName}
+                                        value={videoName.name}
                                         onChange={e => editVideoNameHandler(e)}
                                         ></Input>
                                         <InputGroupAddon addonType="append">
-                                        <Button className="update-video-name-btn"
+                                        <Button disabled={unitDetails.name === videoName.name} onClick={submitVideoNameUpdates} className="update-video-name-btn"
                                          type="button">
                                             Update Video Name
                                         </Button>
@@ -141,6 +205,18 @@ export const VideoPreviewPage = ({ match, courseunit: {
                                     </InputGroup>
                                     </FormGroup>
                                     <div className="update-course-unit-video">
+                                        <div onClick={updateVideo} className="update-course-unit-video-btn">
+                                            <input
+                                             ref={videoInputRef}
+                                             type="file"
+                                             onChange={e => onVideoUpdateClickHandler(e)}
+                                             style={{
+                                                 display:'none'
+                                             }}
+                                            />
+                                         <i className="fas fa-upload"></i>
+                                         <p className="text-center mt-3">Click to Upload Video</p>
+                                        </div>
                                     </div>
                                     <InputGroup className="mt-4">
                                         <Input
@@ -148,13 +224,23 @@ export const VideoPreviewPage = ({ match, courseunit: {
                                         aria-label="attachment filename"
                                         placeholder="attachment filename"
                                         type="text"
+                                        value={attachmentFile !== null ? attachmentFile.name : ''}
                                         ></Input>
+                                        <input
+                                         type="file"
+                                         ref={attachmentRef}
+                                         style={{ display:'none'}}
+                                         onChange={e => onAttachmentFileUpdate(e)}
+                                        />
                                         <InputGroupAddon addonType="append" id="button-addon4">
-                                        <Button color="primary" className="attachment-btn-style" outline type="button">
+                                        <Button onClick={handleAttachmentFileChange} color="primary" className="attachment-btn-style" outline type="button">
                                             Pick File
                                         </Button>
-                                        <Button color="primary" className="attachment-btn-style" outline type="button">
-                                            Upload File
+                                        <Button
+                                         onClick={submitNewAttachment}
+                                         disabled={attachmentFile === null} 
+                                         color="primary" className="attachment-btn-style" outline type="button">
+                                            Upload Attachment
                                         </Button>
                                         </InputGroupAddon>
                                     </InputGroup>
@@ -176,11 +262,15 @@ export const VideoPreviewPage = ({ match, courseunit: {
 }
 
 const mapStateToProps = (state) => ({
-    courseunit: state.courseunit
+    courseunit: state.courseunit,
+    course: state.course.courseDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({
- loadUnit: (courseUnitId) => dispatch(loadCourseUnit(courseUnitId))
+ loadUnit: (courseUnitId) => dispatch(loadCourseUnit(courseUnitId)),
+ updateUnitName: (updates, courseUnitId) => dispatch(updateCourseUnitName(updates, courseUnitId)),
+ updateUnitVideo: (videoFile, courseId, courseUnitId) => dispatch(updateCourseUnitVideo(videoFile, courseId,courseUnitId)),
+ addAttachment: (attachmentFile, courseUnitId) => dispatch(addAttachmentToCourseUnit(attachmentFile, courseUnitId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoPreviewPage)
