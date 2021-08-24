@@ -12,6 +12,8 @@ import courseUnitRoute from "./routes/courseunit"
 import messageRoute from "./routes/message"
 import themeRoute from "./routes/theme"
 import themePreviewRoute from "./routes/themepreview"
+import commentRoute from "./routes/comment"
+import replyRoute from "./routes/reply"
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -40,6 +42,8 @@ app.use('/api/v1/courseunit', courseUnitRoute)
 app.use('/api/v1/message', messageRoute)
 app.use('/api/v1/theme', themeRoute)
 app.use('/api/v1/themepreview', themePreviewRoute)
+app.use('/api/v1/comment', commentRoute)
+app.use('/api/v1/reply', replyRoute)
 
 // block of code come's after application routes
 if(process.env.NODE_ENV === 'production'){

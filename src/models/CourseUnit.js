@@ -25,34 +25,10 @@ const courseUnitSchema = new mongoose.Schema({
         }
     }],
     comments: [
-       {
-        user: {
-            type: mongoose.Schema.Types.ObjectId, 
-        },
-        text: {
-            type: String
-        },
-        name: {
-            type: String
-        },
-        date: {
-            type: Date,
-            default: Date.now
-        },
-        replies: [
-            {
-                name: {
-                    type: String
-                },
-                user: {
-                    type: mongoose.Schema.Types.ObjectId
-                },
-                text: {
-                    type: String
-                }
-            }
-        ]
-       }
+      {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'comment'
+      }
     ],
     course: {
         type: mongoose.Schema.Types.ObjectId,

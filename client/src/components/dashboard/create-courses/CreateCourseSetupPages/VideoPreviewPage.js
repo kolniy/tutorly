@@ -10,6 +10,7 @@ import { Row, Col,
     Button
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import { useAlert } from 'react-alert'
 import DashboardNavbar from '../../DashboardNavbar'
 import VideoPlayer from './VideoPlayer'
@@ -20,6 +21,7 @@ import { loadCourseUnit,
     } from '../../../../actions/courseunit'
 import CommentsItem from './CommentsItem'
 import AttachmentItem from './AttachmentItem'
+import setAuthToken from '../../../../utilities/setAuthToken'
 
 import "../../../../custom-styles/dashboard/dashboardlayout.css"
 import "../../../../custom-styles/dashboard/videounitpreview.css"
@@ -44,6 +46,11 @@ addAttachment
         name: ""
     })
 
+    const [ commentDetails, setCommentDetails ] = useState(null)
+    const [ comments, setComments] = useState([])
+    const [ loadingComments, setLoadingComments ] = useState(true)
+    const [ commentsPagination, setCommentsPagination ] = useState(1)
+    const [ loadingMoreTextDisplay, setLoadingMoreTextDisplay ] = useState(false)
     const [ attachmentFile, setAttachmentFile ] = useState(null)
     const attachmentRef = useRef()
     const videoInputRef = useRef()
@@ -106,6 +113,51 @@ addAttachment
         }
     }, [unitDetails])
 
+    const loadComments = async (courseUnitId) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        const res = await axios.get(`/api/v1/comment/${courseUnitId}/?page=${commentsPagination}&size=3`)
+        setCommentDetails(res.data)
+        setComments(res.data.docs)
+        setCommentsPagination(res.data.nextPage)
+        setLoadingComments(false)
+    }
+
+    const loadMoreComments = async (courseUnitId) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        setLoadingMoreTextDisplay(true)
+        const res = await axios.get(`/api/v1/comment/${courseUnitId}/?page=${commentsPagination}&size=3`)
+        setCommentDetails(res.data)
+        setComments([
+            ...comments,
+            ...res.data.docs
+        ])
+        setCommentsPagination(res.data.nextPage)
+        setLoadingMoreTextDisplay(false)
+    }
+
+    const seeLessComments = async (courseUnitId) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        const res = await axios.get(`/api/v1/comment/${courseUnitId}/?page=1&size=3`)
+        setCommentDetails(res.data)
+        setComments(res.data.docs)
+        setCommentsPagination(res.data.nextPage)
+        setLoadingComments(false)
+    }
+
+    // useEffect called to load courseunit comments
+    useEffect(() => {
+        if(unitDetails !== null){
+            loadComments(unitDetails._id)
+        }
+    // eslint-disable-next-line
+    }, [unitDetails])
+
     return <>
         <div className="dashboard-layout">
             <Container fluid>
@@ -121,7 +173,7 @@ addAttachment
                         <div className="video-preview-container shadow">
                             <div className="video-preview-page-controls">
                                 <div className="previous-page-arrow">
-                                    <Link to={`/dashboard/course/setup/module/${course._id}`}>
+                                    <Link to={`/dashboard/course/setup/module/${course?._id}`}>
                                      <i className="fas fa-arrow-left"></i>
                                     </Link>
                                 </div>
@@ -164,9 +216,33 @@ addAttachment
                                 <h2 className="text-center video-name">{unitDetails.name}</h2>
                                 <VideoPlayer  />
                                 <div className="comments-container">
-                                    <CommentsItem />
-                                    <CommentsItem />
-                                    <CommentsItem />
+                                    {
+                                        loadingComments ? <p>loading...</p> : <>
+                                            {
+                                        comments.length === 0 ? 
+                                        <p className="text-center lead mt-3 mb-3">No comments for found</p> : <>
+                                            {
+                                                comments.map((comment) =>  <CommentsItem key={comment._id} comment={comment} />)
+                                            }
+                                        </>
+                                    }
+                                        </>
+                                    }
+                                    {
+                                        loadingMoreTextDisplay && <p className="text-center lead">loading more...</p>
+                                    }
+                                    {
+                                        commentDetails !== null && (<div className="comments-container__controls">
+                                        <p className="comments-total-placeholder">{commentDetails.totalDocs} comments</p>
+                                        {
+                                            commentDetails.hasNextPage === true ? (<button onClick={e => loadMoreComments(unitDetails._id)} className="load-more-comments ml-5">
+                                            <i className="fas fa-circle"></i> View More
+                                          </button>) : ( <button onClick={e => seeLessComments(unitDetails._id)} className="load-more-comments ml-5">
+                                          <i className="fas fa-circle"></i> See Less
+                                        </button>)
+                                        }
+                                </div>)
+                                    }
                                 </div>
                                 <div className="attachments-container">
                                     <h4 className="text-center mb-4">Course Unit Attachments</h4>

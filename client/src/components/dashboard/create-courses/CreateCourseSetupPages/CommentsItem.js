@@ -1,7 +1,8 @@
 import React from 'react'
+import moment from "moment"
 import randomUserAvatar from "../../../../images/random-avatar.jpg"
 
-const CommentsItem = () => {
+const CommentsItem = ({ comment }) => {
     return <>
     <div className="comments-item mb-4">
         <div className="comment-user-avatar">
@@ -10,14 +11,15 @@ const CommentsItem = () => {
         </div>
         <div className="comment-item__details">
             <div className="comment-name-and-timestamp">
-                <p>kolaniyi <span className="ml-3">3 minutes ago</span></p> 
+                <p>{comment.username} <span className="ml-3">{
+                    moment(comment.date).fromNow()
+                }</span></p> 
             </div>
             <div className="comment-text">
             <p>
-                Curabitur turpis magna, hendrerit vitae pulvinar
-                nec, auctor sed 
-            ipsum. Nullam vel libero sollicitudin hendrerit
-                ante sit amet, rhoncus mi.
+               {
+                   comment.text
+               }
             </p>
             </div>
             <div className="comment-controls">

@@ -18,6 +18,7 @@ export const loadCourseUnit = (courseunitId) => {
                 payload: res.data
             })
         } catch (error) {
+            console.log(error)
             const errors = error.response.data.errors
             if(errors){
                 errors.forEach(element => {
