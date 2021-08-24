@@ -139,8 +139,13 @@
 .comment-controls {
   display: flex;
   align-content: center;
+  justify-content: space-between;
   margin-top: 4px;
   width: 100%;
+}
+
+.comment-controls .reply-controls {
+  display: flex;
 }
 
 .comment-controls .reply-button-and-counter {
@@ -152,7 +157,8 @@
 .comment-controls .view-reply {
   color: #6f6c6c;
   cursor: pointer;
-  flex: 1;
+  border: none;
+  background-color: transparent;
 }
 
 .comment-controls .view-reply i {

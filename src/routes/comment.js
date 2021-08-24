@@ -81,7 +81,8 @@ router.get('/:courseunitId', auth, async (req, res) => {
         courseunit: req.params.courseunitId
     }, {
         offset: skip,
-        limit: limit
+        limit: limit,
+        populate:'reply'
     })
        res.json(commentDetails)
    } catch (error) {
