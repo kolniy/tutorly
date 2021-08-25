@@ -50,6 +50,7 @@ export const updateCourseUnitName = (updateDetails, courseunitId) => {
                 type: UPDATE_COURSE_UNIT_NAME,
                 payload: res.data
             })
+            toast.success('updated successfully')
             dispatch(stopLoading())
         } catch (error) {
             const errors = error.response.data.errors
@@ -81,7 +82,7 @@ export const updateCourseUnitVideo = (videoUpdates, courseId, courseUnitId) => {
                 type: UPDATE_COURSEUNIT_VIDEO,
                 payload: res.data
             })
-            alert('video updated successfully')
+            toast.success('video updated successfully')
             dispatch(stopLoading())
         } catch (error) {
             const errors = error.response.data.errors
