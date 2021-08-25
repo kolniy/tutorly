@@ -4,6 +4,7 @@ import axios from 'axios'
 import setAuthToken from '../../../../utilities/setAuthToken'
 import moment from "moment"
 import { useAlert } from 'react-alert'
+import ReplyContainer from './ReplyContainer'
 import randomUserAvatar from "../../../../images/random-avatar.jpg"
 
 const CommentsItem = ({ comment }) => {
@@ -129,11 +130,18 @@ const CommentsItem = ({ comment }) => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Button onClick={removeTextInput}>Cancel</Button>
+                        <Button style={{
+                            boxShadow:'none',
+                            backgroundColor:'transparent',
+                            border:'none'
+                        }} onClick={removeTextInput}>Cancel</Button>
                         <Button onClick={postReply}>Send Reply</Button>
                     </FormGroup>
                 </div>
             )
+        }
+        {
+            showReplies && <ReplyContainer replies={replies} />
         }
     </>
 }

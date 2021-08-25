@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
 import './App.css';
 import "./styles/assets/vendor/nucleo/css/nucleo.css"
 import "./styles/assets/css/argon-design-system-react.css"
+import 'react-toastify/dist/ReactToastify.css'
 
 import Homepage from "./components/Index"
 import Signup from "./components/auth/Signup"
@@ -50,6 +52,15 @@ function App() {
    <Provider store={store}>
       <Router>
         <AppLoader />
+        <ToastContainer position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover />
       <Switch>
         <Route exact path="/" component={Homepage} />
         <Route exact path="/signup" component={Signup} />

@@ -1,9 +1,12 @@
 import axios from "axios"
+import { toast } from 'react-toastify'
 import setAuthToken from "../utilities/setAuthToken"
 import { LOAD_COURSE_UNIT,
      UPDATE_COURSE_UNIT_NAME, 
     UPDATE_COURSEUNIT_VIDEO,
-    ADD_ATTACHMENT_TO_COURSE_UNIT } from "./types"
+    ADD_ATTACHMENT_TO_COURSE_UNIT,
+    REMOVE_ATTACHMENT_FROM_COURSE_UNIT
+} from "./types"
 import { startLoading, stopLoading } from "./appLoading"
 
 export const loadCourseUnit = (courseunitId) => {
@@ -110,10 +113,40 @@ export const addAttachmentToCourseUnit = (attachmentDetails, courseUnitId) => {
                 type: ADD_ATTACHMENT_TO_COURSE_UNIT,
                 payload: res.data
             })
-            alert('attachment added successfully')
+            toast.success('attachment added successfully')
             dispatch(stopLoading())
         } catch (error) {
             const errors = error.response.data.errors
+            dispatch(stopLoading())
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const removeAttachmentFromCourseUnit = (courseUnitId, attachmentId) => {
+    return async (dispatch) => {
+        try {
+            if(localStorage.getItem("token")){
+                setAuthToken(localStorage.getItem("token"))
+            }
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/courseunit/attachment/remove/${courseUnitId}/${attachmentId}`)
+            dispatch({
+                type: REMOVE_ATTACHMENT_FROM_COURSE_UNIT,
+                payload: res.data
+            })
+            toast.success('attachment removed successfully')
+            dispatch(stopLoading())
+        } catch (error) {
+            const errors = error.response.data.errors
+            const someError = error.response.data
+            if(someError.msg === 'resource cannot be uploaded at the moment'){
+                return toast.warn(someError.msg)
+            }
             dispatch(stopLoading())
             if(errors){
                 errors.forEach(element => {

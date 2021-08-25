@@ -113,6 +113,14 @@ addAttachment
         }
     }, [unitDetails])
 
+    // useEffect called to load courseunit comments
+    useEffect(() => {
+        if(unitDetails !== null){
+            loadComments(match.params.videoId)
+        }
+    // eslint-disable-next-line
+    }, [match.params.videoId])
+
     const loadComments = async (courseUnitId) => {
         if(localStorage.getItem("token")){
             setAuthToken(localStorage.getItem("token"))
@@ -150,14 +158,6 @@ addAttachment
         setLoadingComments(false)
     }
 
-    // useEffect called to load courseunit comments
-    useEffect(() => {
-        if(unitDetails !== null){
-            loadComments(unitDetails._id)
-        }
-    // eslint-disable-next-line
-    }, [unitDetails])
-
     return <>
         <div className="dashboard-layout">
             <Container fluid>
@@ -173,7 +173,7 @@ addAttachment
                         <div className="video-preview-container shadow">
                             <div className="video-preview-page-controls">
                                 <div className="previous-page-arrow">
-                                    <Link to={`/dashboard/course/setup/module/${course?._id}`}>
+                                    <Link to={`/dashboard/course/setup/module/${unitDetails?.course}`}>
                                      <i className="fas fa-arrow-left"></i>
                                     </Link>
                                 </div>
@@ -217,10 +217,18 @@ addAttachment
                                 <VideoPlayer  />
                                 <div className="comments-container">
                                     {
-                                        loadingComments ? <p>loading...</p> : <>
+                                        loadingComments ? <div style={{
+                                            width:'50%',
+                                            margin:'20px auto',
+                                            display:'flex',
+                                            alignItems:'center',
+                                            justifyContent:'center'
+                                        }}>
+                                            <i style={{fontSize:'22px'}} className="fas fa-circle-notch fa-spin"></i>
+                                        </div> : <>
                                             {
                                         comments.length === 0 ? 
-                                        <p className="text-center lead mt-3 mb-3">No comments for found</p> : <>
+                                        <p className="text-center lead mt-3 mb-3">No comments found</p> : <>
                                             {
                                                 comments.map((comment) =>  <CommentsItem key={comment._id} comment={comment} />)
                                             }
@@ -252,7 +260,7 @@ addAttachment
                                                 No Attachments for this course
                                             </p> : <>
                                                 {
-                                                unitDetails.attachment.map((item) => <AttachmentItem key={item._id} attachment={item} />)
+                                                unitDetails.attachment.map((item) => <AttachmentItem key={item._id} attachment={item} courseUnitId={unitDetails._id} />)
                                                 }
                                             </>
                                         }
@@ -263,7 +271,9 @@ addAttachment
                             <p className="text-center page-title">Edit Video Content</p>
                                 <h2 className="text-center video-name">{unitDetails.name}</h2>
                                 <div className="edits-controls-container">
-                                    <FormGroup>
+                                    <div className="edit-course-unit-name mb-4">
+                                        <h4>Update course unit name</h4>
+                                        <FormGroup>
                                     <InputGroup>
                                         <Input
                                         aria-label="Edit video name"
@@ -280,6 +290,9 @@ addAttachment
                                         </InputGroupAddon>
                                     </InputGroup>
                                     </FormGroup>
+                                    </div>
+                                    <div className="course-unit-video-edit mb-4">
+                                     <h4>Replace course unit video</h4>
                                     <div className="update-course-unit-video">
                                         <div onClick={updateVideo} className="update-course-unit-video-btn">
                                             <input
@@ -293,8 +306,11 @@ addAttachment
                                          <i className="fas fa-upload"></i>
                                          <p className="text-center mt-3">Click to Upload Video</p>
                                         </div>
+                                     </div>
                                     </div>
-                                    <InputGroup className="mt-4">
+                                   <div className="course-unit-attachment">
+                                       <h4>Add Attachment to course unit</h4>
+                                   <InputGroup>
                                         <Input
                                         aria-describedby="button-addon4"
                                         aria-label="attachment filename"
@@ -320,6 +336,7 @@ addAttachment
                                         </Button>
                                         </InputGroupAddon>
                                     </InputGroup>
+                                   </div>
                                 </div>
                             </TabPane>
                             </TabContent>

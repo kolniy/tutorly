@@ -197,12 +197,51 @@ attachmentUplaod.single('attachment'),
 
     } catch (error) {
        console.error(error)
+       if(error.message === 'Request Timeout'){
+           return res.status(500).json({
+               msg: 'resource cannot be uploaded at the moment'
+           })
+       }
        res.status(500).send("server")
     }
 })
 
 const videoUpdateUpload = multer({
     storage: storageDest,
+})
+
+router.put('/attachment/remove/:courseUnitId/:attachmentId', auth, async (req, res) => {
+
+    const courseUnitId = req.params.courseUnitId
+    const attachmentId = req.params.attachmentId
+
+    try {
+        let courseUnit = await CourseUnit.findOne({
+            _id: courseUnitId
+        })
+        if(!courseUnit){
+            return res.status(400).json({
+                errors: [{msg: "course unit not found"}]
+            })
+        }
+
+        const attachmentToBeDeleted = courseUnit.attachment.find((attachment) => attachment._id == attachmentId)
+        if(attachmentToBeDeleted){
+            const attachmentPublicId = attachmentToBeDeleted.attachmentId.split('/')[attachmentToBeDeleted.attachmentId.split('/').length - 1]
+
+            // remove attachment from cloud server
+            await cloudinary.v2.uploader.destroy(attachmentPublicId, {
+                resource_type: 'raw'
+            })
+        }
+
+        courseUnit.attachment = courseUnit.attachment.filter((attachment) => attachment._id != attachmentId)
+        await courseUnit.save()
+        res.json(courseUnit)
+    } catch (error) {
+     console.error(error)
+     res.status(500).send("server")
+    }
 })
 
 // route to update courseUnit video url
