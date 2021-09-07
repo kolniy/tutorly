@@ -20,6 +20,7 @@ import Sales from "./components/dashboard/sales/Sales"
 import Messages from "./components/dashboard/messages/Messages"
 import AppLoader from "./components/layout/AppLoader"
 import SchoolLandingPage from "./components/school/SchoolPage"
+import SchoolCourseItemPreviewPage from "./components/school/CourseItemDisplayPage"
 import CourseModules from "./components/dashboard/create-courses/CreateCourseSetupPages/CourseModules";
 import VideoPreviewPage from "./components/dashboard/create-courses/CreateCourseSetupPages/VideoPreviewPage";
 
@@ -66,6 +67,7 @@ function App() {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/:schoolname" component={SchoolLandingPage} />
+        <Route exact path="/:schoolname/:courseItemName" component={SchoolCourseItemPreviewPage} />
         <PrivateRouteForToken exact path="/account/setup/stepone" component={Setpageone} />
         <PrivateRouteForToken exact path="/account/setup/steptwo" component={Setpagetwo} />
         <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />

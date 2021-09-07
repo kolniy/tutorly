@@ -2,6 +2,7 @@ import express from "express"
 import auth from "../middleware/auth"
 import School from "../models/School"
 import Theme from "../models/Theme"
+import Course from "../models/Course"
 
 const router = express.Router()
 
@@ -45,6 +46,28 @@ router.get('/:schoolname', async (req, res) => {
             theme
         })
     } catch (error) {
+        res.status(500).send("server error")
+    }
+})
+
+// route to get school courses by school name
+router.get('/courses/:schoolname', async (req, res) => {    
+    const schoolname = req.params.schoolname
+    try {
+        const school = await School.findOne({
+            name: schoolname
+        })
+        if(!school){
+            return res.status(404).json({errors : [{
+                msg: "school not found"
+            }]})
+        }
+        const courses = await Course.find({
+            school: school._id
+        }).populate('author')
+        res.json(courses)
+    } catch (error) {
+        console.log(error)
         res.status(500).send("server error")
     }
 })

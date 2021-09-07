@@ -115,9 +115,7 @@ addAttachment
 
     // useEffect called to load courseunit comments
     useEffect(() => {
-        if(unitDetails !== null){
-            loadComments(match.params.videoId)
-        }
+        loadComments(match.params.videoId)
     // eslint-disable-next-line
     }, [match.params.videoId])
 

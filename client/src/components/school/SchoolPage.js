@@ -12,9 +12,13 @@ export const SchoolPage = ({ match }) => {
     const [ theme, setTheme ] = useState(null)
     const [ pageLoading, setPageLoading ] = useState(true)
 
+    const [ schoolCourses, setSchoolCourses ] = useState([])
+    const [ coursesLoading, setCoursesLoading ] = useState(false)
+
     useEffect(() => {
         if(match.params.schoolname.length > 0){
         getSchoolBySchoolName(match.params.schoolname)
+        getCoursesBySchoolName(match.params.schoolname)
         }
     }, [match.params.schoolname])
 
@@ -39,6 +43,18 @@ export const SchoolPage = ({ match }) => {
         }
     }
 
+    const getCoursesBySchoolName = async (schoolName) => {
+        try {
+            setCoursesLoading(true)
+            const res = await axios.get(`/api/v1/school/courses/${schoolName}`)
+            setCoursesLoading(false)
+            setSchoolCourses(res.data)
+        } catch (error) {
+            console.log(error)
+            console.log(error?.response?.data?.errors[0]?.msg) 
+        }
+    }
+
     return <>
        {
            pageLoading === true ? 
@@ -50,7 +66,10 @@ export const SchoolPage = ({ match }) => {
                    <>
                     {
                           school.themename.toLowerCase().includes("hero") ? 
-                          <><HeroTheme themeData={theme} /></> 
+                          <><HeroTheme themeData={theme}
+                            courses={schoolCourses}
+                            coursesLoading={coursesLoading}
+                           /></> 
                           : <><SectionTheme themeData={theme}/></>
                     }
                   </>
