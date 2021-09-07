@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row } from "reactstrap"
 import CourseItem from "./CourseItem"
 
-export const CourseList = ({ themeData, courses, coursesLoading }) => {
+export const CourseList = ({ themeData, courses, coursesLoading, school }) => {
     return <>
         <section className="course-list">
             <Container fluid className="course-list-container">
@@ -23,7 +23,7 @@ export const CourseList = ({ themeData, courses, coursesLoading }) => {
                                         </div>
                             </> : <>
                                 {
-                                  courses.map((course) => <CourseItem key={course._id} course={course} />)
+                                  courses.map((course) => <CourseItem key={course._id} course={course} school={school} />)
                                 }
                             </>
                         }

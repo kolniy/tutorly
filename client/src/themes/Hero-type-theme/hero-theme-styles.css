@@ -156,6 +156,22 @@
   font-size: 18px;
 }
 
+.course-item .cart-icon-container-and-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.course-item .cart-icon-container-and-price p {
+  margin: 0;
+}
+
+.course-item .cart-icon-container-and-price i {
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--alt-text-color);
+}
+
 .course-list-hr {
   background-color: #fff;
 }

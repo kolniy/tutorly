@@ -58,7 +58,15 @@ export const SchoolPage = ({ match }) => {
     return <>
        {
            pageLoading === true ? 
-           <p className="lead text-center">loading</p>:
+           <div style={{
+            width:'50%',
+            margin:'20px auto',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center'
+        }}>
+            <i style={{fontSize:'22px'}} className="fas fa-circle-notch fa-spin"></i>
+        </div> :
             <>
                 {
                   !pageLoading && school === null ?
@@ -69,6 +77,7 @@ export const SchoolPage = ({ match }) => {
                           <><HeroTheme themeData={theme}
                             courses={schoolCourses}
                             coursesLoading={coursesLoading}
+                            school={school}
                            /></> 
                           : <><SectionTheme themeData={theme}/></>
                     }
