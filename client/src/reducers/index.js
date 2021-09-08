@@ -7,6 +7,7 @@ import theme from "./theme"
 import course from "./course"
 import modules from "./modules"
 import courseunit from "./courseunit"
+import cart from "./cart"
 
 export default combineReducers({
     auth,
@@ -16,5 +17,6 @@ export default combineReducers({
     theme,
     course,
     modules,
-    courseunit
+    courseunit,
+    cart
 })

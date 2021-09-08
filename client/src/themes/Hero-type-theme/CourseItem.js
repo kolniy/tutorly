@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Col, 
    Card,
   CardBody,
@@ -6,8 +7,9 @@ import { Col,
   CardTitle,
   CardText } from "reactstrap"
 import { Link } from "react-router-dom"
+import { addToCart } from '../../actions/cart'
 
-export const CourseItem = ({ course, school }) => {
+export const CourseItem = ({ course, school, cart, addCourseToCart }) => {
 
    return <>
         <Col xs="12" sm="6" md="4" xl="3">
@@ -35,7 +37,15 @@ export const CourseItem = ({ course, school }) => {
              <p>
                 ${course.price}
              </p>
-              <i className="fas fa-shopping-cart"></i>
+               {
+                  cart.find((item) => item.itemId === course._id) !== undefined ? (
+                     <Link to={`/${school.name}/cart`}>View Cart</Link>
+                  ) : (
+                     <div onClick={e => addCourseToCart(course)} className="add-to-cart">
+                  <i className="fas fa-shopping-cart"></i>
+               </div>
+                  )
+               }
              </div>
           </CardBody>
          </Card>
@@ -44,4 +54,12 @@ export const CourseItem = ({ course, school }) => {
     </>
 }
 
-export default CourseItem
+const mapStateToProps = (state) => ({
+   cart: state.cart
+})
+
+const mapDispatchToProps = (dispatch) => ({
+   addCourseToCart: (courseDetails) => dispatch(addToCart(courseDetails))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseItem)

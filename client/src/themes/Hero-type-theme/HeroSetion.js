@@ -73,12 +73,12 @@ export const HeroSetion = ({ themeData }) => {
             <div className="hero-section-socail-links">
                      {
                        themeData.twitterurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.twitterurl}`} className="social-icon-item">
-                       <i class="fab fa-twitter"></i>
+                       <i className="fab fa-twitter"></i>
                        </a>)
                      }
                      {
                        themeData.youtubeurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.youtubeurl}`} className="social-icon-item">
-                       <i class="fab fa-youtube"></i>
+                       <i className="fab fa-youtube"></i>
                        </a>)
                      }
                     {
@@ -88,12 +88,12 @@ export const HeroSetion = ({ themeData }) => {
                     }
                     {
                       themeData.instagramurl !== undefined && (<a target="_blank" rel="noreferrer" href={`https://${themeData.instagramurl}`} className="social-icon-item">
-                      <i class="fab fa-instagram"></i>
+                      <i className="fab fa-instagram"></i>
                       </a>)
                     }
                    {
                      themeData.facebookurl !== undefined && ( <a target="_blank" rel="noreferrer" href={`https://${themeData.facebookurl}`} className="social-icon-item">
-                     <i class="fab fa-facebook"></i>
+                     <i className="fab fa-facebook"></i>
                  </a>)
                    }
             </div>

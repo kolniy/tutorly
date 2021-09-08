@@ -1,13 +1,14 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { 
   Navbar, Container, UncontrolledCollapse,
-    Row, Col, Nav, NavItem, Button
+    Row, Col, Nav, NavItem, Button, Badge
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import '../../custom-styles/pages/pagenavbar.css'
 
-const PageNavbar = ({ pageName }) => {
+const PageNavbar = ({ pageName, cart }) => {
     return <>
          <Navbar className="navbar-dark page-navbar" expand="lg">
             <Container>
@@ -50,6 +51,21 @@ const PageNavbar = ({ pageName }) => {
                       </span>
                     </Button>
                   </NavItem>
+                  {
+                    cart.length > 0 && (
+                      <NavItem className="d-lg-block">
+                    <Button
+                      tag={Link}
+                      to={`/${pageName}/cart`}
+                      className="page-navbar-button"
+                    >
+                      <span className="nav-link-inner--text ml-1">
+                        Cart <Badge>{cart.length}</Badge>
+                      </span>
+                    </Button>
+                  </NavItem>
+                    )
+                  }
                 </Nav>
               </UncontrolledCollapse>
             </Container>
@@ -57,4 +73,8 @@ const PageNavbar = ({ pageName }) => {
     </>
 }
 
-export default PageNavbar
+const mapStateToProps = (state) => ({
+  cart: state.cart
+})
+
+export default connect(mapStateToProps)(PageNavbar)
