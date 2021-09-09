@@ -10,7 +10,6 @@ import { Link } from "react-router-dom"
 import { addToCart } from '../../actions/cart'
 
 export const CourseItem = ({ course, school, cart, addCourseToCart }) => {
-
    return <>
         <Col xs="12" sm="6" md="4" xl="3">
           <div className="course-item">
@@ -39,7 +38,7 @@ export const CourseItem = ({ course, school, cart, addCourseToCart }) => {
              </p>
                {
                   cart.find((item) => item.itemId === course._id) !== undefined ? (
-                     <Link to={`/${school.name}/cart`}>View Cart</Link>
+                     <Link className="go-to-cart" to={`/${school.name}/cart`}>View Cart</Link>
                   ) : (
                      <div onClick={e => addCourseToCart(course)} className="add-to-cart">
                   <i className="fas fa-shopping-cart"></i>

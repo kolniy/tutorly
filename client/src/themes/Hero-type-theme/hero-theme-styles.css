@@ -172,6 +172,14 @@
   color: var(--alt-text-color);
 }
 
+.course-item .go-to-cart {
+  color: var(--alt-text-color);
+  font-weight: 700;
+  font-size: 16px;
+  border: 1px solid var(--alt-text-color);
+  padding: 5px 15px;
+}
+
 .course-list-hr {
   background-color: #fff;
 }

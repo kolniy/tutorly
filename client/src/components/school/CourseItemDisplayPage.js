@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { Container, Row, 
     Col, 
     TabContent,
@@ -15,11 +17,11 @@ import StartRatings from "react-star-ratings"
 import PageNavbar from './PageNavbar'
 // import CourseThumbnailPreview from '../../images/course-preview.jpg'
 import ModuleItem from './ModuleItem'
-
+import { addToCart } from '../../actions/cart'
 
 import '../../custom-styles/pages/courseitemdisplaypage.css'
 
-export const CourseItemDisplayPage = ({ match }) => {
+export const CourseItemDisplayPage = ({ match, cart, addCourseToCart }) => {
 
     const [ course, setCourse ] = useState(null)
     const [ modules, setModules ] = useState([])
@@ -202,7 +204,12 @@ export const CourseItemDisplayPage = ({ match }) => {
                 </Col>
                 <Col className="mb-3" md="4" sm="4" xs="12">
                     <div className="action-container">
-                        <Button className="action-btn add-to-cart-btn">Add to cart</Button>
+                       {
+                           cart.find((item) => item.itemId === course._id) !== undefined ? (
+                            <Button tag={Link} to={`/${match.params.schoolname}/cart`} className="action-btn add-to-cart-btn">Go To Cart</Button>
+                           ) :
+                            (<Button onClick={e => addCourseToCart(course)} className="action-btn add-to-cart-btn">Add to cart</Button>)
+                       }
                     </div>
                 </Col>
                 <Col className="mb-3" md="4" sm="4" xs="12">
@@ -223,4 +230,12 @@ export const CourseItemDisplayPage = ({ match }) => {
     </>
 }
 
-export default CourseItemDisplayPage 
+const mapStateToProps = (state) => ({
+    cart: state.cart
+ })
+ 
+ const mapDispatchToProps = (dispatch) => ({
+    addCourseToCart: (courseDetails) => dispatch(addToCart(courseDetails))
+ })
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseItemDisplayPage)

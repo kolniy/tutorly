@@ -2,6 +2,12 @@
   background-color: #3d3c3c;
 }
 
+.cart-badge {
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 50%;
+}
+
 .page-navbar-button,
 .page-navbar-button:hover,
 .page-navbar-button:active {

@@ -8,8 +8,8 @@ const cartReducer = (state = initialState, action) => {
     switch (type) {
         case ADD_COURSE_TO_CART:
             return [
-                payload,
-                ...state
+                ...state,
+                payload
             ]
         case REMOVE_COURSE_FROM_CART: 
             return state.filter(({ itemId }) => itemId !== payload)

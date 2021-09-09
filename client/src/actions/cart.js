@@ -6,13 +6,16 @@ const loadCart = () => {
 
 let cartList = []
 
-export const addToCart = ({ _id, thumbnail, title, price }) => {
+export const addToCart = ({ _id, thumbnail, title, price, createdAt, reviews, coursechapters }) => {
     return (dispatch) => {
         const cartItem = {
             itemId: _id,
             itemImg: thumbnail,
             itemName: title,
             itemPrice: price,
+            itemCreatedAt: createdAt,
+            itemReviews: reviews,
+            itemCourseChapters: coursechapters
         }
 
         cartList = loadCart()

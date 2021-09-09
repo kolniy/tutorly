@@ -1,13 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row, Col, Button } from 'reactstrap'
 import PageNavbar from './PageNavbar'
 import CartItem from './CartItem'
 
 import '../../custom-styles/pages/cartpage.css'
 
 export const CartPage = ({ match, cart }) => {
+
+    const cartItemSum = cart?.reduce((prev, curr) => {
+        return prev + curr.itemPrice
+    },0)
+
     return <>
         <PageNavbar pageName={match.params.schoolname} />
         <div className="page-contents">
@@ -31,15 +36,24 @@ export const CartPage = ({ match, cart }) => {
                                     fontWeight:'400'
                                 }}>You have no course in your cart. Click <Link to={`/${match.params.schoolname}`}>Here</Link> to See course and to cart</p> : <>
                                     {
-                                    cart.map((cartItem) => <CartItem cartItem={cartItem} />)
+                                    cart.map((cartItem) => <CartItem key={cartItem.itemId} cartItem={cartItem} />)
                                     }
                                 </>
                             }
                         </div>
                     </Col>
                     <Col md="3">
-                        <div className="cart-summary">
-                            hii here
+                        <div className="cart-summary mt-4 mb-3">
+                           <div className="cart-subtotal">
+                               <p>Subtotal:</p> <h4>${cartItemSum}</h4>
+                           </div>
+                           <div className="cart-tax">
+                             <p>Tax:</p> <p>+1.8</p>
+                           </div>
+                           <div className="cart-total">
+                             <p>Total</p> <p>{cartItemSum + 1.8}</p>
+                           </div>
+                           <Button className="checkout-btn" block>Checkout</Button>
                         </div>
                     </Col>
                 </Row>

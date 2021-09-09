@@ -60,7 +60,7 @@ const PageNavbar = ({ pageName, cart }) => {
                       className="page-navbar-button"
                     >
                       <span className="nav-link-inner--text ml-1">
-                        Cart <Badge>{cart.length}</Badge>
+                        Cart <Badge className="cart-badge">{cart.length}</Badge>
                       </span>
                     </Button>
                   </NavItem>
