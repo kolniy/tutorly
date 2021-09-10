@@ -42,7 +42,7 @@ export const CartPage = ({ match, cart }) => {
                             }
                         </div>
                     </Col>
-                    <Col md="3">
+                    <Col className="cart-sum" md="3">
                         <div className="cart-summary mt-4 mb-3">
                            <div className="cart-subtotal">
                                <p>Subtotal:</p> <h4>${cartItemSum}</h4>

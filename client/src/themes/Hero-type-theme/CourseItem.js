@@ -15,7 +15,7 @@ export const CourseItem = ({ course, school, cart, addCourseToCart }) => {
           <div className="course-item">
             {/* <div className="course-item-previewer"></div> */}
             <Card className="landing-page-course-card shadow">
-         <Link to={`/${school.name}/${course.title}`}>
+         <Link to={`/${school.name}/preview/${course.title}`}>
              <CardImg
                 className="img-fluid"
                 alt="..."
@@ -25,7 +25,7 @@ export const CourseItem = ({ course, school, cart, addCourseToCart }) => {
          </Link>
           <CardBody>
             <CardTitle>
-            <Link to={`/${school.name}/${course.title}`}>
+            <Link to={`/${school.name}/preview/${course.title}`}>
                { course.title }
             </Link>
             </CardTitle>

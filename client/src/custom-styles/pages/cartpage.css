@@ -1,7 +1,6 @@
 .page-contents {
   background-color: #272727;
   width: 100%;
-  height: 130vh;
 }
 
 .cart-title {
@@ -26,11 +25,9 @@
 
 .cart-list {
   padding-right: 15px;
-  height: 600px;
-  overflow-y: auto;
 }
 
-.cart-list::-webkit-scrollbar {
+/* .cart-list::-webkit-scrollbar {
   width: 12px;
 }
 
@@ -42,7 +39,7 @@
 .cart-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #3d3c3c;
-}
+} */
 
 .cart-item {
   border: 1px solid #c4c4c4;
@@ -90,6 +87,7 @@
   font-size: 56px;
   font-weight: 700;
   text-decoration: line-through;
+  margin-top: 10px;
 }
 
 .cart-actions-and-valid-price {
@@ -102,6 +100,16 @@
   color: #fff;
   font-size: 56px;
   font-weight: 700;
+  margin-top: -10px;
+}
+
+.cart-sum {
+  position: relative;
+}
+
+.cart-summary {
+  position: sticky;
+  top: 0;
 }
 
 .cart-actions {
