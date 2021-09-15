@@ -64,7 +64,8 @@ router.get('/courses/:schoolname', async (req, res) => {
             }]})
         }
         const courses = await Course.find({
-            school: school._id
+            school: school._id,
+            published: true
         }).populate('author')
         res.json(courses)
     } catch (error) {

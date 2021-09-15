@@ -244,4 +244,49 @@ router.delete('/:courseId', auth, async (req, res) => {
     }
 })
 
+// route to update publish status course by id
+router.put('/publish/:courseId', auth, async (req, res) => {
+    const courseId = req.params.courseId
+    try {
+        let course = await Course.findOne({ _id: courseId })
+        if(!course){
+            return res.status(404).json({
+                errors: [{ msg: "course not found"}]
+            })
+        }
+
+        course.published = true
+
+        await course.save()
+        res.json(course)
+
+    } catch (error) {
+        res.status(500).send("server error")
+        console.error(error)
+    }
+})
+
+// route to update course retract status
+router.put('/retract/:courseId', auth, async (req, res) => {
+    const courseId = req.params.courseId
+    try {
+        let course = await Course.findOne({ _id: courseId })
+        if(!course){
+            return res.status(404).json({
+                errors: [{ msg: "course not found"}]
+            })
+        }
+
+        course.published = false
+
+        await course.save()
+        res.json(course)
+
+    } catch (error) {
+        res.status(500).send("server error")
+        console.error(error)
+    }
+})
+
+
 export default router

@@ -1,4 +1,7 @@
-import { CREATE_COURSE, LOAD_COURSE, UPDATE_COURSE } from "../actions/types";
+import { CREATE_COURSE, LOAD_COURSE,
+        UPDATE_COURSE, PUBLISH_COURSE,
+        RETRACT_COURSE
+    } from "../actions/types";
 
 const initialState = {
     loading: true,
@@ -25,7 +28,18 @@ const courseReducer = (state = initialState, action) => {
                     ...state.courseDetails,
                     ...payload
                 }
-            }    
+            } 
+        case PUBLISH_COURSE:
+        case RETRACT_COURSE:    
+            delete payload.author
+                return {
+                    ...state,
+                    loading: false,
+                    courseDetails: {
+                        ...state.courseDetails,
+                        ...payload
+                    }
+                }       
         default:
             return state
     }

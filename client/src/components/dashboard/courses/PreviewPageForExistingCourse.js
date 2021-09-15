@@ -9,9 +9,11 @@ import { Row, Col,
     } from 'reactstrap'
 import { useAlert } from 'react-alert'    
 import DashboardNavbar from '../DashboardNavbar'
-import { getCourseById, updateCourseById } from '../../../actions/course'
+import { getCourseById, updateCourseById,
+        publishCourse, retractCourse
+} from '../../../actions/course'
 import StartRatings from "react-star-ratings"
-
+import CourseModuleOrganiser from '../create-courses/CreateCourseSetupPages/CourseModuleOrganiser'
 
 import '../../../custom-styles/dashboard/dashboardlayout.css'
 import '../../../custom-styles/dashboard/coursepreviewpage.css'
@@ -20,7 +22,9 @@ export const PreviewPageForExistingCourse = ({
     match,
     course,
     getCourse,
-    updateCourse
+    updateCourse,
+    publish,
+    retract
 }) => {
 
     const totalCourseRatings = course?.reviews?.reduce((prev, curr) => {
@@ -119,6 +123,14 @@ export const PreviewPageForExistingCourse = ({
         closeUpdateCourseModal()
     }
 
+    const publishCourse = () => {
+        publish(course._id)
+    }
+
+    const unpublishCourse = () => {
+        retract(course._id)
+    }
+
     useEffect(() => {
         getCourse(match.params.courseId)
     }, [getCourse, match.params.courseId])
@@ -162,13 +174,20 @@ export const PreviewPageForExistingCourse = ({
                                 />
                                 </div>
                                 <h4 className="course-item-price">${course.price}</h4>
+                                <div className="course-actions">
                                 <Button onClick={openUpdateCourseModal} className="update-course-btn">Update Course</Button>
+                                {
+                                    course.published === false ? (<Button onClick={publishCourse} className="publish-course-actions-btn">Publish Course</Button>) : 
+                                    (<Button onClick={unpublishCourse} className="publish-course-actions-btn">Retract Course</Button>)
+                                }
+                                </div>
                             </div>
                          </div>
                                      </>
                                  }
                                 </Container>
                         </div>
+                        <CourseModuleOrganiser />
                     </div>
                   </Col>
                 </Row>
@@ -360,7 +379,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getCourse: (courseId) => dispatch(getCourseById(courseId)),
-    updateCourse: (courseId, updateBody) => dispatch(updateCourseById(courseId, updateBody))
+    updateCourse: (courseId, updateBody) => dispatch(updateCourseById(courseId, updateBody)),
+    publish: (courseId) => dispatch(publishCourse(courseId)),
+    retract: (courseId) => dispatch(retractCourse(courseId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviewPageForExistingCourse)

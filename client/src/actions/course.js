@@ -1,5 +1,7 @@
 import axios from "axios"
-import { CREATE_COURSE, LOAD_COURSE, UPDATE_COURSE } from "./types"
+import { CREATE_COURSE, LOAD_COURSE, 
+     UPDATE_COURSE, PUBLISH_COURSE,
+     RETRACT_COURSE } from "./types"
 import { startLoading, stopLoading } from "./appLoading"
 import setAuthToken from "../utilities/setAuthToken"
 
@@ -22,7 +24,7 @@ export const createNewCourse = (courseDetails, schoolId, history, routeTo) => {
                 payload: res.data
             })
          dispatch(stopLoading())   
-         history.push(`/dashboard/course/setup/module/${res.data._id}`)   
+         history.push(`/dashboard/course/setup/module`)   
         } catch (error) {
             dispatch(stopLoading())   
             const errors = error.response.data.errors
@@ -78,6 +80,56 @@ export const getCourseById = (courseId) => {
                 payload: res.data
             })
          dispatch(stopLoading())   
+        } catch (error) {
+            dispatch(stopLoading())   
+            const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const publishCourse = (courseId) => {
+    return async (dispatch) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        try {
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/course/publish/${courseId}`)
+            dispatch({
+                type: PUBLISH_COURSE,
+                payload: res.data
+            })
+            dispatch(stopLoading())   
+        } catch (error) {
+            dispatch(stopLoading())   
+            const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const retractCourse = (courseId) => {
+    return async (dispatch) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        try {
+            dispatch(startLoading())
+            const res = await axios.put(`/api/v1/course/retract/${courseId}`)
+            dispatch({
+                type: RETRACT_COURSE,
+                payload: res.data
+            })
+            dispatch(stopLoading())   
         } catch (error) {
             dispatch(stopLoading())   
             const errors = error.response.data.errors

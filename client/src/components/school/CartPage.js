@@ -29,9 +29,8 @@ export const CartPage = ({ match, cart }) => {
 
     const calculateSavingsInPercentage = () => {
         const differenceInCost = actualCostWithoutDiscount - cartItemSumWithDiscount
-        const averageInCost = (actualCostWithoutDiscount + cartItemSumWithDiscount) / 2
-        const averageSavingsInPrecent = (differenceInCost / averageInCost) * 100
-        return Math.round(averageSavingsInPrecent)
+        const percentDifference = (differenceInCost / actualCostWithoutDiscount) * 100
+        return Math.round(percentDifference)
     }
 
 

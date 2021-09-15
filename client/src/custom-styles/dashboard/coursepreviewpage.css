@@ -50,9 +50,16 @@
   color: var(--site-subtle-dark);
 }
 
-/* .update-course-card {
-  padding: 30px;
-} */
+.course-actions {
+  display: flex;
+}
+
+.publish-course-actions-btn,
+.publish-course-actions-btn:hover,
+.publish-course-actions-btn:active {
+  color: var(--site-white-color) !important;
+  background-color: var(--site-dark-color) !important;
+}
 
 .update-course-card .card {
   border: 0;
