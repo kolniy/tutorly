@@ -1,4 +1,4 @@
-import { CREATE_COURSE, LOAD_COURSE } from "../actions/types";
+import { CREATE_COURSE, LOAD_COURSE, UPDATE_COURSE } from "../actions/types";
 
 const initialState = {
     loading: true,
@@ -16,6 +16,16 @@ const courseReducer = (state = initialState, action) => {
                 loading: false,
                 courseDetails: payload
             }     
+        case UPDATE_COURSE: 
+         delete payload.author
+            return {
+                ...state,
+                loading: false,
+                courseDetails: {
+                    ...state.courseDetails,
+                    ...payload
+                }
+            }    
         default:
             return state
     }

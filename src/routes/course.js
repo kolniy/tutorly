@@ -72,7 +72,7 @@ router.post('/:schoolId', [
 // route to get specific course by courseId
 router.get('/:courseId', async (req, res) => {
     try {
-        const course = await Course.findOne({ _id: req.params.courseId })
+        const course = await Course.findOne({ _id: req.params.courseId }).populate('author')
         if(!course){
             return res.status(400).json({
                 errors: [{ msg: "course not found"}]
@@ -130,7 +130,9 @@ router.put('/:courseId', auth, async (req, res) => {
             language,
             level,
             thumbnail,
-            price } = req.body
+            price,
+            coursediscount
+        } = req.body
 
            if(title)  course.title = title
            if(subtitle) course.subtitle = subtitle
@@ -141,6 +143,7 @@ router.put('/:courseId', auth, async (req, res) => {
            if(level) course.level = level
            if(thumbnail) course.thumbnail = thumbnail
            if(price) course.price = price
+           if(coursediscount) course.coursediscount = coursediscount
 
            await course.save()
            res.json(course)

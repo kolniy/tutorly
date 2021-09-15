@@ -33,6 +33,9 @@ const courseSchema = new mongoose.Schema({
         type: Boolean,
         default: false  
     },
+    coursediscount: {
+        type: String
+    },
     coursethumbnailid: {
         type: String
     },

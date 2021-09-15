@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
 import StartRatings from "react-star-ratings"
 import { removeFromCart } from '../../actions/cart'
+import calculateDiscountForCourseCart from '../../utilities/calculateDiscountForCourseCart'
 
 export const CartItem = ({ cartItem, removeItem }) => {
 
@@ -43,9 +44,11 @@ export const CartItem = ({ cartItem, removeItem }) => {
                             <div className="episode-number">{cartItem.itemCourseChapters.length} Episodes</div>
                          </div>
                     </div>
-                    <div className="old-price">
-                        <h2>$57</h2>
-                    </div>
+                   {
+                       cartItem.itemDiscount && (<div className="old-price">
+                       <h2>${cartItem.itemPrice}</h2>
+                   </div>)
+                   }
                 </div>
                 <div className="cart-actions-and-valid-price mt-1">
                     <div className="cart-actions">
@@ -53,7 +56,9 @@ export const CartItem = ({ cartItem, removeItem }) => {
                        <Button className="cart-actions-btn mb-1">Save</Button>
                     </div>
                     <div className="cart-price">
-                      <h2>${cartItem.itemPrice}</h2>
+                    {
+                        <h2>${ cartItem.itemDiscount !== undefined ? calculateDiscountForCourseCart(cartItem.itemPrice, cartItem.itemDiscount) : cartItem.itemPrice }</h2>
+                    }
                     </div>
                 </div>
          </div>

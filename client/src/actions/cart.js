@@ -6,9 +6,9 @@ const loadCart = () => {
 
 let cartList = []
 
-export const addToCart = ({ _id, thumbnail, title, price, createdAt, reviews, coursechapters }) => {
+export const addToCart = ({ _id, thumbnail, title, price, createdAt, reviews, coursechapters, coursediscount }) => {
     return (dispatch) => {
-        const cartItem = {
+        let cartItem = {
             itemId: _id,
             itemImg: thumbnail,
             itemName: title,
@@ -16,6 +16,10 @@ export const addToCart = ({ _id, thumbnail, title, price, createdAt, reviews, co
             itemCreatedAt: createdAt,
             itemReviews: reviews,
             itemCourseChapters: coursechapters
+        }
+
+        if(coursediscount){
+            cartItem['itemDiscount'] = coursediscount
         }
 
         cartList = loadCart()

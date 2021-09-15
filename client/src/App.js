@@ -23,6 +23,7 @@ import SchoolLandingPage from "./components/school/SchoolPage"
 import SchoolCourseItemPreviewPage from "./components/school/CourseItemDisplayPage"
 import SchoolCartPage from "./components/school/CartPage"
 import CourseModules from "./components/dashboard/create-courses/CreateCourseSetupPages/CourseModules";
+import PreviewPageForExistingCourse from "./components/dashboard/courses/PreviewPageForExistingCourse";
 import VideoPreviewPage from "./components/dashboard/create-courses/CreateCourseSetupPages/VideoPreviewPage";
 
 // theme preview components import
@@ -75,7 +76,7 @@ function App() {
         <PrivateRoute exact path="/dashboard/createcourse" component={CreateCourse} />
         <PrivateRoute exact path="/dashboard/courses" component={Courses} />
         <PrivateRoute exact path="/dashboard/course/setup/module" component={CourseModules} />
-        <PrivateRoute exact path="/dashboard/course/setup/module/:courseId" component={CourseModules} />
+        <PrivateRoute exact path="/dashboard/course/setup/module/:courseId" component={PreviewPageForExistingCourse} />
         <PrivateRoute exact path="/dashboard/course/module/vidoepreview/:videoId" component={VideoPreviewPage}/>
         <PrivateRoute exact path="/dashboard/customize" component={Customize} />
         <PrivateRoute exact path="/dashboard/customize/theme/setup/themeinfo" component={ThemeInfo} />

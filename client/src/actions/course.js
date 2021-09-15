@@ -1,5 +1,5 @@
 import axios from "axios"
-import { CREATE_COURSE, LOAD_COURSE } from "./types"
+import { CREATE_COURSE, LOAD_COURSE, UPDATE_COURSE } from "./types"
 import { startLoading, stopLoading } from "./appLoading"
 import setAuthToken from "../utilities/setAuthToken"
 
@@ -23,6 +23,37 @@ export const createNewCourse = (courseDetails, schoolId, history, routeTo) => {
             })
          dispatch(stopLoading())   
          history.push(`/dashboard/course/setup/module/${res.data._id}`)   
+        } catch (error) {
+            dispatch(stopLoading())   
+            const errors = error.response.data.errors
+            if(errors){
+                errors.forEach(element => {
+                    alert(element.msg)
+                });
+            }
+        }
+    }
+}
+
+export const updateCourseById = (courseId, updateBody) => {
+    return async (dispatch) => {
+        if(localStorage.getItem("token")){
+            setAuthToken(localStorage.getItem("token"))
+        }
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        const body = JSON.stringify(updateBody)
+        dispatch(startLoading())
+        try {
+            const res = await axios.put(`/api/v1/course/${courseId}`, body, config)
+            dispatch({
+                type: UPDATE_COURSE,
+                payload: res.data
+            })
+            dispatch(stopLoading())   
         } catch (error) {
             dispatch(stopLoading())   
             const errors = error.response.data.errors

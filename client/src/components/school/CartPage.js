@@ -4,14 +4,36 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'reactstrap'
 import PageNavbar from './PageNavbar'
 import CartItem from './CartItem'
+// function used to calculate actual cost/price if course has discount
+import calculateDiscountForCourseCart from '../../utilities/calculateDiscountForCourseCart'
 
 import '../../custom-styles/pages/cartpage.css'
 
 export const CartPage = ({ match, cart }) => {
 
-    const cartItemSum = cart?.reduce((prev, curr) => {
+    const cartItemSumWithDiscount = cart?.reduce((prev, curr) => {
+        if(curr.itemDiscount){
+            return prev + calculateDiscountForCourseCart(curr.itemPrice, curr.itemDiscount)
+        } else {
         return prev + curr.itemPrice
+        }
     },0)
+
+    const actualCostWithoutDiscount = cart?.reduce((prev, curr) => {
+        return prev + curr.itemPrice
+    }, 0)
+
+    const getCourseTotalSavingFromDiscount = () => {
+        return actualCostWithoutDiscount - cartItemSumWithDiscount
+    }
+
+    const calculateSavingsInPercentage = () => {
+        const differenceInCost = actualCostWithoutDiscount - cartItemSumWithDiscount
+        const averageInCost = (actualCostWithoutDiscount + cartItemSumWithDiscount) / 2
+        const averageSavingsInPrecent = (differenceInCost / averageInCost) * 100
+        return Math.round(averageSavingsInPrecent)
+    }
+
 
     return <>
         <PageNavbar pageName={match.params.schoolname} />
@@ -45,13 +67,13 @@ export const CartPage = ({ match, cart }) => {
                     <Col className="cart-sum" md="3">
                         <div className="cart-summary mt-4 mb-3">
                            <div className="cart-subtotal">
-                               <p>Subtotal:</p> <h4>${cartItemSum}</h4>
+                               <p>Subtotal:</p> <h4><span className="actual-price-span">${actualCostWithoutDiscount}</span>${cartItemSumWithDiscount}</h4>
                            </div>
                            <div className="cart-tax">
-                             <p>Tax:</p> <p>+1.8</p>
+                             <p>Total Savings(%{calculateSavingsInPercentage()}):</p> <p>${getCourseTotalSavingFromDiscount()}</p>
                            </div>
                            <div className="cart-total">
-                             <p>Total</p> <p>{cartItemSum + 1.8}</p>
+                             <p>Total</p> <p>{cartItemSumWithDiscount}</p>
                            </div>
                            <Button className="checkout-btn" block>Checkout</Button>
                         </div>

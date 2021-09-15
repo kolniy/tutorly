@@ -23,7 +23,13 @@ export const CourseList = ({ themeData, courses, coursesLoading, school }) => {
                                         </div>
                             </> : <>
                                 {
-                                  courses.map((course) => <CourseItem key={course._id} course={course} school={school} />)
+                                 courses.length === 0 ? <p style={{
+                                     textAlign:'center',
+                                     color:'#fff',
+                                     width:'100%'
+                                 }} className="text-center mb-2 mt-2">course not found</p> : <>{
+                                    courses.map((course) => <CourseItem key={course._id} course={course} school={school} />)
+                                 }</>
                                 }
                             </>
                         }
