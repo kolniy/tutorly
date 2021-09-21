@@ -11,6 +11,7 @@ import {
     ModalFooter
 } from "reactstrap"
 import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
+import { startLoading, stopLoading } from "../../../actions/appLoading"
 import DashboardNavbar from "../DashboardNavbar"
 import setAuthToken from "../../../utilities/setAuthToken"
 import Barchat from "./Barchat"
@@ -22,13 +23,27 @@ import "../../../custom-styles/dashboard/sales.css"
 
 const Sales = ({ 
     updatePageSelector,
-    school
+    school,
+    showLoader,
+    removeLoader
 }) => {
 
     const [ newPaymentMethodModalOpen, setNewPaymentMethodModalOpen ] = useState(false)
     const [ listOfSupportedPaymentMethods, setListOfSupportedPaymentMethods ] = useState([])
     const [ listOfSchoolPaymentMethods, setListOfSchoolPaymentMethods ] = useState([])
     const [ loadingListOfSchoolPaymentMethods, setLoadingListOfSchoolPaymentMethods ] = useState(true)
+    const [ showUpdatePaymentMethodKeys, setShowUpdatePaymentMethodKeys ] = useState(false)
+    const [ detailsOfPaymentMethodToBeUpdated, setDetailsOfPaymentMethodToBeUpdated ] = useState(null)
+
+    const onOpenUpdatePaymentMethodClick = (paymentMethodDetails) => {
+        setShowUpdatePaymentMethodKeys(true)
+        setDetailsOfPaymentMethodToBeUpdated(paymentMethodDetails)
+    }
+
+     const onCloseUpdatePaymentMethodClick = () => {
+        setShowUpdatePaymentMethodKeys(false)
+        setDetailsOfPaymentMethodToBeUpdated(null)
+     }
 
     const getListOfSupportedPaymentMethods = async () => {
         try {
@@ -52,6 +67,49 @@ const Sales = ({
             setLoadingListOfSchoolPaymentMethods(false)
         } catch (error) {
             setLoadingListOfSchoolPaymentMethods(false)
+            console.log(error)
+        }
+    }
+
+    const addNewPaymentMethodToSchool = async (paymentMethodId, schoolId) => {
+        try {
+            if(localStorage.getItem('token')){
+                setAuthToken(localStorage.getItem('token'))
+            }
+            showLoader()
+            const res = await axios.post(`/api/v1/schoolpaymentmethod/${paymentMethodId}/${schoolId}`)
+            setListOfSchoolPaymentMethods([
+                ...listOfSchoolPaymentMethods,
+                res.data
+            ])
+            removeLoader()
+            setNewPaymentMethodModalOpen(false)
+        } catch (error) {
+            removeLoader()
+            console.log(error)
+        }
+    }
+
+    const updatePaymentMethodCheckState = async (paymentMethodId) => {
+        try {
+            if(localStorage.getItem('token')){
+                setAuthToken(localStorage.getItem('token'))
+            }
+            showLoader()
+            const res = await axios.put(`/api/v1/schoolpaymentmethod/check/${paymentMethodId}`)
+            setListOfSchoolPaymentMethods(listOfSchoolPaymentMethods.map((item) => {
+                if(item._id === res.data._id){
+                    return {
+                        ...item,
+                        ...res.data
+                    }
+                } else {
+                    return item
+                }
+            }))
+            removeLoader()
+        } catch (error) {
+            removeLoader()
             console.log(error)
         }
     }
@@ -104,7 +162,11 @@ const Sales = ({
                                             your school currently has not payment method.
                                         </p> : <>
                                             {
-                                                listOfSchoolPaymentMethods.map((item) => <SchoolPaymentMethodItem key={item._id} item={item} />)
+                                                listOfSchoolPaymentMethods.map((item) => <SchoolPaymentMethodItem
+                                                 key={item._id} item={item}
+                                                 updatePaymentMethodCheckState={updatePaymentMethodCheckState}
+                                                 onOpenUpdatePaymentMethodClick={onOpenUpdatePaymentMethodClick}
+                                                  />)
                                             }
                                         </>
                                     }
@@ -169,7 +231,7 @@ const Sales = ({
             Choose a new Payment Method
         </div>
         <ModalBody>
-        <AvailablePaymentMethodContainer paymentMethods={listOfSupportedPaymentMethods} />
+        <AvailablePaymentMethodContainer paymentMethods={listOfSupportedPaymentMethods} addNewPaymentMethodToSchool={addNewPaymentMethodToSchool} />
         </ModalBody>
         <ModalFooter>
           <Button style={{
@@ -191,6 +253,42 @@ const Sales = ({
           }}>Close</Button>
         </ModalFooter>
       </Modal>
+      <Modal size="md" isOpen={showUpdatePaymentMethodKeys}>
+        <div style={{
+          fontWeight:'700',
+          fontSize:'20',
+          color:'#242121',
+          textTransform:'uppercase'
+        }} className="modal-header">
+            {
+            detailsOfPaymentMethodToBeUpdated !== null && (<img src={detailsOfPaymentMethodToBeUpdated?.logo} alt="payment gateway logo" className="img-fluid" />)
+            }
+        </div>
+        <ModalBody>
+        {
+            detailsOfPaymentMethodToBeUpdated !== null && (<p>Enter your {detailsOfPaymentMethodToBeUpdated.name} Account Information here to enable integration</p>)
+        }
+        </ModalBody>
+        <ModalFooter>
+          <Button style={{
+            color:'#242121',
+            backgroundColor:'#fff',
+            border:'1px solid #242121',
+            paddingLeft:'40px',
+            paddingRight:'40px'
+          }} 
+          onClick={onCloseUpdatePaymentMethodClick}
+          >Cancel</Button>{' '}
+          <Button
+        //   onClick={e => setNewPaymentMethodModalOpen(false)}
+          style={{
+              color:'#fff',
+              backgroundColor:'#242121',
+              paddingLeft:'40px',
+              paddingRight:'40px'
+          }}>Update</Button>
+        </ModalFooter>
+      </Modal>
 </>
 }
 
@@ -199,7 +297,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
+  updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter }),
+  showLoader: () => dispatch(startLoading()),
+  removeLoader: () => dispatch(stopLoading())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sales)

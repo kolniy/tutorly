@@ -9,37 +9,40 @@ const router = express.Router()
 router.post('/:paymentmethodId/:schoolId', auth, async (req, res) => {
     const paymenMethodId = req.params.paymentmethodId
     const schoolId = req.params.schoolId
-
-    const validPaymentMethod = await AvailablePaymentMethod.findOne({
-        _id: paymenMethodId
-    })
-    if(!validPaymentMethod){
-        return res.status(400).json({
-            errors: [{msg:"invalid payment method"}]
+    try {
+        const validPaymentMethod = await AvailablePaymentMethod.findOne({
+            _id: paymenMethodId
         })
-    }
-
-    const validSchool = await School.findOne({
-        _id: schoolId
-    })
-
-    if(!validSchool){
-        return res.status(400).json({
-            errors: [{msg:"school not found"}]
+        if(!validPaymentMethod){
+            return res.status(400).json({
+                errors: [{msg:"invalid payment method"}]
+            })
+        }
+    
+        const validSchool = await School.findOne({
+            _id: schoolId
         })
+    
+        if(!validSchool){
+            return res.status(400).json({
+                errors: [{msg:"school not found"}]
+            })
+        }
+    
+        const newSchoolPaymentMethod = new SchoolPaymentMethod({
+            name: validPaymentMethod.name,
+            logourl: validPaymentMethod.logourl,
+            publickey:'',
+            privatekey:'',
+            school: validSchool._id,
+            paymentmethodId: validPaymentMethod._id
+        })
+    
+        await newSchoolPaymentMethod.save()
+        res.json(newSchoolPaymentMethod)
+    } catch (error) {
+        res.status(500).send('server error')
     }
-
-    const newSchoolPaymentMethod = new SchoolPaymentMethod({
-        name: validPaymentMethod.name,
-        logourl: validPaymentMethod.logourl,
-        publickey:'',
-        privatekey:'',
-        school: validSchool._id,
-        paymentmethodId: validPaymentMethod._id
-    })
-
-    await newSchoolPaymentMethod.save()
-    res.json(newSchoolPaymentMethod)
 })
 
 router.get('/:schoolId', async (req, res) => {
@@ -53,5 +56,25 @@ router.get('/:schoolId', async (req, res) => {
         res.status(500).send('server error')
     }
 })
+
+router.put('/check/:paymentmethodId', auth, async (req, res) => {
+    const paymentMethodId = req.params.paymentmethodId
+    try {
+        const validPaymentMethod = await SchoolPaymentMethod.findOne({
+            _id: paymentMethodId
+        })
+        if(!validPaymentMethod){
+            return res.status(400).json({
+                errors: [{msg: 'payment method not found'}]
+            })
+        }
+        validPaymentMethod.active = (!validPaymentMethod.active)
+        await validPaymentMethod.save()
+        res.json(validPaymentMethod)
+    } catch (error) {
+        res.status(500).send('server error')
+    }
+})  
+
 
 export default router
