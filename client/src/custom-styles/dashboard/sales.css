@@ -1,13 +1,55 @@
-.sales-page .page-title {
-  font-weight: 800;
-  font-size: 24px;
-  color: var(--site-dark-color);
+.sales-page__contents {
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
+  background-color: var(--site-white-color);
+  padding-right: 35px;
+  padding-left: 35px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-.sales-page__contents {
-  margin: 0 auto;
+.section-header {
+  border-bottom: 1px solid var(--site-dark-color);
+  padding-bottom: 10px;
+  color: var(--site-subtle-dark);
+  font-weight: 600;
+  margin-bottom: 8vh;
+}
+
+.payment-setup__contents {
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
+  background-color: var(--site-white-color);
+  padding-right: 35px;
+  padding-left: 35px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.payment-method__item {
+  display: flex;
+  margin: 5vh auto;
   width: 80%;
-  padding-top: 12vh;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-method__item img {
+  width: 140px;
+  height: 50px;
+}
+
+.payment-method__item-btn,
+.payment-method__item-btn:hover,
+.payment-method__item-btn:active {
+  color: var(--site-subtle-dark) !important;
+  border: 1px solid var(--site-subtle-dark);
+  box-shadow: none;
+  background-color: var(--site-white-color) !important;
 }
 
 .subscription-info {
@@ -49,11 +91,6 @@
 
 .chart {
   background-color: #d8ffdc;
-  margin-top: 20px;
-}
-
-.sales-breakdown__info {
-  margin-top: 9vh;
 }
 
 .total-sales-info_container {
@@ -80,4 +117,86 @@
   font-weight: 500;
   padding: 0;
   margin: 0;
+}
+
+/* styles for our toggle Buttons */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 130px;
+  min-width: 110px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ff6060;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #161950;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(98px);
+  -ms-transform: translateX(98px);
+  transform: translateX(98px);
+}
+
+/*------ ADDED CSS ---------*/
+.on {
+  display: none;
+}
+
+.on,
+.off {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  font-size: 15px;
+}
+
+input:checked + .slider .on {
+  display: block;
+}
+
+input:checked + .slider .off {
+  display: none;
+}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

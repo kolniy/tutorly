@@ -94,8 +94,8 @@ const DashboardNavbar = ({
                                     <NavItem className={classnames("navbar-item-link", {
                                         selected: currentPage.counter === 4
                                     })}>
-                                        <NavLink onClick={e => updatePage(4)} tag={Link} to="/dashboard/sales">
-                                        <i className="fas fa-dollar-sign"></i><span className="navlink-text d-none-sm">Sales</span>
+                                        <NavLink onClick={e => updatePage(4)} tag={Link} to="/dashboard/payment">
+                                        <i className="fas fa-dollar-sign"></i><span className="navlink-text d-none-sm">Payments</span>
                                         </NavLink>
                                     </NavItem>
                                     <NavItem className={classnames("navbar-item-link", {

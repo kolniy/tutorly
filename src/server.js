@@ -14,6 +14,8 @@ import themeRoute from "./routes/theme"
 import themePreviewRoute from "./routes/themepreview"
 import commentRoute from "./routes/comment"
 import replyRoute from "./routes/reply"
+import availablepaymentmethodRoute from './routes/availablepaymentmethod'
+import schoolpaymentmethod from './routes/schoolpaymentmethod'
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -44,6 +46,8 @@ app.use('/api/v1/theme', themeRoute)
 app.use('/api/v1/themepreview', themePreviewRoute)
 app.use('/api/v1/comment', commentRoute)
 app.use('/api/v1/reply', replyRoute)
+app.use('/api/v1/availablepaymentmethod', availablepaymentmethodRoute)
+app.use('/api/v1/schoolpaymentmethod', schoolpaymentmethod)
 
 // block of code come's after application routes
 if(process.env.NODE_ENV === 'production'){

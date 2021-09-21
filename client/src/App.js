@@ -82,7 +82,7 @@ function App() {
         <PrivateRoute exact path="/dashboard/customize/theme/setup/themeinfo" component={ThemeInfo} />
         <PrivateRoute exact path="/dashboard/customize/theme/setup/assetupload" component={ThemeUpload} />
         <PrivateRoute exact path="/dashboard/customize/theme/setup/contactinfo" component={ThemeContact} />
-        <PrivateRoute exact path="/dashboard/sales" component={Sales} />
+        <PrivateRoute exact path="/dashboard/payment" component={Sales} />
         <PrivateRoute exact path="/dashboard/messages" component={Messages} />
         <PrivateRoute exact path="/dashboard/themes/preview/hero" component={Herotheme} />
       </Switch>
