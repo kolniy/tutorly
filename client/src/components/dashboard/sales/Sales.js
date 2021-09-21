@@ -1,24 +1,70 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { connect } from "react-redux"
 import { 
     Row,
     Col,
     Container,
     Button,
+    Modal,
+    ModalBody,
+    ModalFooter
 } from "reactstrap"
-import { Link } from 'react-router-dom'
 import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import DashboardNavbar from "../DashboardNavbar"
+import setAuthToken from "../../../utilities/setAuthToken"
 import Barchat from "./Barchat"
-import stripeLogo from "../../../images/stripelogo.png"
-import paystackLogo from '../../../images/paystacklogo.png'
+import AvailablePaymentMethodContainer from './AvailablePaymentMethodContainer'
+import SchoolPaymentMethodItem from './SchoolPaymentMethodItem'
 
 import "../../../custom-styles/dashboard/dashboardlayout.css";
 import "../../../custom-styles/dashboard/sales.css"
 
 const Sales = ({ 
-    updatePageSelector
+    updatePageSelector,
+    school
 }) => {
+
+    const [ newPaymentMethodModalOpen, setNewPaymentMethodModalOpen ] = useState(false)
+    const [ listOfSupportedPaymentMethods, setListOfSupportedPaymentMethods ] = useState([])
+    const [ listOfSchoolPaymentMethods, setListOfSchoolPaymentMethods ] = useState([])
+    const [ loadingListOfSchoolPaymentMethods, setLoadingListOfSchoolPaymentMethods ] = useState(true)
+
+    const getListOfSupportedPaymentMethods = async () => {
+        try {
+            if(localStorage.getItem('token')){
+                setAuthToken(localStorage.getItem('token'))
+            }
+            const res = await axios.get('/api/v1/availablepaymentmethod')
+            setListOfSupportedPaymentMethods((await res).data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getListOfSchoolPaymentMethods = async (schoolId) => {
+        try {
+            if(localStorage.getItem('token')){
+                setAuthToken(localStorage.getItem('token'))
+            }
+            const res = await axios.get(`/api/v1/schoolpaymentmethod/${schoolId}`)
+            setListOfSchoolPaymentMethods(res.data)
+            setLoadingListOfSchoolPaymentMethods(false)
+        } catch (error) {
+            setLoadingListOfSchoolPaymentMethods(false)
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getListOfSupportedPaymentMethods() // get list of payment methods that the tutor can choose from        
+    }, [])
+
+    useEffect(() => {
+       if(school !== null){
+        getListOfSchoolPaymentMethods(school._id) // get list of payment methods that the tutor has already choose for he's school
+       }
+    }, [school])
 
     useEffect(() => {
         updatePageSelector(4)
@@ -35,43 +81,41 @@ const Sales = ({
 
                         <div className="payment-setup__contents">
                         <div className="section-header">
-                            Payment Method
+                            <h5>Payment Method</h5>
+                            <div onClick={e => setNewPaymentMethodModalOpen(true)} className="add-payment__method mr-1">
+                              <i className="fas fa-plus"></i>
+                            </div>
                         </div>
                         <div className="payment-method-list">
-                            <div className="payment-method__item">
-                                <img src={paystackLogo} className="img-fluid" alt="paystack logo" />
-                                <label class="switch">
-                                    <input type="checkbox" id="togBtn" />
-                                    <div class="slider round">
-                                    {/* <!--ADDED HTML --> */}
-                                    <span class="on">Enabled</span>
-                                    <span class="off">Disabled</span>
-                                    {/* <!--END--> */}
-                                    </div>
-                                </label>
-                                <Button className="payment-method__item-btn"
-                                 tag={Link}>Enter Account Info</Button>
-                            </div>
-                            <div className="payment-method__item">
-                                <img src={stripeLogo} className="img-fluid" alt="stripe logo" />
-                                <label class="switch">
-                                    <input type="checkbox" id="togBtn" />
-                                    <div class="slider round">
-                                    {/* <!--ADDED HTML --> */}
-                                    <span class="on">Enabled</span>
-                                    <span class="off">Disabled</span>
-                                    {/* <!--END--> */}
-                                    </div>
-                                </label>
-                                <Button className="payment-method__item-btn"
-                                 tag={Link}>Enter Account Info</Button>
-                            </div>
+                            {
+                              loadingListOfSchoolPaymentMethods ?
+                                (<div style={{
+                                    width:'50%',
+                                    margin:'20px auto',
+                                    display:'flex',
+                                    alignItems:'center',
+                                    justifyContent:'center'
+                                }}>
+                                    <i className="fas fa-circle-notch fa-spin"></i>
+                                </div>) :
+                                <>
+                                    {
+                                        listOfSchoolPaymentMethods.length === 0 ? <p className="text-center">
+                                            your school currently has not payment method.
+                                        </p> : <>
+                                            {
+                                                listOfSchoolPaymentMethods.map((item) => <SchoolPaymentMethodItem key={item._id} item={item} />)
+                                            }
+                                        </>
+                                    }
+                                </>
+                            }
                         </div>
                         </div>
                         
                      <div className="sales-page__contents">
                         <div className="section-header">
-                            Payment History
+                            <h5>Payment History</h5>
                         </div>
                          <div className="payment-history__container">
                             <Container>
@@ -115,11 +159,47 @@ const Sales = ({
             </Row>
         </Container>
     </div>
+    <Modal size="md" isOpen={newPaymentMethodModalOpen}>
+        <div style={{
+          fontWeight:'700',
+          fontSize:'20',
+          color:'#242121',
+          textTransform:'uppercase'
+        }} className="modal-header">
+            Choose a new Payment Method
+        </div>
+        <ModalBody>
+        <AvailablePaymentMethodContainer paymentMethods={listOfSupportedPaymentMethods} />
+        </ModalBody>
+        <ModalFooter>
+          <Button style={{
+            color:'#242121',
+            backgroundColor:'#fff',
+            border:'1px solid #242121',
+            paddingLeft:'40px',
+            paddingRight:'40px'
+          }} 
+          onClick={e => setNewPaymentMethodModalOpen(false)}
+          >Cancel</Button>{' '}
+          <Button
+          onClick={e => setNewPaymentMethodModalOpen(false)}
+          style={{
+              color:'#fff',
+              backgroundColor:'#242121',
+              paddingLeft:'40px',
+              paddingRight:'40px'
+          }}>Close</Button>
+        </ModalFooter>
+      </Modal>
 </>
 }
+
+const mapStateToProps = (state) => ({
+    school: state.school.schoolDetails
+})
 
 const mapDispatchToProps = (dispatch) => ({
   updatePageSelector: (counter) => dispatch({type: UPDATE_DASHBOARD_PAGE_COUNTER, payload:counter })
 })
 
-export default connect(null, mapDispatchToProps)(Sales)
+export default connect(mapStateToProps, mapDispatchToProps)(Sales)

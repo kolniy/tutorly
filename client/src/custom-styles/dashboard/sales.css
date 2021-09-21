@@ -13,9 +13,43 @@
 .section-header {
   border-bottom: 1px solid var(--site-dark-color);
   padding-bottom: 10px;
+  margin-bottom: 8vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header h5 {
   color: var(--site-subtle-dark);
   font-weight: 600;
-  margin-bottom: 8vh;
+  font-size: 15px;
+}
+
+.section-header .add-payment__method {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* .available-payment-method-container {
+} */
+
+.available-payment-method-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
+  border-bottom: 0.6px solid var(--site-subtle-dark);
+}
+
+.available-payment-method-item__name {
+  color: var(--site-subtle-dark);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.choose-payment-method__item {
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .payment-setup__contents {
