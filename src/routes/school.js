@@ -4,6 +4,7 @@ import School from "../models/School"
 import Theme from "../models/Theme"
 import Course from "../models/Course"
 import CourseChapter from "../models/CourseChapter"
+import SchoolPaymentMethod from "../models/SchoolPaymentMethod"
 
 const router = express.Router()
 
@@ -141,6 +142,30 @@ router.get('/course/module/:courseId', async (req, res) => {
         course: courseId
     }).populate('courseunit')
     res.json(courseChapters)
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Internal server error")
+    }
+})
+
+router.get('/:schoolname/check/paymentmethods', async (req, res) => {
+    const schoolname = req.params.schoolname
+    try {
+        const school = await School.findOne({
+            name: schoolname
+        })
+        if(!school){
+            return res.status(404).json({errors : [{
+                msg: "school not found"
+            }]})
+        }
+
+        const availableSchoolPaymentMethods = await SchoolPaymentMethod.find({
+            school: school._id
+        }).select('-privatekey')
+
+        res.json(availableSchoolPaymentMethods)
+
     } catch (error) {
         console.error(error)
         res.status(500).send("Internal server error")

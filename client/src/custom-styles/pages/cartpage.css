@@ -179,6 +179,11 @@
   border-radius: 0;
 }
 
+.dropdown-header {
+  color: #545454;
+  font-size: 14px;
+}
+
 .checkout-btn:hover,
 .checkout-btn:active {
   color: #fff !important;

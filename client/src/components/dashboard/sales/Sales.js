@@ -7,11 +7,15 @@ import {
     Container,
     Button,
     Modal,
+    FormGroup,
+    Input,
+    Label,
     ModalBody,
     ModalFooter
 } from "reactstrap"
 import { UPDATE_DASHBOARD_PAGE_COUNTER } from "../../../actions/types"
 import { startLoading, stopLoading } from "../../../actions/appLoading"
+import { useAlert } from 'react-alert'
 import DashboardNavbar from "../DashboardNavbar"
 import setAuthToken from "../../../utilities/setAuthToken"
 import Barchat from "./Barchat"
@@ -34,6 +38,11 @@ const Sales = ({
     const [ loadingListOfSchoolPaymentMethods, setLoadingListOfSchoolPaymentMethods ] = useState(true)
     const [ showUpdatePaymentMethodKeys, setShowUpdatePaymentMethodKeys ] = useState(false)
     const [ detailsOfPaymentMethodToBeUpdated, setDetailsOfPaymentMethodToBeUpdated ] = useState(null)
+    const [ keysDetails, setKeysDetails ] = useState({
+        privatekey:'',
+        publickey:''
+    })
+    const alert = useAlert()
 
     const onOpenUpdatePaymentMethodClick = (paymentMethodDetails) => {
         setShowUpdatePaymentMethodKeys(true)
@@ -44,6 +53,28 @@ const Sales = ({
         setShowUpdatePaymentMethodKeys(false)
         setDetailsOfPaymentMethodToBeUpdated(null)
      }
+
+     const updateKeysFromInput = (e) => setKeysDetails({
+         ...keysDetails,
+          [e.target.name]: e.target.value
+     })
+
+     const { privatekey, publickey } = keysDetails
+
+     const submitPaymentKeys = () => {
+        if(publickey.length === 0){
+            return alert.show('public key cannot be empty', {
+                type:'error'
+            })
+        }
+         if(privatekey.length === 0){
+             return alert.show('private key cannot be empty', {
+                 type:'error'
+             })
+         }
+        updateKeysForPaymentMethod(detailsOfPaymentMethodToBeUpdated.id ,keysDetails)
+        onCloseUpdatePaymentMethodClick()
+    }
 
     const getListOfSupportedPaymentMethods = async () => {
         try {
@@ -107,6 +138,43 @@ const Sales = ({
                     return item
                 }
             }))
+            removeLoader()
+        } catch (error) {
+            removeLoader()
+            console.log(error)
+        }
+    }
+
+    const updateKeysForPaymentMethod = async (paymentMethodId, keyDetails) => {
+        try {
+            if(localStorage.getItem('token')){
+                setAuthToken(localStorage.getItem('token'))
+            }
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            const body = JSON.stringify(keyDetails)
+            showLoader()
+            const res = await axios.put(`/api/v1/schoolpaymentmethod/keys/${paymentMethodId}`, body, config)
+            setListOfSchoolPaymentMethods(listOfSchoolPaymentMethods.map((item) => {
+                if(item._id === res.data._id){
+                    return {
+                        ...item,
+                        ...res.data
+                    }
+                } else {
+                    return item
+                }
+            }))
+            alert.show('intergration keys updated successfully', {
+                type:'success'
+            })
+            setKeysDetails({
+                privatekey:'',
+                publickey:''
+            })
             removeLoader()
         } catch (error) {
             removeLoader()
@@ -268,6 +336,14 @@ const Sales = ({
         {
             detailsOfPaymentMethodToBeUpdated !== null && (<p>Enter your {detailsOfPaymentMethodToBeUpdated.name} Account Information here to enable integration</p>)
         }
+        <FormGroup>
+            <Label>Public Key*</Label>
+            <Input name="publickey" onChange={e => updateKeysFromInput(e)} value={publickey} placeholder="Enter Your Public Key Here"></Input>
+        </FormGroup>
+        <FormGroup>
+            <Label>Private Key*</Label>
+            <Input name="privatekey"  onChange={e => updateKeysFromInput(e)} value={privatekey} placeholder="Enter Your Private Key Here"></Input>
+        </FormGroup>
         </ModalBody>
         <ModalFooter>
           <Button style={{
@@ -280,7 +356,7 @@ const Sales = ({
           onClick={onCloseUpdatePaymentMethodClick}
           >Cancel</Button>{' '}
           <Button
-        //   onClick={e => setNewPaymentMethodModalOpen(false)}
+          onClick={submitPaymentKeys}
           style={{
               color:'#fff',
               backgroundColor:'#242121',

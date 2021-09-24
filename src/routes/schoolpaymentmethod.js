@@ -76,5 +76,26 @@ router.put('/check/:paymentmethodId', auth, async (req, res) => {
     }
 })  
 
+router.put('/keys/:paymentmethodId', auth, async (req, res) => {
+    const paymentMethodId = req.params.paymentmethodId
+    try {
+        const validPaymentMethod = await SchoolPaymentMethod.findOne({
+            _id: paymentMethodId
+        })
+        if(!validPaymentMethod){
+            return res.status(400).json({
+                errors: [{msg: 'payment method not found'}]
+            })
+        }
+        const { privatekey, publickey } = req.body
+        validPaymentMethod.privatekey = privatekey
+        validPaymentMethod.publickey = publickey
+        
+        await validPaymentMethod.save()
+        res.json(validPaymentMethod)
+    } catch (error) {
+        res.status(500).send('server error')
+    }
+})
 
 export default router

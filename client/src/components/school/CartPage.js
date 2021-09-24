@@ -1,15 +1,65 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col, 
+    Button, ButtonDropdown, DropdownToggle,
+    DropdownMenu, DropdownItem } from 'reactstrap'
+import { PaystackButton } from 'react-paystack'
 import PageNavbar from './PageNavbar'
 import CartItem from './CartItem'
+
 // function used to calculate actual cost/price if course has discount
 import calculateDiscountForCourseCart from '../../utilities/calculateDiscountForCourseCart'
 
 import '../../custom-styles/pages/cartpage.css'
 
 export const CartPage = ({ match, cart }) => {
+
+    const [ schoolPaymentMethods, setSchoolPaymentMethods ] = useState([])
+    const [ validSchoolPaymentMethods, setValidSchoolPaymentMethods ] = useState([])
+    const [ paymentMethodToUse, setPaymentMethodToUse ] = useState(null)
+    const [dropdownOpen, setOpen] = useState(false); // used to control the checkout options dropdown
+    const toggle = () => setOpen(!dropdownOpen);
+    // const initializePaystackPayment = usePaystackPayment({
+    //     reference: (new Date()).getTime().toString(),
+    //     email: "kolaniyi3@gmail.com.com",
+    //     amount: 2000 * 100,
+    //     publicKey: 'pk_test_f0d4496ea386a402b4a3d72cda5e5535eb95d5cb',
+    //   })
+
+    const getSchoolPaymentMethods = async (schoolName) => {
+        try {
+            const res = await axios.get(`/api/v1/school/${schoolName}/check/paymentmethods`)
+            setSchoolPaymentMethods(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        // useEffect run to get all the payment methods for this school
+        getSchoolPaymentMethods(match.params.schoolname)
+    }, [match.params.schoolname])
+
+    useEffect(() => {
+    // filter applies here to get on valid payment methods
+    setValidSchoolPaymentMethods(filterValidPayment(schoolPaymentMethods))
+    }, [schoolPaymentMethods])
+
+    useEffect(() => {
+        if(validSchoolPaymentMethods.length > 0){
+            setPaymentMethodToUse(validSchoolPaymentMethods[0])
+        }
+    }, [validSchoolPaymentMethods])
+
+    const filterValidPayment = (paymentMethods) => {
+        return paymentMethods.filter((method) => {
+            return method.active === true && method.publickey.length > 0
+        })
+    }
+
+    const updatePaymentMethodToUse = (method) => setPaymentMethodToUse(method)
 
     const cartItemSumWithDiscount = cart?.reduce((prev, curr) => {
         if(curr.itemDiscount){
@@ -33,7 +83,41 @@ export const CartPage = ({ match, cart }) => {
         return Math.round(percentDifference)
     }
 
+    const checkOut = () => {
+        // alert('hello') run function to check authentication status
+        switch (paymentMethodToUse.name) {
+            case 'paystack':
+                // payStackPaymentHandler(paymentMethodToUse)
+                break;
+            case 'stripe':
+                alert('call the stripe payment gateway method')
+                break;
+            default:
+                break;
+        }
+    }
 
+    const payStackHandleClose = () => alert('no')
+
+    const payStackHandleSuccess = () => alert('yes')
+
+    // const payStackPaymentHandler = (paymentMethodInfo) => {
+        
+    // }
+
+    const config = {
+        reference: (new Date()).getTime().toString(),
+        email: "kolaniyi3@example.com",
+        amount: 20000,
+        publicKey: paymentMethodToUse.publickey,
+    }
+    const componentProps = {
+        ...config,
+        onSuccess: (reference) => payStackHandleSuccess(reference),
+        onClose: payStackHandleClose,
+        text: 'Checkout With Paystack'
+    }
+ 
     return <>
         <PageNavbar pageName={match.params.schoolname} />
         <div className="page-contents">
@@ -74,7 +158,24 @@ export const CartPage = ({ match, cart }) => {
                            <div className="cart-total">
                              <p>Total</p> <p>{cartItemSumWithDiscount}</p>
                            </div>
-                           <Button className="checkout-btn" block>Checkout</Button>
+                           { validSchoolPaymentMethods.length === 0 ?
+                            <p className="mt-2 mb-2" style={{color:'#fff'}}>Cannot check at the moment. school does not have a valid payment method</p> :
+                            <ButtonDropdown direction="up" isOpen={dropdownOpen} toggle={toggle}>
+                                {
+                                    paymentMethodToUse.name === 'paystack' ? <>
+                                        <PaystackButton {...componentProps} />
+                                    </> : <>
+                                    <Button onClick={checkOut} className="checkout-btn" id="caret">Checkout with {paymentMethodToUse?.name}</Button>
+                                    </>
+                                }
+                            <DropdownToggle split style={{backgroundColor:'#569d6b', color:'#fff', border:'none'}} />
+                            <DropdownMenu>
+                            <DropdownItem header>Choose Different a payment method</DropdownItem>
+                                {
+                                    validSchoolPaymentMethods.map((method) => <DropdownItem onClick={e => updatePaymentMethodToUse(method)} key={method._id}>{method.name}</DropdownItem>)
+                                }
+                            </DropdownMenu>
+                            </ButtonDropdown>}
                         </div>
                     </Col>
                 </Row>

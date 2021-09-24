@@ -25,12 +25,12 @@ const SchoolPaymentMethodItem = ({
     return <>
          <div className="payment-method__item">
             <img src={logourl} className="img-fluid" alt="paystack logo" />
-            <label class="switch">
+            <label className="switch">
                 <input type="checkbox" checked={active} onChange={e => updateCheckedState(e)} />
-                <div class="slider round">
+                <div className="slider round">
                 {/* <!--ADDED HTML --> */}
-                <span class="on">Enabled</span>
-                <span class="off">Disabled</span>
+                <span className="on">Enabled</span>
+                <span className="off">Disabled</span>
                 {/* <!--END--> */}
                 </div>
             </label>
